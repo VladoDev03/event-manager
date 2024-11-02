@@ -46,24 +46,56 @@ body {
     font-weight: 600;
 }
 
+.inputContainer{
+    width: 100%;
+    max-width: 300px;
+}
 .inputBox {
-    margin: 10px 0;
+    margin: 15px 0;
 }
 
 .search_box {
-    padding: 8px 12px;
+    padding: 12px 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 20px;
     font-size: 16px;
-    width: 200px;
+    width: 100%;
 }
 
 .submitBtn {
     width: 100%;
-    padding: 10px;
+    background-color: #d1410c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.signupPrompt {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.signupPrompt a {
+    color: #d1410c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signupPrompt a:hover {
+    text-decoration: underline;
 }
 
 .secondHalf {
-    background: url('https://img.freepik.com/premium-photo/champagne-toast-celebration-party_663277-40416.jpg?semt=ais_hybrid') no-repeat center center;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://img.freepik.com/premium-photo/champagne-toast-celebration-party_663277-40416.jpg?semt=ais_hybrid') no-repeat center center;
     background-size: cover;
+    position: relative;
 }
+
+

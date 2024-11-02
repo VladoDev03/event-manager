@@ -106,103 +106,112 @@ body {
     
 }
 
-.iconCategoryBrowseContainer {
+.eventInfoContainer{
     display:flex;
-    justify-content:center;
-    gap:40px;
-    margin:50px;
+    flex-direction: column;
+    margin: 0 40px 30px 30px;
 }
 
-.iconCategory:hover {
-    transform: scale(1.1);
+.eventInfoContainer time{
+    font-size:18px;
+    margin-bottom:10px;
+}
+
+.eventInfoContainer h1{
+    font-size:50px;
+}
+
+.eventSummary{
+    font-size:14px;
+    margin:40px 0;
+}
+
+.dateAndTimeWrapper{
+    margin-bottom:50px;
+}
+
+.dateAndTimeWrapper h2{
+    margin-bottom:10px;
+}
+
+.locationWrapper h2{
+    margin-bottom:10px;
+}
+
+.locationWrapper{
+    margin-bottom:50px;
+}
+
+.eventDescription h2{
+    margin-bottom:10px;
+}
+
+.eventAndReservationContainer{
+    display:flex;
+    padding:50px;
+}
+
+.eventReservationContainer {
+    margin: 50px 150px 0 50px;
+}
+
+.eventReservationWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 200px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    align-items: center;
+}
+
+.reservationInfo {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    font-size: 18px;
+    gap:30px;
+}
+
+.ticketPrice {
+    color: gray;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.quantitySelector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantitySelector button {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
     cursor: pointer;
 }
 
-.iconWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.iconWrapper img {
-    width:100px;
-    height: 100px;
-    padding: 20px;
-    border: 1px solid #e0e0ff;
-    border-radius: 50%;
-    transition: border-color 0.3s;
-}
-
-.iconTitle {
-    margin-top: 10px;
+.quantitySelector span {
     font-size: 16px;
-}
-
-.popularEventsContainer{
-    margin:100px;
-}
-
-.popularEventsTitleContainer {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    justify-content: space-between;
-}
-
-.popularEventsTitle {
-    width: 75%;
-}
-
-.exporeMoreEvents {
-    text-decoration: none;
-    color: #333;
-    font-size: 14px;
-}
-
-.exporeMoreEvents:hover {
-    color: #ff6f61;
-}
-
-.eventsContainer {
-    display: flex;
-    gap: 20px;
-}
-
-.eventWrapper {
-    display: flex;
-    width: 30%;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.eventWrapper:hover {
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
-    transition: transform 0.3s; 
-}
-
-.eventImg img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
-}
-
-.eventDescription {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    margin-top: 10px;
-}
-
-.eventDescription a {
-    text-decoration: none;
-    color: #333;
-    margin: 5px 0;
     font-weight: bold;
 }
 
-.eventDescription p {
-    margin: 4px 0;
-    color: #666;
+.reservationBtn{
+    width:100%;
+}
+.reservationBtn button {
+    background-color: #d1410c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width:100%;
 }
