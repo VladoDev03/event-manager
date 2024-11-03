@@ -173,7 +173,7 @@ body {
     align-items: center;
     flex-direction: row;
     font-size: 18px;
-    gap:30px;
+    gap:20px;
 }
 
 .ticketPrice {
@@ -212,6 +212,12 @@ body {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
     width:100%;
+}
+
+.reservationBtn button:hover{
+    background-color:#dd5523;
+    transition: transform 0.3s; 
 }
