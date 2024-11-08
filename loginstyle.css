@@ -54,7 +54,7 @@ body {
     margin: 15px 0;
 }
 
-.search_box {
+.searchBox {
     padding: 12px 15px;
     border: 1px solid #ccc;
     border-radius: 20px;
@@ -62,7 +62,7 @@ body {
     width: 100%;
 }
 
-.submitBtn {
+.submitBtn button{
     width: 100%;
     background-color: #d1410c;
     color: white;
@@ -72,6 +72,11 @@ body {
     cursor: pointer;
     font-size: 18px;
     font-weight: bold;
+}
+
+.submitBtn button:hover{
+    background-color:#dd5523;
+    transition: transform 0.3s; 
 }
 
 .signupPrompt {
