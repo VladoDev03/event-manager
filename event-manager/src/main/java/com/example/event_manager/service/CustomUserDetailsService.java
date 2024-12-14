@@ -15,10 +15,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public CustomUserDetailsService() {
         users = new ArrayList<>();
-        users.addAll(List.of(
-                new User("test@test.test", "123", "test"),
-                new User("testuser@test.test", "123", "testuser")
-        ));
     }
 
     @Override

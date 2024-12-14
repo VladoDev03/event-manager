@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:8080/api/user';
+const baseUrl = 'http://localhost:8080/api/auth';
 
 export async function login(userData) {
     const response = await fetch(`${baseUrl}/login`, {
