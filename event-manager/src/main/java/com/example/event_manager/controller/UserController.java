@@ -18,11 +18,11 @@ public class UserController {
 
     @PostMapping("/login")
     public User getUser() {
-        return new User("test", "test123");
+        return new User("test", "test123", "");
     }
 
     @PostMapping("/register")
     public User createUser() {
-        return new User("test", "test123");
+        return new User("test", "test123", "");
     }
 }

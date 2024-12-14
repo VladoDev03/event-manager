@@ -7,7 +7,7 @@ function App() {
   const [logData, setLogData] = useState();
 
   const newUser = {
-    username: "testUser",
+    email: "testUser",
     password: "testtesttest"
   };
 
@@ -30,10 +30,10 @@ function App() {
   return (
     <div className="App">
       <h1 onClick={registerHandler}>Register</h1>
-      <h2>{regData?.username ?? 'username'}</h2>
+      <h2>{regData?.email ?? 'email'}</h2>
       <h2>{regData?.password ?? 'password'}</h2>
       <h1 onClick={loginHandler}>Login</h1>
-      <h2>{logData?.username ?? 'username'}</h2>
+      <h2>{logData?.email ?? 'email'}</h2>
       <h2>{logData?.password ?? 'password'}</h2>
     </div>
   );
