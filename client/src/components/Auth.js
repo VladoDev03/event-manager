@@ -30,11 +30,17 @@ function Auth() {
             })
     };
 
+    const logoutHandler = () => {
+        userLogout();
+        setRegData('');
+        setLogData('');
+    };
+
     return (
-        <div className="App">
+        <div className='App'>
             <h1 onClick={registerHandler}>Register</h1>
             <h1 onClick={loginHandler}>Login</h1>
-            <h1 onClick={userLogout}>Logout</h1>
+            <h1 onClick={logoutHandler}>Logout</h1>
             <h2>{regData?.access_token ?? 'regToken'}</h2>
             <h2>{logData?.access_token ?? 'logToken'}</h2>
         </div>
