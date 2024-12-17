@@ -4,7 +4,6 @@ import com.example.event_manager.bindingmodels.AuthenticationRequest;
 import com.example.event_manager.bindingmodels.AuthenticationResponse;
 import com.example.event_manager.bindingmodels.RegisterRequest;
 import com.example.event_manager.bindingmodels.User;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +12,15 @@ import java.util.List;
 
 @Service
 public class AuthService {
-    private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     private final List<User> users;
 
     public AuthService(
-            AuthenticationManager authenticationManager,
             JwtService jwtService,
             PasswordEncoder passwordEncoder
             ) {
-        this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
 
