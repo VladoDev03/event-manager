@@ -20,7 +20,7 @@ public class AuthService {
     public AuthService(
             JwtService jwtService,
             PasswordEncoder passwordEncoder
-            ) {
+    ) {
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
 

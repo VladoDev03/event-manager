@@ -14,6 +14,14 @@ public class Review extends BaseEntity {
     @OneToOne
     private Reservation reservation;
 
+    public Review() {}
+
+    public Review(Rating rating, String comment, LocalDateTime reviewTime) {
+        this.rating = rating;
+        this.comment = comment;
+        this.reviewTime = reviewTime;
+    }
+
     public Rating getRating() {
         return rating;
     }
