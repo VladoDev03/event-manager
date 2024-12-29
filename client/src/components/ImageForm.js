@@ -18,7 +18,7 @@ export function ImageForm() {
         });
 
         try {
-            const result = await mediaService.uploadImages(formData);
+            const result = await mediaService.uploadMedia(formData);
             console.log("Media URLs:", result);
         } catch (error) {
             console.error("Error uploading images:", error.message);

@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
+import * as reviewService from '../services/reviewService';
 
 export const Review = () => {
-    const [rating, setRating] = useState(0); // Rating state (1 to 5)
-    const [comment, setComment] = useState(''); // Comment state
-    const [submitted, setSubmitted] = useState(false); // To track if the form is submitted
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState('');
+    const [submitted, setSubmitted] = useState(false);
 
-    // Handle the star rating click
-    const handleRatingClick = (star) => {
+    const handleRatingClick = star => {
         setRating(star);
     };
 
-    // Handle the comment change
-    const handleCommentChange = (event) => {
+    const handleCommentChange = event => {
         setComment(event.target.value);
     };
 
-    // Handle the form submission
-    const handleSubmit = (event) => {
+    const handleSubmit = async event => {
         event.preventDefault();
-        if (rating === 0) {
+        if (rating === null) {
             alert('Please select a rating.');
         } else {
-            console.log('Review Submitted:', { rating, comment });
-            // send to server
-            setSubmitted(true); // Set submitted state to true
+            const review = { rating, comment };
+            const result = await reviewService.uploadReview(review);
+
+            console.log('Review Submitted:', result);
+            console.log(review);
+            
+            setSubmitted(true);
         }
     };
 
@@ -34,7 +36,7 @@ export const Review = () => {
                 <div>
                     <h3>Rating</h3>
                     <div>
-                        {[1, 2, 3, 4, 5].map((star) => (
+                        {[0, 1, 2, 3, 4].map((star) => (
                             <span
                                 key={star}
                                 onClick={() => handleRatingClick(star)}
@@ -67,7 +69,7 @@ export const Review = () => {
             {submitted && (
                 <div>
                     <h3>Thank you for your review!</h3>
-                    <p>Rating: {rating} stars</p>
+                    <p>Rating: {rating + 1} stars</p>
                     <p>Comment: {comment}</p>
                 </div>
             )}
