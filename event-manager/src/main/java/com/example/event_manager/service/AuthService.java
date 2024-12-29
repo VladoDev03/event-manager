@@ -1,9 +1,9 @@
 package com.example.event_manager.service;
 
-import com.example.event_manager.bindingmodels.AuthenticationRequest;
-import com.example.event_manager.bindingmodels.AuthenticationResponse;
-import com.example.event_manager.bindingmodels.RegisterRequest;
-import com.example.event_manager.bindingmodels.User;
+import com.example.event_manager.dto.AuthenticationRequest;
+import com.example.event_manager.dto.AuthenticationResponse;
+import com.example.event_manager.dto.RegisterRequest;
+import com.example.event_manager.dto.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

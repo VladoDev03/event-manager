@@ -1,6 +1,6 @@
 package com.example.event_manager.service;
 
-import com.example.event_manager.bindingmodels.User;
+import com.example.event_manager.dto.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;

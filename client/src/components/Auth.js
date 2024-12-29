@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import * as authService from '../services/authService'
 import { AuthContext } from "../contexts/AuthContext";
 
-function Auth() {
+export function Auth() {
     const { userLogin, userLogout } = useContext(AuthContext)
 
     const [regData, setRegData] = useState();
@@ -46,5 +46,3 @@ function Auth() {
         </div>
     );
 }
-
-export default Auth;

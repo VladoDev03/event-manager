@@ -1,4 +1,4 @@
-package com.example.event_manager.bindingmodels;
+package com.example.event_manager.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

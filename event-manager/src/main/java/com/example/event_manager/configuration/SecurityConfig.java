@@ -1,4 +1,4 @@
-package com.example.event_manager.config;
+package com.example.event_manager.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

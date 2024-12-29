@@ -1,8 +1,8 @@
 package com.example.event_manager.controller;
 
-import com.example.event_manager.bindingmodels.AuthenticationRequest;
-import com.example.event_manager.bindingmodels.AuthenticationResponse;
-import com.example.event_manager.bindingmodels.RegisterRequest;
+import com.example.event_manager.dto.AuthenticationRequest;
+import com.example.event_manager.dto.AuthenticationResponse;
+import com.example.event_manager.dto.RegisterRequest;
 import com.example.event_manager.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

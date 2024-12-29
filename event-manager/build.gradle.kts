@@ -18,6 +18,10 @@ repositories {
 }
 
 dependencies {
+//	Hibernate
+	implementation("org.hibernate:hibernate-core:5.6.15.Final")
+	implementation("mysql:mysql-connector-java:8.0.18")
+
 //	JWTs
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
@@ -27,6 +31,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.security:spring-security-crypto")
+
+//	Cloudinary
+	implementation("com.cloudinary:cloudinary-http5:2.0.0")
+	implementation("com.cloudinary:cloudinary-taglib:2.0.0")
 
 //	testing
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
