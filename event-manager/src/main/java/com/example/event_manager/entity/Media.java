@@ -1,17 +1,13 @@
 package com.example.event_manager.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class Media {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Media extends BaseEntity {
     private String url;
     private String publicId;
+    @ManyToOne
+    private Event event;
 
     public Media() {}
 
@@ -20,15 +16,27 @@ public class Media {
         this.publicId = publicId;
     }
 
-    public long getId() {
-        return id;
-    }
-
     public String getUrl() {
         return url;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String getPublicId() {
         return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }
