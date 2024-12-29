@@ -3,6 +3,7 @@ package com.example.event_manager.service;
 import com.example.event_manager.dao.ReviewDao;
 import com.example.event_manager.dto.CreateReviewDto;
 import com.example.event_manager.dto.UploadReviewDto;
+import com.example.event_manager.entity.Review;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,5 +20,10 @@ public class ReviewService {
         ReviewDao.createReview(createReviewDto);
 
         return createReviewDto;
+    }
+
+    public void deleteReview(long reviewId) {
+        Review review = ReviewDao.getReviewById(reviewId);
+        ReviewDao.deleteReview(review);
     }
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/review")
 @CrossOrigin(origins = "*")
@@ -21,6 +23,14 @@ public class ReviewController {
     @PostMapping()
     public ResponseEntity<?> uploadReview(@RequestBody UploadReviewDto review) {
         CreateReviewDto result =  reviewService.createReview(review);
+
         return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<?> deleteReview(@PathVariable String reviewId) {
+        reviewService.deleteReview(Long.parseLong(reviewId));
+        
+        return ResponseEntity.ok(reviewId);
     }
 }

@@ -1,12 +1,5 @@
 const baseUrl = 'http://localhost:8080/api/review'
 
-export async function getReviews() {
-    const response = await fetch(baseUrl)
-    const result = await response.json();
-
-    return result;
-}
-
 export async function uploadReview(review) {
     const response = await fetch(baseUrl, {
         method: 'POST',
@@ -21,4 +14,14 @@ export async function uploadReview(review) {
     }
 
     return await response.text();
+}
+
+export async function deleteReview(reviewId) {
+    const response = await fetch(`${baseUrl}/${reviewId}`, {
+        method: 'DELETE'
+    })
+
+    const result = await response.json();
+
+    return result
 }

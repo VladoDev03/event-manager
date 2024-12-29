@@ -3,7 +3,8 @@ import { AuthProvider } from './contexts/AuthContext'
 import { Auth } from './components/Auth';
 import { ImageForm } from './components/ImageForm';
 import { DeleteMedia } from './components/DeleteMedia';
-import { Review } from './components/Review';
+import { ReviewForm } from './components/ReviewForm';
+import { DeleteReview } from './components/DeleteReview';
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
       <Auth />
       <ImageForm />
       <DeleteMedia />
-      <Review />
+      <ReviewForm />
+      <DeleteReview />
     </AuthProvider>
   );
 }

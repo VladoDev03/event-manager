@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import * as reviewService from '../services/reviewService';
 
-export const Review = () => {
-    const [rating, setRating] = useState(0);
+export const ReviewForm = () => {
+    const [rating, setRating] = useState(null); // Initialize rating to null
     const [comment, setComment] = useState('');
     const [submitted, setSubmitted] = useState(false);
 
@@ -43,7 +43,7 @@ export const Review = () => {
                                 style={{
                                     fontSize: '30px',
                                     cursor: 'pointer',
-                                    color: star <= rating ? '#FFD700' : '#dcdcdc',
+                                    color: rating !== null && star <= rating ? '#FFD700' : '#dcdcdc',
                                 }}
                             >
                                 ★
