@@ -27,7 +27,7 @@ public class AuthenticationResponse {
 
         public AuthenticationResponseBuilder accessToken(String accessToken) {
             this.accessToken = accessToken;
-            return this; // Enables method chaining
+            return this;
         }
 
         public AuthenticationResponse build() {

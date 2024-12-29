@@ -3,7 +3,7 @@ package com.example.event_manager.service;
 import com.example.event_manager.dto.AuthenticationRequest;
 import com.example.event_manager.dto.AuthenticationResponse;
 import com.example.event_manager.dto.RegisterRequest;
-import com.example.event_manager.dto.User;
+import com.example.event_manager.dto.UserListDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    private final List<User> users;
+    private final List<UserListDto> users;
 
     public AuthService(
             JwtService jwtService,
@@ -30,7 +30,7 @@ public class AuthService {
     public AuthenticationResponse register(RegisterRequest request) {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
-        User user = new User(request.getEmail(), encodedPassword, "");
+        UserListDto user = new UserListDto(request.getEmail(), encodedPassword, "");
         users.add(user);
 
         var jwtToken = jwtService.generateToken(user);

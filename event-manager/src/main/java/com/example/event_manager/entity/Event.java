@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-public class Event extends BaseEntity{
+public class Event extends BaseEntity {
     private String title;
     private String description;
     private BigDecimal price;

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User extends BaseEntity{
+public class User extends BaseEntity {
     private String username;
     private String password;
     private String firstName;

@@ -5,7 +5,7 @@ import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
-public class Creator extends User{
+public class Creator extends User {
     @OneToMany (mappedBy = "creator")
     private Set<Event> events;
 

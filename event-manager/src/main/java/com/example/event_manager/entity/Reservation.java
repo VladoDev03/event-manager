@@ -6,7 +6,7 @@ import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Entity
-public class Reservation extends BaseEntity{
+public class Reservation extends BaseEntity {
     private LocalDateTime purchaseDate;
     @ManyToOne
     private Event event;

@@ -6,7 +6,7 @@ import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Entity
-public class Review extends BaseEntity{
+public class Review extends BaseEntity {
     @Enumerated
     private Rating rating;
     private String comment;

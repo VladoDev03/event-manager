@@ -5,7 +5,7 @@ import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
-public class Location extends BaseEntity{
+public class Location extends BaseEntity {
     private String name;
     private String address;
     private String city;

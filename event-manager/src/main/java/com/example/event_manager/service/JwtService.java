@@ -1,10 +1,11 @@
 package com.example.event_manager.service;
 
-import com.example.event_manager.dto.User;
+import com.example.event_manager.dto.UserListDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -14,23 +15,31 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    private final String secretKey = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
-    private final long jwtExpiration = 86400000;
+    private final String secretKey;
+    private final long jwtExpiration;
 
-    public String generateToken(User userDetails) {
+    public JwtService(
+            @Value("${jwt.secret-key}") String secretKey,
+            @Value("${jwt.expiration}") long jwtExpiration
+    ) {
+        this.secretKey = secretKey;
+        this.jwtExpiration = jwtExpiration;
+    }
+
+    public String generateToken(UserListDto userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
     public String generateToken(
             Map<String, Object> extraClaims,
-            User userDetails
+            UserListDto userDetails
     ) {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
     private String buildToken(
             Map<String, Object> extraClaims,
-            User userDetails,
+            UserListDto userDetails,
             long expiration
     ) {
         return Jwts

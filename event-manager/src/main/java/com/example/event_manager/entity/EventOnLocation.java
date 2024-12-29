@@ -5,7 +5,7 @@ import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Entity
-public class EventOnLocation extends BaseEntity{
+public class EventOnLocation extends BaseEntity {
     @ManyToOne
     private Event event;
     @ManyToOne

@@ -1,11 +1,11 @@
 package com.example.event_manager.dto;
 
-public class User {
+public class UserListDto {
     private String email;
     private String password;
     private String username;
 
-    public User(String email, String password, String username) {
+    public UserListDto(String email, String password, String username) {
         setEmail(email);
         setPassword(password);
         setUsername(username);

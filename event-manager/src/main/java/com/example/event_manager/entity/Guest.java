@@ -6,7 +6,7 @@ import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
-public class Guest extends User{
+public class Guest extends User {
     @OneToMany (mappedBy = "guest")
     private Set<Reservation> reservations;
     @ManyToMany
