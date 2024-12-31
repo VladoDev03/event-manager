@@ -130,20 +130,12 @@ body {
     margin-bottom:50px;
 }
 
-.dateAndTimeWrapper h2{
-    margin-bottom:10px;
-}
-
-.locationWrapper h2{
+h2{
     margin-bottom:10px;
 }
 
 .locationWrapper{
     margin-bottom:50px;
-}
-
-.eventDescription h2{
-    margin-bottom:10px;
 }
 
 .eventAndReservationContainer{
