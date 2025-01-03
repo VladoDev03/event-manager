@@ -26,9 +26,9 @@ public class EventController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CreateEventDto> getEventById(@PathVariable long id) {
-        CreateEventDto eventDto = eventService.getEventById(id);
-        if (eventDto != null) {
-            return new ResponseEntity<>(eventDto, HttpStatus.OK);
+        CreateEventDto createEventDto = eventService.getEventById(id);
+        if (createEventDto != null) {
+            return new ResponseEntity<>(createEventDto, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

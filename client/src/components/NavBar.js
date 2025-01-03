@@ -1,16 +1,17 @@
-import React from 'react';
-import '../style/NavBar.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import "../style/NavBar.css";
 
 const Navbar = () => {
   return (
     <header className="headerContainer">
       <div className="logo">
-        <a href="/">
+        <Link to="/">
           <img
             src="https://1000logos.net/wp-content/uploads/2017/05/Pepsi-logo.png"
             alt="logo"
           />
-        </a>
+        </Link>
       </div>
 
       <div className="searchbarContainer">
@@ -62,6 +63,9 @@ const Navbar = () => {
           </li>
           <li className="login">
             <a href="myTicketsPage.html">Find my tickets</a>
+          </li>
+          <li className="login">
+            <Link to="/wishlist">Wish list</Link> {}
           </li>
           <li className="login">
             <a href="login.html">Log in</a>

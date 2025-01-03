@@ -62,7 +62,7 @@ hr{
 .popularEventsTitleContainer {
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 20px 0;
     justify-content: space-between;
 }
 
@@ -86,6 +86,7 @@ hr{
 }
 
 .eventWrapper {
+    position: relative;
     display: flex;
     width: 30%;
     flex-direction: column;
@@ -123,4 +124,20 @@ hr{
 .eventDescription p {
     margin: 4px 0;
     color: #666;
+}
+
+.favoriteButton {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #ff4d4d;
+    transition: transform 0.3s, color 0.3s;
+}
+.favoriteButton:hover {
+    transform: scale(1.2);
+    color: #ff1a1a;
 }

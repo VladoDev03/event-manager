@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class CreateEventDto {
+    private long id;
     private String title;
     private String description;
     private BigDecimal price;
@@ -16,6 +17,10 @@ public class CreateEventDto {
         this.price = price;
         this.capacity = capacity;
         this.creationDate = creationDate;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getTitle() {
