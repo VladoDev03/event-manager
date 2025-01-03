@@ -1,102 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="eventStyle.css" />
-    <title>Event</title>
-</head>
-<body id="eventPage">
-    <header class="headerContainer">
-        <div class="logo">
-              <a href="homepage.html">
-                  <img src="https://1000logos.net/wp-content/uploads/2017/05/Pepsi-logo.png" alt="logo">
-              </a>
-        </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="eventStyle.css" />
+        <title>Event</title>
+    </head>
+    <body id="eventPage">
+        <div id="navbar-container"></div>
 
-        <div class="searchbarContainer">
-          <div class="searchEvents">
-              <input type="text" class="searchBox" placeholder="Search events">
-          </div>
-          <div class="searchCity">
-              <hr>
-              <input type="text" class="searchBox" placeholder="Choose a location">
-          </div>
-          <div class="searchButtonContainer">
-            <button class="searchButton">
-              <svg aria-label="search button" xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none">
-                                                              <circle cx="18" cy="18" r="18"></circle>
-                                                              <path fill="#fff" fill-rule="evenodd" d="M20.926 19.426a6 6 0 1 0-1.454 1.468L24.5 26l1.5-1.5-5.074-5.074ZM16 20a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" clip-rule="evenodd"></path>
-                                                          </svg>
-            </button>
-          </div>
-      </div>
-      
-      <div class="navOptionsContainer">
-        <ul class="optionsList">
-          <li class="login">
-              <a href="findEventsPage.html">Find events</a>
-          </li>
-          <li class="login">
-              <a href="createEventPage.html" target="_blank">Create events</a>
-          </li>
-          <li class="login">
-              <a href="myTicketsPage.html">Find my tickets</a>
-          </li>
-          <li class="login">
-              <a href="login.html">Log in</a>
-          </li>
-          <li class="signup">
-            <a href="signup.html">Sign up</a>
-          </li>
-        </ul>
-      </div>
-
-    </header>
-
-    <div class="mainContainer">
-        <div class="bannerContainer">
-            <img src="https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:d97d126b-e18a-5797-8802-2b457ac10518/component?assetType=TEMPLATE&etag=867813dd4f024cae8df2d0dfd2a91435&revision=e707f25d-6eef-4d42-9881-f62be17f2998&component_id=f5e79f54-25f0-40f7-9a1e-a87b7f696f81" alt="banner">
-        </div>
-
-        <div class="eventAndReservationContainer">
-            <div class="eventInfoContainer">
-                <time class="eventDateHeader" datetime="2024-11-07">Thursday, November 7</time>
-                <h1 class="eventTitle">Event title</h1>
-                <p class="eventSummary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad nesciunt libero distinctio at eum, nulla pariatur quae doloribus perferendis error quidem dolores facilis repellendus ipsam fugit? Alias deserunt unde dignissimos.</p>
-                <div class="dateAndTimeWrapper">
-                    <h2>Date and time</h2>
-                    <span>Thursday, November 7 6:30-8pm</span>
-                </div>
-                <div class="locationWrapper">
-                    <h2>Location</h2>
-                    <span>NBU</span>
-                </div>
-                <div class="eventDescription">
-                    <h2>About this event</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis cupiditate sed eligendi maiores exercitationem, sit numquam autem dolor! Illo magnam corrupti porro laborum molestias minus aliquid, ea excepturi laboriosam nisi!</p>
-                    <br>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure iste animi adipisci cum eligendi, sunt itaque distinctio ab et. Porro incidunt vel magni nisi ducimus maxime earum quidem, beatae voluptatibus.</p>
-                </div>
+        <div class="mainContainer">
+            <div class="bannerContainer">
+                <img
+                    src="https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:d97d126b-e18a-5797-8802-2b457ac10518/component?assetType=TEMPLATE&etag=867813dd4f024cae8df2d0dfd2a91435&revision=e707f25d-6eef-4d42-9881-f62be17f2998&component_id=f5e79f54-25f0-40f7-9a1e-a87b7f696f81"
+                    alt="banner"
+                />
             </div>
 
-            <div class="eventReservationContainer">
-                <div class="eventReservationWrapper">
-                    <div class="reservationInfo">
-                        <span>General Admission</span>
-                        <div class="quantitySelector">
-                            <button onclick="decreaseQuantity()">-</button>
-                            <span id="quantity">1</span>
-                            <button onclick="increaseQuantity()">+</button>
-                        </div>
+            <div class="eventAndReservationContainer">
+                <div class="eventInfoContainer">
+                    <time class="eventDateHeader" datetime="2024-11-07"
+                        >Thursday, November 7</time
+                    >
+                    <h1 class="eventTitle">Event title</h1>
+                    <p class="eventSummary">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Ad nesciunt libero distinctio at eum, nulla pariatur
+                        quae doloribus perferendis error quidem dolores facilis
+                        repellendus ipsam fugit? Alias deserunt unde
+                        dignissimos.
+                    </p>
+                    <div class="dateAndTimeWrapper">
+                        <h2>Date and time</h2>
+                        <span>Thursday, November 7 6:30-8pm</span>
                     </div>
-                    <div class="reservationBtn">
-                        <button>Reserve a spot</button>
+                    <div class="locationWrapper">
+                        <h2>Location</h2>
+                        <span>NBU</span>
+                    </div>
+                    <div class="eventDescription">
+                        <h2>About this event</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing
+                            elit. Veritatis cupiditate sed eligendi maiores
+                            exercitationem, sit numquam autem dolor! Illo magnam
+                            corrupti porro laborum molestias minus aliquid, ea
+                            excepturi laboriosam nisi!
+                        </p>
+                        <br />
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Iure iste animi adipisci cum eligendi, sunt
+                            itaque distinctio ab et. Porro incidunt vel magni
+                            nisi ducimus maxime earum quidem, beatae
+                            voluptatibus.
+                        </p>
                     </div>
                 </div>
-            </div>            
+
+                <div class="eventReservationContainer">
+                    <div class="eventReservationWrapper">
+                        <div class="reservationInfo">
+                            <span>General Admission</span>
+                            <div class="quantitySelector">
+                                <button onclick="decreaseQuantity()">-</button>
+                                <span id="quantity">1</span>
+                                <button onclick="increaseQuantity()">+</button>
+                            </div>
+                        </div>
+                        <div class="reservationBtn">
+                            <button>Reserve a spot</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    
-</body>
+        <script>
+            fetch("navBar.html")
+                .then((response) => response.text())
+                .then((html) => {
+                    document.getElementById("navbar-container").innerHTML =
+                        html;
+                });
+        </script>
+    </body>
 </html>
