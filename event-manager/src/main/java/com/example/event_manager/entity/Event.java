@@ -5,7 +5,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -14,8 +14,8 @@ public class Event extends BaseEntity {
     private String description;
     private BigDecimal price;
     private int capacity;
-    private LocalDate creationDate;
-    private LocalDate updateDate;
+    private LocalDateTime creationDate;
+    private LocalDateTime updateDate;
     @OneToMany (mappedBy = "event")
     private Set<EventOnLocation> eventOnLocations;
     @OneToMany (mappedBy = "event")
@@ -26,6 +26,17 @@ public class Event extends BaseEntity {
     private Set<Reservation> reservations;
     @ManyToMany (mappedBy = "wishlist")
     private Set<Guest> guestsHaveEventInWishlist;
+
+    public Event() {
+    }
+
+    public Event(String title, String description, BigDecimal price, int capacity, LocalDateTime creationDate) {
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.capacity = capacity;
+        this.creationDate = creationDate;
+    }
 
     public String getTitle() {
         return title;
@@ -43,11 +54,11 @@ public class Event extends BaseEntity {
         return capacity;
     }
 
-    public LocalDate getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public LocalDate getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
@@ -87,11 +98,11 @@ public class Event extends BaseEntity {
         this.capacity = capacity;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
-    public void setUpdateDate(LocalDate updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 
