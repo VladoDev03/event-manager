@@ -11,9 +11,12 @@ import java.util.List;
 @RequestMapping("/api/wishlist")
 @CrossOrigin(origins = "*")
 public class WishlistController {
+    private final WishlistService wishlistService;
 
     @Autowired
-    private WishlistService wishlistService;
+    public WishlistController(WishlistService wishlistService) {
+        this.wishlistService = wishlistService;
+    }
 
     // Add an event to the wishlist
     @PostMapping("/add")
