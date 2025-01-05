@@ -26,7 +26,7 @@ const Wishlist = ({ wishlist, removeFromWishlist }) => {
                     alt="JSTalks Event"
                     class="eventImage"
                   />
-                  <div class="eventActions">
+                  <div className="eventActions">
                     <button
                       className="removeButton"
                       onClick={() => removeFromWishlist(event.id)}

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import Wishlist from "./components/Wishlist";
 import EventForm from "./components/EventForm";
@@ -15,41 +15,41 @@ function App() {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
   return (
-    <Router>
+    <AuthProvider>
       <div>
-        <Routes>
-          <Route
-            path="/"
-            element={<HomePage addToWishlist={addToWishlist} />}
-          />
+      <Routes>
+        <Route
+          path="/"
+          element={<HomePage addToWishlist={addToWishlist} />}
+        />
 
-          <Route
-            path="/wishlist"
-            element={
-              <Wishlist
-                wishlist={wishlist}
-                removeFromWishlist={removeFromWishlist}
-              />
-            }
-          />
+        <Route
+          path="/wishlist"
+          element={
+            <Wishlist
+              wishlist={wishlist}
+              removeFromWishlist={removeFromWishlist}
+            />
+          }
+        />
 
-          <Route path="/create-event" element={<EventForm />} />
+        <Route path="/create-event" element={<EventForm />} />
 
-          <Route
-            path="/login"
-            element={
-              <AuthProvider>
-                <Auth />
-                <ImageForm />
-                <DeleteMedia />
-                <ReviewForm />
-                <DeleteReview />
-              </AuthProvider>
-            }
-          />
-        </Routes>
-      </div>
-    </Router>
+        <Route
+          path="/login"
+          element={
+            <div>
+              <Auth />
+              <ImageForm />
+              <DeleteMedia />
+              <ReviewForm />
+              <DeleteReview />
+            </div>
+          }
+        />
+      </Routes>
+    </div>
+    </AuthProvider>
   );
 }
 

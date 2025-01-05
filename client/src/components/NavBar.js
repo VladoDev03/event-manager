@@ -68,7 +68,8 @@ const Navbar = () => {
             <Link to="/wishlist">Wish list</Link> {}
           </li>
           <li className="login">
-            <a href="login.html">Log in</a>
+            {/* <a href="login.html">Log in</a> */}
+            <Link to="/login">Log in</Link> {}
           </li>
           <li className="signup">
             <a href="signup.html">Sign up</a>
