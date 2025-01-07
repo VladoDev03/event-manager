@@ -6,9 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 public class User extends BaseEntity {
     private String username;
     private String password;

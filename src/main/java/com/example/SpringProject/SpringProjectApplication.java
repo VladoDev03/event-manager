@@ -2,7 +2,7 @@ package com.example.SpringProject;
 
 import com.example.SpringProject.User.User;
 import com.example.SpringProject.User.UserRepository;
-import com.example.SpringProject.User.UserService;
+//import com.example.SpringProject.User.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;

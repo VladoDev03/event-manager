@@ -12,12 +12,10 @@ import java.util.stream.Collectors;
 @Service
 public class CreatorService {
     private final CreatorRepository creatorRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public CreatorService(CreatorRepository creatorRepository, UserRepository userRepository) {
+    public CreatorService(CreatorRepository creatorRepository) {
         this.creatorRepository = creatorRepository;
-        this.userRepository = userRepository;
     }
 
     public List<CreatorDto> getCreators(){
