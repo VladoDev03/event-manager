@@ -83,4 +83,17 @@ public class EventService {
                         event.getCreator().getId()
                 )).collect(Collectors.toList());
     }
+
+    public List<EventDto> getEventsByTitleAndDate(String title, LocalDate date) {
+        return eventRepository.findByTitleAndDate(title, date)
+                .stream()
+                .map(event -> new EventDto(event.getTitle(),
+                        event.getDescription(),
+                        event.getPrice(),
+                        event.getCapacity(),
+                        event.getCreationDate(),
+                        event.getUpdateDate(),
+                        event.getCreator().getId()
+                )).collect(Collectors.toList());
+    }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/creator")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CreatorController {
     private final CreatorService creatorService;
 

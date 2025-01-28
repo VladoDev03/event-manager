@@ -19,5 +19,10 @@ public interface EventRepository extends JpaRepository<Event,Long> {
 
     @Query("SELECT e FROM Event e WHERE e.updateDate = :date")
     List<Event> getAllByDate(LocalDate date);
+
+    @Query("SELECT e FROM Event e WHERE " +
+            "(:title IS NULL OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
+            "(:date IS NULL OR e.updateDate = :date)")
+    List<Event> findByTitleAndDate(@Param("title") String title, @Param("date") LocalDate date);
 }
 

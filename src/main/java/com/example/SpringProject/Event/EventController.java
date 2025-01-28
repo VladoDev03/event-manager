@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/event")
+@CrossOrigin(origins = "http://localhost:5173")
 public class EventController {
     private final EventService eventService;
 
@@ -32,18 +33,31 @@ public class EventController {
         return eventService.getEventById(id);
     }
 
-    @GetMapping("/name/{title}")
-    public List<EventDto> getEventsByName(@PathVariable(required = false) String title){
-        return eventService.getEventsByName(title);
+    @GetMapping("/search")
+    public List<EventDto> getEventsByCriteria(
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "date", required = false) LocalDate date
+    ) {
+        // Handle combined filtering
+        if (title != null && date != null) {
+            return eventService.getEventsByTitleAndDate(title, date);
+        } else if (title != null) {
+            return eventService.getEventsByName(title);
+        } else if (date != null) {
+            return eventService.getAllByDate(date);
+        } else {
+            return eventService.getEvents(); // Return all events if no criteria provided
+        }
     }
+
 
     @GetMapping("creatorUsername/{username}")
     public List<EventDto> getEventsByCreatorUserName(@PathVariable String username){
         return eventService.getEventsByCreatorUserName(username);
     }
 
-    @GetMapping("date/{date}")
-    public List<EventDto> getEventsByDate(@PathVariable LocalDate date){
+    @GetMapping("/date")
+    public List<EventDto> getEventsByDate(@RequestParam(value = "date", required = false) LocalDate date){
         return eventService.getAllByDate(date);
     }
 }
