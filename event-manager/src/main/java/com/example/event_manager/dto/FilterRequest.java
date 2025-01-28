@@ -9,18 +9,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class FilterRequest {
-    private List<Event> initialEvents;
+    private List<DisplayEventDto> initialEvents;
     private EventCategory category;
     private BigDecimal minPrice;
     private BigDecimal maxPrice;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public List<Event> getInitialEvents() {
+    public List<DisplayEventDto> getInitialEvents() {
         return initialEvents;
     }
 
-    public void setInitialEvents(List<Event> initialEvents) {
+    public void setInitialEvents(List<DisplayEventDto> initialEvents) {
         this.initialEvents = initialEvents;
     }
 
@@ -77,4 +77,5 @@ public class FilterRequest {
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
 }

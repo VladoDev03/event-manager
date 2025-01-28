@@ -2,6 +2,7 @@ package com.example.event_manager.dao;
 
 import com.example.event_manager.configuration.SessionFactoryUtil;
 import com.example.event_manager.dto.CreateReservationDto;
+import com.example.event_manager.dto.ReservationTicketDto;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.Guest;
 import com.example.event_manager.entity.Reservation;
@@ -134,6 +135,34 @@ public class ReservationDao {
             return reservation;
         }
 
+    }
+
+    public static ReservationTicketDto getReservationTicket(long id) {
+        Reservation reservation = ReservationDao.getReservationById(id);
+
+        //getting Event
+        long eventId = reservation.getEvent().getId();
+        Event event = EventDao.getEventById(eventId);
+
+        //getting Guest
+        Guest guest = reservation.getGuest();
+
+        ReservationTicketDto reservationTicketDto = new ReservationTicketDto();
+
+        reservationTicketDto.setEventId(event.getId());
+        reservationTicketDto.setEventTitle(event.getTitle());
+        reservationTicketDto.setEventStartTime(EventDao.getEventStartTime(event.getId()));
+        reservationTicketDto.setEventLocation("NBU");
+        reservationTicketDto.setEventPrice(event.getPrice());
+
+        reservationTicketDto.setReservationId(reservation.getId());
+        reservationTicketDto.setReservationContactNames(reservation.getFirstName() + " " + reservation.getLastName());
+        reservationTicketDto.setReservationEmail(reservation.getEmail());
+        reservationTicketDto.setReservationQrCode(reservation.getQrCode());
+
+        reservationTicketDto.setGuestId(guest.getId());
+
+        return reservationTicketDto;
     }
 
 }

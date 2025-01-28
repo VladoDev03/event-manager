@@ -4,6 +4,7 @@ import com.example.event_manager.dao.EventDao;
 import com.example.event_manager.dao.ReservationDao;
 import com.example.event_manager.dto.CreateReservationDto;
 import com.example.event_manager.dto.ReservationDto;
+import com.example.event_manager.dto.ReservationTicketDto;
 import com.example.event_manager.entity.Reservation;
 import com.google.zxing.WriterException;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,6 @@ public class ReservationService {
             throw new IllegalStateException("Event is full");
         }
 
-        ReservationDao.saveReservationDto(createReservationDto);
         Reservation reservation = ReservationDao.saveReservationDto(createReservationDto);
         ReservationDto reservationDto = new ReservationDto(
                 reservation.getEvent().getId(),
@@ -46,10 +46,11 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    public List<Reservation> getGuestReservations(long guestId) {
+    public List<ReservationTicketDto> getGuestReservations(long guestId) {
         return ReservationDao.getReservations()
                 .stream()
                 .filter(reservation -> reservation.getEvent().getId() == guestId)
+                .map(reservation -> ReservationDao.getReservationTicket(reservation.getId()))
                 .collect(Collectors.toList());
     }
 }

@@ -2,6 +2,7 @@ package com.example.event_manager.service;
 
 import com.example.event_manager.dao.EventDao;
 import com.example.event_manager.dto.CreateEventDto;
+import com.example.event_manager.dto.DisplayEventDto;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
 import com.example.event_manager.entity.EventOnLocation;
@@ -11,6 +12,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.example.event_manager.dao.EventDao.getEvents;
 
 @Service
 public class EventService {
@@ -58,13 +61,27 @@ public class EventService {
         }
     }
 
-    public List<Event> filterEvents(List <Event> initialEvents, EventCategory eventCategory, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime start, LocalDateTime end) {
+    public List<DisplayEventDto> getAllEvents() {
+        return EventDao.getAllDisolayEventDto();
+    }
+
+//    public List<Event> filterEvents(List <Event> initialEvents, EventCategory eventCategory, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime start, LocalDateTime end) {
+//        return initialEvents.stream()
+//                .filter(event -> (eventCategory == null || event.getCategory().equals(eventCategory)) &&
+//                        (minPrice == null || event.getPrice().compareTo(minPrice) >= 0) &&
+//                        (maxPrice == null || event.getPrice().compareTo(maxPrice) <= 0) &&
+//                        ((end == null || EventDao.getEventStartTime(event.getId()).isBefore(end)) ||
+//                        (start == null || EventDao.getEventEndTime(event.getId()).isAfter(start))))
+//                .collect(Collectors.toList());
+//    }
+
+    public List<DisplayEventDto> filterEvents(List <DisplayEventDto> initialEvents, EventCategory eventCategory, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime start, LocalDateTime end) {
         return initialEvents.stream()
                 .filter(event -> (eventCategory == null || event.getCategory().equals(eventCategory)) &&
                         (minPrice == null || event.getPrice().compareTo(minPrice) >= 0) &&
                         (maxPrice == null || event.getPrice().compareTo(maxPrice) <= 0) &&
                         ((end == null || EventDao.getEventStartTime(event.getId()).isBefore(end)) ||
-                        (start == null || EventDao.getEventEndTime(event.getId()).isAfter(start))))
+                                (start == null || EventDao.getEventEndTime(event.getId()).isAfter(start))))
                 .collect(Collectors.toList());
     }
 }

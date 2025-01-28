@@ -67,11 +67,13 @@ public class EventManagerApplication {
 		Event event2 = new Event();
 		event2.setTitle("subiranka");
 		event2.setPrice(BigDecimal.valueOf(2));
+		event2.setCategory(EventCategory.CULTURE);
 		EventDao.createEvent(event2);
 
 		Event event3 = new Event();
 		event3.setTitle("teatur");
 		event3.setPrice(BigDecimal.valueOf(20));
+		event3.setCategory(EventCategory.CULTURE);
 		EventDao.createEvent(event3);
 
 		EventOnLocation eventOnLocation1 = new EventOnLocation();
@@ -108,10 +110,10 @@ public class EventManagerApplication {
 			System.out.println("Initial " + event);
 		}
 
-		List<Event> eventsByFilters = eventService.filterEvents(initialEvents, null, BigDecimal.valueOf(2), BigDecimal.valueOf(20), LocalDateTime.of(2024,12,27,20,20), LocalDateTime.of(2024,12,28,8,20));
-		for(Event event :eventsByFilters){
-			System.out.println(event);
-		}
+//		List<Event> eventsByFilters = eventService.filterEvents(initialEvents, null, BigDecimal.valueOf(2), BigDecimal.valueOf(20), LocalDateTime.of(2024,12,27,20,20), LocalDateTime.of(2024,12,28,8,20));
+//		for(Event event :eventsByFilters){
+//			System.out.println(event);
+//		}
 		System.out.println("done");
 
 		Guest guest = new Guest();

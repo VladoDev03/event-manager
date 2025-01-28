@@ -4,6 +4,7 @@ import com.example.event_manager.configuration.SessionFactoryUtil;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventOnLocation;
 import com.example.event_manager.entity.Reservation;
+import com.example.event_manager.dto.DisplayEventDto;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -53,7 +54,7 @@ public class EventDao {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             events = session
-                    .createQuery("select e from Event e", Event.class)
+                    .createQuery("select e from Event e left join fetch e.eventOnLocations left join fetch e.media left join fetch e.reservations left join fetch e.guestsHaveEventInWishlist", Event.class)
                     .getResultList();
             transaction.commit();
         }
@@ -123,6 +124,18 @@ public class EventDao {
             transaction.commit();
         }
         return event.getCapacity() <= event.getReservations().size();
+    }
+
+    public static List<DisplayEventDto> getAllDisolayEventDto() {
+        List<DisplayEventDto> events;
+        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            events = session
+                    .createQuery("SELECT new com.example.event_manager.dto.DisplayEventDto(e.id, e.title, e.description, e.category, e.price) FROM Event e", DisplayEventDto.class)
+                    .getResultList();
+            transaction.commit();
+        }
+        return events;
     }
 }
 

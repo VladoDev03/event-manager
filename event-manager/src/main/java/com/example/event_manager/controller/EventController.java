@@ -1,6 +1,7 @@
 package com.example.event_manager.controller;
 
 import com.example.event_manager.dto.CreateEventDto;
+import com.example.event_manager.dto.DisplayEventDto;
 import com.example.event_manager.dto.FilterRequest;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
@@ -52,10 +53,13 @@ public class EventController {
         return new ResponseEntity<>("Event deleted successfully", HttpStatus.OK);
     }
 
+    @GetMapping("/allEvents")
+    public List<DisplayEventDto> getAllEvents() {
+        return eventService.getAllEvents();
+    }
+
     @PostMapping("/filterEvents")
-    public List<Event> filterEvents(@RequestBody FilterRequest filterRequest) {
-        /**/
-        System.out.println(filterRequest);
+    public List<DisplayEventDto> filterEvents(@RequestBody FilterRequest filterRequest) {
         return eventService.filterEvents(
                 filterRequest.getInitialEvents(),
                 filterRequest.getCategory(),

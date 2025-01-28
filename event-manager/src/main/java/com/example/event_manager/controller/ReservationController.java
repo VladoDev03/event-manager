@@ -2,6 +2,7 @@ package com.example.event_manager.controller;
 
 import com.example.event_manager.dto.CreateReservationDto;
 import com.example.event_manager.dto.ReservationDto;
+import com.example.event_manager.dto.ReservationTicketDto;
 import com.example.event_manager.entity.Reservation;
 import com.example.event_manager.service.ReservationService;
 import com.google.zxing.WriterException;
@@ -30,7 +31,7 @@ public class ReservationController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteReservation(@PathVariable long id) {
         reservationService.deleteReservation(id);
         return new ResponseEntity<>("Reservation deleted successfully", HttpStatus.OK);
@@ -38,7 +39,8 @@ public class ReservationController {
 
 
     @GetMapping("/{guestId}")
-    public List<Reservation> getGusetReservations(@PathVariable long guestId) {
+    public List<ReservationTicketDto> getGuestReservations(@PathVariable long guestId) {
+        System.out.println("loading tickets");
         return reservationService.getGuestReservations(guestId);
     }
 }
