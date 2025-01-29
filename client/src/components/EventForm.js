@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
-import '../style/CreateEvent.css';
-import { createEvent } from '../services/eventService';
+import React, { useState } from "react";
+import "../style/CreateEvent.css";
+import { createEvent } from "../services/eventService";
 
 const EventForm = () => {
   const [formData, setFormData] = useState({
-    title: '',
-    category: '',
-    startDate: '',
-    startTime: '',
-    endTime: '',
-    location: '',
+    title: "",
+    category: "",
+    startDate: "",
+    startTime: "",
+    endTime: "",
+    location: "",
     capacity: 0,
-    description: '',
+    price: "",
+    description: "",
+  });
+
+  const [errors, setErrors] = useState({
+    title: "",
+    capacity: "",
   });
 
   const handleChange = (e) => {
@@ -21,21 +27,54 @@ const EventForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    let isValid = true;
+    let errorsCopy = { ...errors };
+
+    if (
+      formData.title !==
+      formData.title.charAt(0).toUpperCase() + formData.title.slice(1)
+    ) {
+      errorsCopy.title = "Event title must start with an uppercase letter.";
+      isValid = false;
+    } else {
+      errorsCopy.title = "";
+    }
+
+    if (formData.capacity <= 0) {
+      errorsCopy.capacity = "Capacity must be greater than zero.";
+      isValid = false;
+    } else {
+      errorsCopy.capacity = "";
+    }
+
+    if (formData.price <= 0) {
+      errorsCopy.price = "Price must be greater than zero.";
+      isValid = false;
+    } else {
+      errorsCopy.price = "";
+    }
+
+    setErrors(errorsCopy);
+
+    if (!isValid) return;
+
     try {
       await createEvent(formData);
-      alert('Event created successfully!');
+      alert("Event created successfully!");
       setFormData({
-        title: '',
-        category: '',
-        startDate: '',
-        startTime: '',
-        endTime: '',
-        location: '',
+        title: "",
+        category: "",
+        startDate: "",
+        startTime: "",
+        endTime: "",
+        location: "",
         capacity: 0,
-        description: '',
+        price: "",
+        description: "",
       });
     } catch (error) {
-      alert('Error creating event. Please try again.');
+      alert("Error creating event. Please try again.");
     }
   };
 
@@ -44,7 +83,7 @@ const EventForm = () => {
       <div className="logo">
         <a href="/">
           <img
-            src="https://1000logos.net/wp-content/uploads/2017/05/Pepsi-logo.png"
+            src="https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/537ec30a-379d-42ed-9912-75af8cb47205.png?auto=format%2Ccompress&fit=max&w=256&q=75&ch=Width%2CDPR"
             alt="logo"
           />
         </a>
@@ -64,6 +103,7 @@ const EventForm = () => {
                 placeholder="Enter the name of your event"
                 required
               />
+              {errors.title && <p className="error-message">{errors.title}</p>}
             </div>
 
             <div className="formWrapper">
@@ -119,7 +159,9 @@ const EventForm = () => {
           {/* Location Section */}
           <h2 className="sectionTitle">Location</h2>
           <div className="formWrapper">
-            <label htmlFor="location">Where will your event take place? *</label>
+            <label htmlFor="location">
+              Where will your event take place? *
+            </label>
             <select
               id="location"
               value={formData.location}
@@ -145,6 +187,24 @@ const EventForm = () => {
               placeholder="0"
               required
             />
+            {errors.capacity && (
+              <p className="error-message">{errors.capacity}</p>
+            )}
+          </div>
+
+          {/* Price Section */}
+          <h2 className="sectionTitle">What's the price of your event?</h2>
+          <div className="formWrapper">
+            <label htmlFor="price">Event Price *</label>
+            <input
+              type="number"
+              id="price"
+              value={formData.price}
+              onChange={handleChange}
+              placeholder="Enter price"
+              required
+            />
+            {errors.price && <p className="error-message">{errors.price}</p>}
           </div>
 
           {/* Additional Information Section */}

@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import Wishlist from "./components/Wishlist";
 import EventForm from "./components/EventForm";
+import SignupForm from "./components/SignupForm";
+import LoginForm from "./components/LoginForm";
 import { Auth } from "./components/Auth";
 import { ImageForm } from "./components/ImageForm";
 import { DeleteMedia } from "./components/DeleteMedia";
@@ -17,38 +19,39 @@ function App() {
   return (
     <AuthProvider>
       <div>
-      <Routes>
-        <Route
-          path="/"
-          element={<HomePage addToWishlist={addToWishlist} />}
-        />
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage addToWishlist={addToWishlist} />}
+          />
 
-        <Route
-          path="/wishlist"
-          element={
-            <Wishlist
-              wishlist={wishlist}
-              removeFromWishlist={removeFromWishlist}
-            />
-          }
-        />
+          <Route
+            path="/wishlist"
+            element={
+              <Wishlist
+                wishlist={wishlist}
+                removeFromWishlist={removeFromWishlist}
+              />
+            }
+          />
 
-        <Route path="/create-event" element={<EventForm />} />
+          <Route path="/create-event" element={<EventForm />} />
+          <Route path="/signup" element={<SignupForm />} />
 
-        <Route
-          path="/login"
-          element={
-            <div>
-              <Auth />
-              <ImageForm />
-              <DeleteMedia />
-              <ReviewForm />
-              <DeleteReview />
-            </div>
-          }
-        />
-      </Routes>
-    </div>
+          <Route
+            path="/login"
+            element={
+              <div>
+                <Auth />
+                <ImageForm />
+                <DeleteMedia />
+                <ReviewForm />
+                <DeleteReview />
+              </div>
+            }
+          />
+        </Routes>
+      </div>
     </AuthProvider>
   );
 }

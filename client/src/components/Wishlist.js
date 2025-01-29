@@ -12,7 +12,7 @@ const Wishlist = ({ wishlist, removeFromWishlist }) => {
           {wishlist.length > 0 ? (
             wishlist.map((event) => (
               <div key={event.id} className="eventWrapperWishList">
-                <div className="eventDetails">
+                <div className="eventDetailsWishList">
                   <a className="eventTitle" href="event.html">
                     <h3>{event.title}</h3>
                   </a>
@@ -21,11 +21,6 @@ const Wishlist = ({ wishlist, removeFromWishlist }) => {
                   <p>{event.price}</p>
                 </div>
                 <div class="eventImageContainer">
-                  <img
-                    src={event.image}
-                    alt="JSTalks Event"
-                    class="eventImage"
-                  />
                   <div className="eventActions">
                     <button
                       className="removeButton"

@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class EventDao {
     public static void createEvent(Event event) {
@@ -26,19 +28,9 @@ public class EventDao {
         return event;
     }
 
-    public static void updateEvent(Event event) {
+    public static List<Event> getAllEvents() {
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.saveOrUpdate(event);
-            transaction.commit();
-        }
-    }
-
-    public static void deleteEvent(Event event) {
-        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.delete(event);
-            transaction.commit();
+            return session.createQuery("FROM Event", Event.class).list();
         }
     }
 }

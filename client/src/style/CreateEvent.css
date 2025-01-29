@@ -5,11 +5,11 @@
     font-family: Arial, sans-serif;
 }
 
-/* .logo img {
-    width: 100px;
-    height: auto;
-    margin:20px;
-} */
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
 
 .mainContainerCreateEvent {
     margin: 0px auto 40px;

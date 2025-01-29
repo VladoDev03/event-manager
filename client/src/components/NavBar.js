@@ -8,7 +8,7 @@ const Navbar = () => {
       <div className="logo">
         <Link to="/">
           <img
-            src="https://1000logos.net/wp-content/uploads/2017/05/Pepsi-logo.png"
+            src="https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/537ec30a-379d-42ed-9912-75af8cb47205.png?auto=format%2Ccompress&fit=max&w=256&q=75&ch=Width%2CDPR"
             alt="logo"
           />
         </Link>
@@ -53,26 +53,26 @@ const Navbar = () => {
 
       <div className="navOptionsContainer">
         <ul className="optionsList">
-          <li className="login">
+          <li className="login1">
             <a href="findEventsPage.html">Find events</a>
           </li>
-          <li className="login">
+          <li className="login1">
             <a href="create-event" target="_blank">
               Create events
             </a>
           </li>
-          <li className="login">
+          <li className="login1">
             <a href="myTicketsPage.html">Find my tickets</a>
           </li>
-          <li className="login">
+          <li className="login1">
             <Link to="/wishlist">Wish list</Link> {}
           </li>
-          <li className="login">
+          <li className="login1">
             {/* <a href="login.html">Log in</a> */}
             <Link to="/login">Log in</Link> {}
           </li>
           <li className="signup">
-            <a href="signup.html">Sign up</a>
+            <Link to="/signup">Sign up</Link> {}
           </li>
         </ul>
       </div>

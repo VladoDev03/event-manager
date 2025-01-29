@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../style/Homepage.css";
 import Navbar from "./NavBar";
 
 const HomePage = ({ addToWishlist }) => {
-  const [events] = useState([
-    {
-      id: 1,
-      title: "Event 1",
-      date: "2025-01-05",
-      location: "NBU",
-      price: "Free",
-      image: "...",
-    },
-    {
-      id: 2,
-      title: "Event 2",
-      date: "2025-01-06",
-      location: "Arena Armeec",
-      price: "$10",
-      image: "...",
-    },
-  ]);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/events");
+        if (!response.ok) {
+          throw new Error("Failed to fetch events");
+        }
+        const data = await response.json();
+        setEvents(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   return (
     <>
@@ -32,36 +32,7 @@ const HomePage = ({ addToWishlist }) => {
             alt="banner"
           />
         </div>
-        <div className="iconCategoryBrowseContainer">
-          <a className="iconCategory">
-            <div className="iconWrapper">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhcGz5Y2viMsk4NWscvM51coJgpM4X2FYDcw&s"
-                alt="iconParty"
-              />
-              <p className="iconTitle">Party</p>
-            </div>
-          </a>
-          <a className="iconCategory">
-            <div className="iconWrapper">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhcGz5Y2viMsk4NWscvM51coJgpM4X2FYDcw&s"
-                alt="iconParty"
-              />
-              <p className="iconTitle">Party</p>
-            </div>
-          </a>
-          <a className="iconCategory">
-            <div className="iconWrapper">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhcGz5Y2viMsk4NWscvM51coJgpM4X2FYDcw&s"
-                alt="iconParty"
-              />
-              <p className="iconTitle">Party</p>
-            </div>
-          </a>
-        </div>
-        <hr />
+
         <div className="popularEventsContainer">
           <div className="popularEventsTitleContainer">
             <div className="popularEventsTitle">
@@ -74,13 +45,11 @@ const HomePage = ({ addToWishlist }) => {
           <div className="eventsContainer">
             {events.map((event) => (
               <section key={event.id} className="eventWrapper">
-                <a className="eventImg" href="event.html">
-                  <img src={event.image} alt="event" />
-                </a>
                 <div className="eventDescription">
                   <h3>{event.title}</h3>
                   <p>{event.date}</p>
                   <p>{event.location}</p>
+                  <p>${event.price}</p>
                 </div>
                 <button
                   className="favoriteButton"

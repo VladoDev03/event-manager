@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/events")
 @CrossOrigin(origins = "*")
@@ -33,15 +35,9 @@ public class EventController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateEvent(@PathVariable long id, @RequestBody CreateEventDto createEventDto) {
-        eventService.updateEvent(id, createEventDto);
-        return new ResponseEntity<>("Event updated successfully", HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEvent(@PathVariable long id) {
-        eventService.deleteEvent(id);
-        return new ResponseEntity<>("Event deleted successfully", HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<CreateEventDto>> getAllEvents() {
+        List<CreateEventDto> events = eventService.getAllEvents();
+        return new ResponseEntity<>(events, HttpStatus.OK);
     }
 }
