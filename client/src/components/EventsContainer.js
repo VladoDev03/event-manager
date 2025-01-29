@@ -14,12 +14,13 @@ const EventsContainer = ({ events, addToWishlist }) => {
             {events.map((event) => (
               <section key={event.id} className="eventWrapper" onClick={() => handleEventClick(event.id)}>
                 <a className="eventImg" href="/event">
-                  <img src={event.image} alt="event" />
+                  {/* <img src={event.image} alt="event" /> */}
                 </a>
                 <div className="eventDescription">
                   <h3>{event.title}</h3>
                   <p>{event.date}</p>
                   <p>{event.location}</p>
+                  <p>{event.price} BGN</p>
                 </div>
                 <button
                   className="favoriteButton"

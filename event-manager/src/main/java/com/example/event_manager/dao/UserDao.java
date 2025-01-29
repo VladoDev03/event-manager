@@ -1,7 +1,7 @@
 package com.example.event_manager.dao;
 
 import com.example.event_manager.configuration.SessionFactoryUtil;
-import com.example.event_manager.entity.Guest;
+import com.example.event_manager.entity.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class GuestDao {
-    public static void saveGuest(Guest guest) {
+public class UserDao {
+    public static void saveUser(User guest) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(guest);
@@ -18,7 +18,7 @@ public class GuestDao {
         }
     }
 
-    public static void createGuest(Guest guest) {
+    public static void createUser(User guest) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(guest);
@@ -26,7 +26,7 @@ public class GuestDao {
         }
     }
 
-    public static void updateGuest(Guest guest) {
+    public static void updateUser(User guest) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(guest);
@@ -34,7 +34,7 @@ public class GuestDao {
         }
     }
 
-    public static void deleteGuest(Guest guest) {
+    public static void deleteUser(User guest) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.delete(guest);
@@ -42,22 +42,22 @@ public class GuestDao {
         }
     }
 
-    public static List<Guest> getGuests() {
-        List<Guest> guests;
+    public static List<User> getUsers() {
+        List<User> guests;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            guests = session.createQuery("select g from com.example.event_manager.entity.Guest g", Guest.class)
+            guests = session.createQuery("select g from com.example.event_manager.entity.User g", User.class)
                     .getResultList();
             transaction.commit();
         }
         return guests;
     }
 
-    public static Guest getGuestById(long id) {
-        Guest guest;
+    public static User getUserById(long id) {
+        User guest;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            guest = session.get(Guest.class, id);
+            guest = session.get(User.class, id);
             transaction.commit();
         }
         return guest;

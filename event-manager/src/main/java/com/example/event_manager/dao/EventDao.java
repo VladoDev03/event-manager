@@ -2,7 +2,7 @@ package com.example.event_manager.dao;
 
 import com.example.event_manager.configuration.SessionFactoryUtil;
 import com.example.event_manager.entity.Event;
-import com.example.event_manager.entity.EventOnLocation;
+import com.example.event_manager.entity.Location;
 import com.example.event_manager.entity.Reservation;
 import com.example.event_manager.dto.DisplayEventDto;
 import org.hibernate.Session;
@@ -54,50 +54,24 @@ public class EventDao {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             events = session
-                    .createQuery("select e from Event e left join fetch e.eventOnLocations left join fetch e.media left join fetch e.reservations left join fetch e.guestsHaveEventInWishlist", Event.class)
+                    .createQuery("select e from Event e join fetch e.location left join fetch e.media left join fetch e.reservations left join fetch e.guestsHaveEventInWishlist", Event.class)
                     .getResultList();
             transaction.commit();
         }
         return events;
     }
 
-    public static Set<EventOnLocation> getEventEventOnLocations(long id) {
+    public static Location getEventLocation(long id) {
         Event event;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             event = session
-                    .createQuery("select e from Event e join fetch e.eventOnLocations where e.id = :id", Event.class)
+                    .createQuery("select e from Event e join fetch e.location where e.id = :id", Event.class)
                     .setParameter("id", id)
                     .getSingleResult();
             transaction.commit();
         }
-        return event.getEventOnLocations();
-    }
-
-    public static LocalDateTime getEventStartTime(long eventId) {
-        LocalDateTime start;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            start = session
-                    .createQuery("select min(el.startTime) from EventOnLocation el where el.event.id = :eventId", LocalDateTime.class)
-                    .setParameter("eventId", eventId)
-                    .getSingleResult();
-        }
-        return start;
-
-    }
-
-    public static LocalDateTime getEventEndTime(long eventId) {
-        LocalDateTime end;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            end = session
-                    .createQuery("select max(el.endTime) from com.example.event_manager.entity.EventOnLocation el where el.event.id = :eventId", LocalDateTime.class)
-                    .setParameter("eventId", eventId)
-                    .getSingleResult();
-        }
-        return end;
-
+        return event.getLocation();
     }
 
     public static Set<Reservation> getEventReservations(long id) {
@@ -126,12 +100,13 @@ public class EventDao {
         return event.getCapacity() <= event.getReservations().size();
     }
 
-    public static List<DisplayEventDto> getAllDisolayEventDto() {
+    //    public DisplayEventDto(long id, String title, String description, EventCategory category, String locationName, BigDecimal price, LocalDateTime startTime, LocalDateTime endTime) {
+    public static List<DisplayEventDto> getAllDisplayEventDto() {
         List<DisplayEventDto> events;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             events = session
-                    .createQuery("SELECT new com.example.event_manager.dto.DisplayEventDto(e.id, e.title, e.description, e.category, e.price) FROM Event e", DisplayEventDto.class)
+                    .createQuery("SELECT new com.example.event_manager.dto.DisplayEventDto(e.id, e.title, e.description, e.category, e.location.name, e.price, e.startTime, e.endTime) FROM Event e", DisplayEventDto.class)
                     .getResultList();
             transaction.commit();
         }

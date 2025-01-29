@@ -1,22 +1,15 @@
 package com.example.event_manager.entity;
 
-import com.example.event_manager.configuration.QRCodeGenerator;
-import com.example.event_manager.dao.EventDao;
-import com.example.event_manager.dao.GuestDao;
-
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 public class Reservation extends BaseEntity {
     private LocalDateTime purchaseDate;
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     private Event event;
-    @ManyToOne
-    private Guest guest;
+    @ManyToOne (fetch = FetchType.LAZY)
+    private User guest;
     private String firstName;
     private String lastName;
     private String email;
@@ -31,7 +24,7 @@ public class Reservation extends BaseEntity {
         return event;
     }
 
-    public Guest getGuest() {
+    public User getGuest() {
         return guest;
     }
 
@@ -51,13 +44,13 @@ public class Reservation extends BaseEntity {
         return review;
     }
 
-    @Transient
-    public String getQrCode() {
-        String qrString = "Reservation id:" + getId() + " by guest id: " + guest.getId() + " for " + getFirstName() + " " + getLastName() + ", event id: " + event.getId();
-        String topText = event.getTitle();
-        String bottomText = firstName + " " + lastName;
-        return QRCodeGenerator.getBase64QRCode(qrString, topText, bottomText);
-    }
+//    @Transient
+//    public String getQrCode() {
+//        String qrString = "Reservation id:" + getId() + " by guest id: " + guest.getId() + " for " + getFirstName() + " " + getLastName() + ", event id: " + event.getId();
+//        String topText = event.getTitle();
+//        String bottomText = firstName + " " + lastName;
+//        return QRCodeGenerator.getBase64QRCode(qrString, topText, bottomText);
+//    }
 
     public void setPurchaseDate(LocalDateTime purchaseDate) {
         this.purchaseDate = purchaseDate;
@@ -67,7 +60,7 @@ public class Reservation extends BaseEntity {
         this.event = event;
     }
 
-    public void setGuest(Guest guest) {
+    public void setGuest(User guest) {
         this.guest = guest;
     }
 

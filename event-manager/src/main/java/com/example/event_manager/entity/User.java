@@ -1,9 +1,8 @@
 package com.example.event_manager.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -13,6 +12,26 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
     private LocalDateTime creationDate;
+
+    @OneToMany(mappedBy = "guest")
+    private Set<Reservation> reservations;
+    @ManyToMany
+    private Set<Event> wishlist;
+
+    @OneToMany (mappedBy = "creator")
+    private Set<Event> events;
+
+    public User(String username, String password, String firstName, String lastName, LocalDateTime creationDate) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.creationDate = creationDate;
+    }
+
+    public User() {
+
+    }
 
     public String getUsername() {
         return username;
@@ -52,5 +71,29 @@ public class User extends BaseEntity {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public Set<Event> getWishlist() {
+        return wishlist;
+    }
+
+    public void setWishlist(Set<Event> wishlist) {
+        this.wishlist = wishlist;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
     }
 }

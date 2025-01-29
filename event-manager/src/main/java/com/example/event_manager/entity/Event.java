@@ -11,20 +11,22 @@ public class Event extends BaseEntity {
     private String description;
     @Enumerated(EnumType.STRING)
     private EventCategory category;
+    @ManyToOne (fetch = FetchType.LAZY)
+    private Location location;
     private BigDecimal price;
     private int capacity;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private LocalDateTime creationDate;
     private LocalDateTime updateDate;
     @OneToMany (mappedBy = "event")
-    private Set<EventOnLocation> eventOnLocations;
-    @OneToMany (mappedBy = "event")
     private Set<Media> media;
-    @ManyToOne
-    private Creator creator;
+    @ManyToOne (fetch = FetchType.LAZY)
+    private User creator;
     @OneToMany (mappedBy = "event")
     private Set<Reservation> reservations;
     @ManyToMany (mappedBy = "wishlist")
-    private Set<Guest> guestsHaveEventInWishlist;
+    private Set<User> guestsHaveEventInWishlist;
 
     public Event() {
     }
@@ -64,15 +66,15 @@ public class Event extends BaseEntity {
         return updateDate;
     }
 
-    public Set<EventOnLocation> getEventOnLocations() {
-        return eventOnLocations;
+    public Location getLocation() {
+        return location;
     }
 
     public Set<Media> getMedia() {
         return media;
     }
 
-    public Creator getCreator() {
+    public User getCreator() {
         return creator;
     }
 
@@ -80,7 +82,7 @@ public class Event extends BaseEntity {
         return reservations;
     }
 
-    public Set<Guest> getGuestsHaveEventInWishlist() {
+    public Set<User> getGuestsHaveEventInWishlist() {
         return guestsHaveEventInWishlist;
     }
 
@@ -112,15 +114,15 @@ public class Event extends BaseEntity {
         this.updateDate = updateDate;
     }
 
-    public void setEventOnLocations(Set<EventOnLocation> eventOnLocations) {
-        this.eventOnLocations = eventOnLocations;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public void setMedia(Set<Media> media) {
         this.media = media;
     }
 
-    public void setCreator(Creator creator) {
+    public void setCreator(User creator) {
         this.creator = creator;
     }
 
@@ -128,8 +130,24 @@ public class Event extends BaseEntity {
         this.reservations = reservations;
     }
 
-    public void setGuestsHaveEventInWishlist(Set<Guest> guestsHaveEventInWishlist) {
+    public void setGuestsHaveEventInWishlist(Set<User> guestsHaveEventInWishlist) {
         this.guestsHaveEventInWishlist = guestsHaveEventInWishlist;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override
@@ -137,12 +155,14 @@ public class Event extends BaseEntity {
         return "Event{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", category=" + category +
+                ", category=" + category.name() +
                 ", price=" + price +
                 ", capacity=" + capacity +
+                ", location=" + location.getName() +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 ", creationDate=" + creationDate +
                 ", updateDate=" + updateDate +
-                ", creator=" + creator +
                 "} " + super.toString();
     }
 }

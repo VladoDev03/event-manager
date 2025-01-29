@@ -1,12 +1,10 @@
 package com.example.event_manager.dao;
 
+import com.example.event_manager.configuration.QRCodeGenerator;
 import com.example.event_manager.configuration.SessionFactoryUtil;
 import com.example.event_manager.dto.CreateReservationDto;
 import com.example.event_manager.dto.ReservationTicketDto;
-import com.example.event_manager.entity.Event;
-import com.example.event_manager.entity.Guest;
-import com.example.event_manager.entity.Reservation;
-import com.example.event_manager.entity.Review;
+import com.example.event_manager.entity.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -52,7 +50,7 @@ public class ReservationDao {
         List<Reservation> reservations;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            reservations = session.createQuery("select r from com.example.event_manager.entity.Reservation r", Reservation.class)
+            reservations = session.createQuery("select r from Reservation r join fetch r.event join fetch r.guest", Reservation.class)
                     .getResultList();
             transaction.commit();
         }
@@ -73,17 +71,23 @@ public class ReservationDao {
         Reservation reservation;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            reservation = session.get(Reservation.class, id);
+            reservation = session
+                    .createQuery("select r from Reservation r join fetch r.event where r.id = :id", Reservation.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
             transaction.commit();
         }
         return reservation.getEvent();
     }
 
-    public static Guest getReservationGuest(long id) {
+    public static User getReservationGuest(long id) {
         Reservation reservation;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            reservation = session.get(Reservation.class, id);
+            reservation = session
+                    .createQuery("select r from Reservation r join fetch r.guest where r.id = :id", Reservation.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
             transaction.commit();
         }
         return reservation.getGuest();
@@ -119,12 +123,22 @@ public class ReservationDao {
         return reservation.getReview();
     }
 
+    public static String getReservationQrCode(long id) {
+        Reservation reservation = getReservationById(id);
+        Event event = getReservationEvent(id);
+        User guest = getReservationGuest(id);
+        String qrString = "Reservation id:" + id + " by guest id: " + guest.getId() + " for " + reservation.getFirstName() + " " + reservation.getLastName() + ", event id: " + event.getId();
+        String topText = event.getTitle();
+        String bottomText = reservation.getFirstName() + " " + reservation.getLastName();
+        return QRCodeGenerator.getBase64QRCode(qrString, topText, bottomText);
+    }
+
     public static Reservation saveReservationDto(CreateReservationDto createReservationDto) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             Reservation reservation = new Reservation();
             reservation.setEvent(EventDao.getEventById(createReservationDto.getEventId()));
-            reservation.setGuest(GuestDao.getGuestById(createReservationDto.getGuestId()));
+            reservation.setGuest(UserDao.getUserById(createReservationDto.getGuestId()));
             reservation.setFirstName(createReservationDto.getFirstName());
             reservation.setLastName(createReservationDto.getLastName());
             reservation.setEmail(createReservationDto.getEmail());
@@ -141,24 +155,23 @@ public class ReservationDao {
         Reservation reservation = ReservationDao.getReservationById(id);
 
         //getting Event
-        long eventId = reservation.getEvent().getId();
-        Event event = EventDao.getEventById(eventId);
+        Event event = ReservationDao.getReservationEvent(id);
 
         //getting Guest
-        Guest guest = reservation.getGuest();
+        User guest = ReservationDao.getReservationGuest(id);
 
         ReservationTicketDto reservationTicketDto = new ReservationTicketDto();
 
         reservationTicketDto.setEventId(event.getId());
         reservationTicketDto.setEventTitle(event.getTitle());
-        reservationTicketDto.setEventStartTime(EventDao.getEventStartTime(event.getId()));
-        reservationTicketDto.setEventLocation("NBU");
+        reservationTicketDto.setEventStartTime(event.getStartTime());
+        reservationTicketDto.setEventLocation(EventDao.getEventLocation(event.getId()).getName());
         reservationTicketDto.setEventPrice(event.getPrice());
 
         reservationTicketDto.setReservationId(reservation.getId());
         reservationTicketDto.setReservationContactNames(reservation.getFirstName() + " " + reservation.getLastName());
         reservationTicketDto.setReservationEmail(reservation.getEmail());
-        reservationTicketDto.setReservationQrCode(reservation.getQrCode());
+        reservationTicketDto.setReservationQrCode(getReservationQrCode(id));
 
         reservationTicketDto.setGuestId(guest.getId());
 

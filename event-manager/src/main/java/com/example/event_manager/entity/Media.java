@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class Media extends BaseEntity {
     private String url;
     private String publicId;
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     private Event event;
 
     public Media() {}

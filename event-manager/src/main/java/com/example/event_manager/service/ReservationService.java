@@ -22,12 +22,12 @@ public class ReservationService {
 
         Reservation reservation = ReservationDao.saveReservationDto(createReservationDto);
         ReservationDto reservationDto = new ReservationDto(
-                reservation.getEvent().getId(),
-                reservation.getGuest().getId(),
+                ReservationDao.getReservationEvent(reservation.getId()).getId(),
+                ReservationDao.getReservationGuest(reservation.getId()).getId(),
                 reservation.getFirstName(),
                 reservation.getLastName(),
                 reservation.getEmail(),
-                reservation.getQrCode()
+                ReservationDao.getReservationQrCode(reservation.getId())
         );
         return reservationDto;
     }
@@ -42,14 +42,14 @@ public class ReservationService {
     public List<Reservation> getEventReservations(long eventId) {
         return ReservationDao.getReservations()
                 .stream()
-                .filter(reservation -> reservation.getEvent().getId() == eventId)
+                .filter(reservation -> ReservationDao.getReservationEvent(reservation.getId()).getId() == eventId)
                 .collect(Collectors.toList());
     }
 
     public List<ReservationTicketDto> getGuestReservations(long guestId) {
         return ReservationDao.getReservations()
                 .stream()
-                .filter(reservation -> reservation.getEvent().getId() == guestId)
+                .filter(reservation -> ReservationDao.getReservationEvent(reservation.getId()).getId() == guestId)
                 .map(reservation -> ReservationDao.getReservationTicket(reservation.getId()))
                 .collect(Collectors.toList());
     }

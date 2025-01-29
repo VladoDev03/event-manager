@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-import { createReservation } from '../services/ReservationService';
+import React, { use, useState } from 'react';
+import { createReservation } from '../services/reservationService';
 
-const ReservationComponent = ({ openModal, eventId, guestId, firstName, lastName, email }) => {
-    const [qrCode, setQrCode] = useState('');
+const ReservationComponent = ({ openModal, eventId, guestId, firstName, lastName, emial }) => {
     const [error, setError] = useState('');
 
     const handleReservation = async () => {
         try {
-            const data = await createReservation( 1, 1, "Stoyanka", "Mehandzhieva", "tanya@gmail.com"/* eventId, guestId */);
-            setQrCode(data.qrCode);
             setError('');
             openModal();
         } catch (error) {
@@ -17,15 +14,22 @@ const ReservationComponent = ({ openModal, eventId, guestId, firstName, lastName
         }
     };
 
-
     return (
         <div className="eventReservationWrapper">
             <div className="reservationBtn">
                 <button onClick={handleReservation}>Reserve a spot</button>
             </div>
-            {/*<h3>Your QR Code</h3>
-                    {qrCode && <img src={`data:image/png;base64,${qrCode}`} alt="QR Code" />}
-                    <button onClick={closeModal}>Close</button>*/}
+            {/* <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Reservation QR Code"
+                className="modal"
+                overlayClassName="modalOverlay"
+            >
+                <h3>Your QR Code</h3>
+                {qrCode && <img src={`data:image/png;base64,${qrCode}`} alt="QR Code" />}
+                <button onClick={closeModal}>Close</button>
+            </Modal> */}
         </div>
     );
 };

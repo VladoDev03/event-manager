@@ -62,7 +62,7 @@ const Navbar = () => {
             </a>
           </li>
           <li className="login">
-            <a href="myTicketsPage.html">Find my tickets</a>
+            <Link to="/myTickets">Find my tickets</Link> {}
           </li>
           <li className="login">
             <Link to="/wishlist">Wish list</Link> {}

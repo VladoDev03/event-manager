@@ -58,51 +58,28 @@ public class EventManagerApplication {
 		event1.setCapacity(30);
 		event1.setCategory(EventCategory.MUSIC);
 		event1.setCreationDate(LocalDateTime.now());
+		event1.setLocation(location1);
+		event1.setStartTime(LocalDateTime.of(2024,12,27,18,30));
+		event1.setEndTime(LocalDateTime.of(2024,12,27,22,30));
 		EventDao.createEvent(event1);
-
-/*		Reservation reservation = new Reservation();
-		reservation.setEvent(event1);
-		ReservationDao.saveReservation(reservation);*/
 
 		Event event2 = new Event();
 		event2.setTitle("subiranka");
 		event2.setPrice(BigDecimal.valueOf(2));
 		event2.setCategory(EventCategory.CULTURE);
+		event2.setLocation(location1);
+		event2.setStartTime(LocalDateTime.of(2024,12,29,18,30));
+		event2.setEndTime(LocalDateTime.of(2024,12,30,20,30));
 		EventDao.createEvent(event2);
 
 		Event event3 = new Event();
 		event3.setTitle("teatur");
 		event3.setPrice(BigDecimal.valueOf(20));
 		event3.setCategory(EventCategory.CULTURE);
+		event3.setLocation(location3);
+		event3.setStartTime(LocalDateTime.of(2025,12,27,18,30));
+		event3.setEndTime(LocalDateTime.of(2025,12,27,22,30));
 		EventDao.createEvent(event3);
-
-		EventOnLocation eventOnLocation1 = new EventOnLocation();
-		eventOnLocation1.setLocation(location1);
-		eventOnLocation1.setEvent(event1);
-		eventOnLocation1.setStartTime(LocalDateTime.of(2024,12,27,18,30));
-		eventOnLocation1.setEndTime(LocalDateTime.of(2024,12,27,22,30));
-		EventOnLocationDao.saveEventOnLocation(eventOnLocation1);
-
-		EventOnLocation eventOnLocation2 = new EventOnLocation();
-		eventOnLocation2.setLocation(location1);
-		eventOnLocation2.setEvent(event2);
-		eventOnLocation2.setStartTime(LocalDateTime.of(2024,12,29,18,30));
-		eventOnLocation2.setEndTime(LocalDateTime.of(2024,12,30,20,30));
-		EventOnLocationDao.saveEventOnLocation(eventOnLocation2);
-
-		EventOnLocation eventOnLocation3 = new EventOnLocation();
-		eventOnLocation3.setLocation(location2);
-		eventOnLocation3.setEvent(event1);
-		eventOnLocation3.setStartTime(LocalDateTime.of(2025,12,27,18,30));
-		eventOnLocation3.setEndTime(LocalDateTime.of(2025,12,27,22,30));
-		EventOnLocationDao.saveEventOnLocation(eventOnLocation3);
-
-		EventOnLocation eventOnLocation4 = new EventOnLocation();
-		eventOnLocation4.setLocation(location3);
-		eventOnLocation4.setEvent(event3);
-		eventOnLocation4.setStartTime(LocalDateTime.of(2025,12,27,18,30));
-		eventOnLocation4.setEndTime(LocalDateTime.of(2025,12,27,22,30));
-		EventOnLocationDao.saveEventOnLocation(eventOnLocation4);
 
 		EventService eventService = new EventService();
 		List<Event> initialEvents = EventDao.getEvents();
@@ -116,12 +93,12 @@ public class EventManagerApplication {
 //		}
 		System.out.println("done");
 
-		Guest guest = new Guest();
+		User guest = new User();
 		guest.setFirstName("Tanya");
 		guest.setLastName("Mehandzhieva");
 		guest.setUsername("tanya_meh");
 		guest.setPassword("0000");
-		GuestDao.saveGuest(guest);
+		UserDao.saveUser(guest);
 		/**/
 
 		System.out.println(EventDao.isEventFull(1));

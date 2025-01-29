@@ -5,6 +5,7 @@ import Wishlist from "./components/Wishlist";
 import EventForm from "./components/EventForm";
 import SearchResultPage from "./components/SearchResultPage";
 import EventPage from "./components/EventPage";
+import MyTickets from "./components/MyTickets";
 import { Auth } from "./components/Auth";
 import { ImageForm } from "./components/ImageForm";
 import { DeleteMedia } from "./components/DeleteMedia";
@@ -62,6 +63,13 @@ function App() {
           element={
             <EventPage />
           } 
+        />
+
+        <Route 
+        path="/myTickets"
+        element={
+          <MyTickets />
+        }
         />
 
 

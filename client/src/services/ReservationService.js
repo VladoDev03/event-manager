@@ -30,8 +30,9 @@ export const createReservation = async (eventId, guestId, firstName, lastName, e
 };
 
 export const deleteReservation = async (reservationId) => { 
-    try { 
-        const response = await fetch(`${baseUrl}/${reservationId}`, {
+    console.log(`${baseUrl}/delete/${reservationId}`);
+    try {
+        const response = await fetch(`${baseUrl}/delete/${reservationId}`, {
             method: 'DELETE'
         });
     
@@ -48,8 +49,10 @@ export const deleteReservation = async (reservationId) => {
 
 export const fetchReservations = async (guestId) => {
     try {
-        const response = await fetch(`baseUrl/${guestId}`);
+        console.log(guestId);
+        const response = await fetch(`${baseUrl}/${guestId}`);
         const data = await response.json();
+        console.log("data from service" + data);
         return data;
     } catch (error) {
         console.error('Error fetching reservations:', error);

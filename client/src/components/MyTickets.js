@@ -1,54 +1,107 @@
-import React, { useEffect } from "react";
-import "../style/Wishlist.css";
-import Navbar from "./NavBar";
-import { fetchReservations } from "../services/ReservationService";
+import React, { useEffect, useState} from 'react';
+import Modal from 'react-modal';
+import Navbar from './NavBar';
+import TicketsContainer from './TicketsContainer';
+import { deleteReservation, fetchReservations } from '../services/reservationService';
+import '../style/myTickets.css';
 
-const MyTickets = ({ guestId }) => {
-    const [reservations, setReservations] = useEffect([]);
+const MyTickets = () => {
+    const [tickets, setTickets] = useState([]);
+    const [qrCode, setQrCode] = useState('');
+    const [qrModalIsOpen, setqrModalIsOpen] = useState(false);
+    const [confirmCancelModalIsOpen, setConfirmCancelModalIsOpen] = useState(false);
+    const [reservationId, setReservationId] = useState('');
 
-    useEffect(() => {fetchReservations(guestId)})
+    useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    const ticketsData = await fetchReservations(1 /*guest id*/);
+                    setTickets(ticketsData || []);
+                } catch (error) {
+                    console.error('Error fetching tickets', error);
+                }
+            };
     
-  return (
-    <>
-      <Navbar />
-      <div className="likesSection">
-        <h1>Wish List</h1>
-        <div>
-          {wishlist.length > 0 ? (
-            wishlist.map((event) => (
-              <div key={event.id} className="eventWrapperWishList">
-                <div className="eventDetails">
-                  <a className="eventTitle" href="event.html">
-                    <h3>{event.title}</h3>
-                  </a>
-                  <p class="eventDate">{event.date}</p>
-                  <p>{event.location}</p>
-                  <p>{event.price}</p>
+            fetchData();
+        }, []
+    );
+
+    const setQr = (qr) => {
+        setQrCode(qr);
+    }
+
+    const openQrModal = () => {
+        setqrModalIsOpen(true);
+    }
+   
+   const closeQrModal = () => {
+        setqrModalIsOpen(false);
+    }
+
+    const openConfirmCancelModal = (reservation_id) => {
+        setConfirmCancelModalIsOpen(true);
+        setReservationId(reservation_id);
+        console.log(reservationId);
+    }
+
+    const closeConfirmCancelModal = () => {
+        setConfirmCancelModalIsOpen(false);
+        setReservationId();
+        console.log(reservationId)
+    }
+
+    const cancelReservation = async (e) => {
+        e.preventDefault();
+        try {
+            await deleteReservation(reservationId);
+        } catch (error) {
+            alert('Error creating reservation. Please try again.');
+        }
+    }
+        
+	return (
+        <div id="myTickets">
+            <Navbar />
+
+            <div className="mainContainer">
+                <div className="myTicketsContainer">
+                    <TicketsContainer tickets={tickets} setQr={setQr} openQrModal={openQrModal} openConfirmCancelModal={openConfirmCancelModal}/>
                 </div>
-                <div class="eventImageContainer">
-                  <img
-                    src={event.image}
-                    alt="JSTalks Event"
-                    class="eventImage"
-                  />
-                  <div className="eventActions">
-                    <button
-                      className="removeButton"
-                      onClick={() => removeFromWishlist(event.id)}
-                    >
-                      ❤️
-                    </button>
-                  </div>
+            </div>
+
+            <Modal 
+                isOpen={qrModalIsOpen} 
+                onRequestClose={closeQrModal} 
+                contentLabel="Reservation QR Code" 
+                className="modal" 
+                overlayClassName="modalOverlay" 
+            >
+                <div className="container" id="qr-code"> 
+                    <h3>Your QR Code</h3>
+                    <button className="close-modal" onClick={closeQrModal}>&#10005;</button>
+                    {qrCode && <img src={`data:image/png;base64,${qrCode}`} alt="QR Code" />}
                 </div>
-              </div>
-            ))
-          ) : (
-            <p>No events in your wishlist yet.</p>
-          )}
+            </Modal> 
+
+            <Modal 
+                isOpen={confirmCancelModalIsOpen} 
+                onRequestClose={closeConfirmCancelModal} 
+                contentLabel="Confirm cancelation" 
+                className="modal" 
+                overlayClassName="modalOverlay" 
+            >
+                <div className="container" id="confirm-cancelation"> 
+                    <h3>Are you sure you want to cancel this reservation?</h3>
+                    <button className="close-modal" onClick={closeConfirmCancelModal}>&#10005;</button>
+                    <button className="confirm-cancel-btn" id="keep-reservation" onClick={closeConfirmCancelModal}>No, keep reservation</button>
+                    <button className="confirm-cancel-btn" id="conf-cancel-reservation" onClick={cancelReservation}>Yes, cancel reservation</button>
+                </div>
+            </Modal> 
         </div>
-      </div>
-    </>
-  );
+        
+    );
+
+    
 };
 
 export default MyTickets;

@@ -1,21 +1,54 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
+
 import Navbar from './NavBar';
 import EventInfo from './EventInfo';
 import ReservationComponent from './ReservationComponent';
+
 import '../style/eventStyle.css';
-import '../style/ReservationForm.css'
-import Modal from 'react-modal';
+import '../style/ReservationForm.css';
+
+import { createReservation } from '../services/reservationService';
 
 const EventPage = () => {
+    
+    const navigate = useNavigate();
+    
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
+
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
 
     const openModal = () => {
         setModalIsOpen(true);
-    }; 
-    
+    }
+
     const closeModal = () => {
         setModalIsOpen(false);
-    };
+    }
+
+    const openSuccessModal = () => {
+        setModalIsOpen(false);
+        setSuccessModalIsOpen(true);
+    }
+
+    const closeSuccessModal = () => {
+        setSuccessModalIsOpen(false);
+        navigate('/myTickets');
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await createReservation(1, 1, firstName, lastName, email);
+            openSuccessModal();
+        } catch (error) {
+            alert('Error creating reservation. Please try again.');
+        }
+    }
 
     return (
         <div id="eventPage">
@@ -30,45 +63,76 @@ const EventPage = () => {
                 </div>
             </div>
 
-            <Modal
-                    isOpen={modalIsOpen}
-                    onRequestClose={closeModal}
-                    contentLabel="Reservation QR Code"
-                    className="modal"
-                    overlayClassName="modalOverlay"
-                >
-                    <div className="container">
-                        <h1>Event Reservation Form</h1>
-                        <form>
-                            <h2>Contact Information</h2>
-                            <div className="names">
-                                <div className="first-name">
-                                    <label htmlFor="first-name">First Name:</label>
-                                    <input type="text" id="first-name" name="first-name" required />
-                                </div>
-                                <div className="last-name">
-                                    <label htmlFor="last-name">Last Name:</label>
-                                    <input type="text" id="last-name" name="last-name" required />
-                                </div>
+            <Modal 
+                isOpen={modalIsOpen} 
+                onRequestClose={closeModal} 
+                contentLabel="Reservation Form" 
+                className="modal" 
+                overlayClassName="modalOverlay" 
+            > 
+                <div className="container"> 
+                    <h1>Event Reservation Form</h1> 
+                    <button className="close-modal" onClick={closeModal}>&#10005;</button> 
+                    <form> 
+                        <h2>Contact Information</h2> 
+                        <div className="names"> 
+                            <div className="first-name"> 
+                                <label htmlFor="first-name">First Name:</label> 
+                                <input 
+                                type="text" 
+                                id="first-name"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required /> 
+                            </div> 
+                            <div className="last-name"> 
+                                <label htmlFor="last-name">Last Name:</label> 
+                                <input 
+                                type="text" 
+                                id="last-name" 
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                required /> 
                             </div>
-                            <label htmlFor="email">Email Address:</label>
-                            <input type="email" id="email" name="email" required />
+                        </div> 
+                            
+                        <label htmlFor="email">Email Address:</label> 
+                        <input 
+                        type="email" 
+                        id="email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required /> 
 
-                            <h2>Order Summary</h2>
-                            <div className="order-summary">
-                                <p><strong>Event:</strong> Speech Storytelling Masterclass</p>
-                                <p><strong>Date:</strong> Wednesday, April 9, 9:00 - 10:30 pm EEST</p>
-                                <p><strong>Location:</strong> NBU, 21 Montevideo street, Sofia, Bulgaria</p>
-                                <p><strong>Fee:</strong> Free ($0.00)</p>
-                            </div>
+                        {/* <h2>Order Summary</h2> 
+                        <div className="order-summary"> 
+                            <p><strong>Event:</strong> Speech Storytelling Masterclass</p> 
+                            <p><strong>Date:</strong> Wednesday, April 9, 9:00 - 10:30 pm EEST</p> 
+                            <p><strong>Location:</strong> NBU, 21 Montevideo street, Sofia, Bulgaria</p> 
+                            <p><strong>Fee:</strong> Free ($0.00)</p> 
+                        </div> */}
 
-                            <button type="submit">Finish reservation</button>
-                        </form>
-                        <button onClick={closeModal}>Close</button>
-                    </div>
-                </Modal>
+                        <button className="finish-reservation" type="submit" onClick={handleSubmit}>Finish reservation</button> 
+                    </form> 
+                </div> 
+            </Modal>
+
+            <Modal 
+                isOpen={successModalIsOpen} 
+                onRequestClose={closeSuccessModal} 
+                contentLabel="Reservation Success" 
+                className="modal" 
+                overlayClassName="modalOverlay" 
+            >
+                <div className="container" id="successful-reservation"> 
+                    <h1>Reservation successful!</h1> 
+                    <p>Your reservation has been successfully made.</p> 
+                    <button className="go-to-tickets" onClick={closeSuccessModal}>Go to my tickets</button> 
+                </div>
+            </Modal>
         </div>
     );
 };
 
+Modal.setAppElement('#root');
 export default EventPage;

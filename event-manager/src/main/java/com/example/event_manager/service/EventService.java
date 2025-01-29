@@ -5,15 +5,12 @@ import com.example.event_manager.dto.CreateEventDto;
 import com.example.event_manager.dto.DisplayEventDto;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
-import com.example.event_manager.entity.EventOnLocation;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.example.event_manager.dao.EventDao.getEvents;
 
 @Service
 public class EventService {
@@ -62,7 +59,7 @@ public class EventService {
     }
 
     public List<DisplayEventDto> getAllEvents() {
-        return EventDao.getAllDisolayEventDto();
+        return EventDao.getAllDisplayEventDto();
     }
 
 //    public List<Event> filterEvents(List <Event> initialEvents, EventCategory eventCategory, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime start, LocalDateTime end) {
@@ -80,8 +77,8 @@ public class EventService {
                 .filter(event -> (eventCategory == null || event.getCategory().equals(eventCategory)) &&
                         (minPrice == null || event.getPrice().compareTo(minPrice) >= 0) &&
                         (maxPrice == null || event.getPrice().compareTo(maxPrice) <= 0) &&
-                        ((end == null || EventDao.getEventStartTime(event.getId()).isBefore(end)) ||
-                                (start == null || EventDao.getEventEndTime(event.getId()).isAfter(start))))
+                        ((end == null || event.getStartTime().isBefore(end)) ||
+                                (start == null || event.getEndTime().isAfter(start))))
                 .collect(Collectors.toList());
     }
 }

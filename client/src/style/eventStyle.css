@@ -159,11 +159,11 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height: 200px;
+    height: max-content;
     width: 300px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    padding: 20px;
+    padding: 40px 20px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     align-items: center;
 }
@@ -205,6 +205,7 @@ body {
 .reservationBtn{
     width:100%;
 }
+
 .reservationBtn button {
     background-color: #d1410c;
     color: white;

@@ -101,3 +101,22 @@ export const fetchFilteredEvents = async (params) => {
       throw error;
   }
 };
+
+export const fetchAllEvents = async () => {
+    try {
+        const response = await fetch(`${API_URL}/allEvents`, {
+            method: 'GET',
+        });
+        
+        if (!response.ok) {
+            throw new Error('Error fetching all events');
+        }
+    
+        const data = await response.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching all events: ', error);
+        throw error;
+    }
+}
