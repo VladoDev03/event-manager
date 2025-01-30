@@ -36,12 +36,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         try{
             AuthenticationResponse response = authService.login(request);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            AuthenticationResponse response = AuthenticationResponse.builder()
+                    .accessToken(null, e.getMessage(), 0)
+                    .build();
+            return ResponseEntity.badRequest().body(response);
         }
 
 

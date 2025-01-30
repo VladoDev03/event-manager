@@ -22,12 +22,15 @@
 }
 
 input, select {
-    text-transform: capitalize;
     width: 100%;
     padding: 10px;
     margin-top: 10px;
     border-radius: 4px;
     border: 1px solid #ccc;
+}
+
+#filter-form select {
+     text-transform: capitalize; 
 }
 
 #apply-filters {

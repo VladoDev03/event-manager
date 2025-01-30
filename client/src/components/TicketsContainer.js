@@ -1,6 +1,8 @@
 import React from 'react';
 import '../style/myTickets.css';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
+
 
 const TicketsContainer = ({ tickets, previousTickets, setQr, openQrModal, openConfirmCancelModal }) => {
     const navigate = useNavigate();
@@ -9,6 +11,9 @@ const TicketsContainer = ({ tickets, previousTickets, setQr, openQrModal, openCo
         navigate(`/event/${eventId}`);
     };
 
+    const formatDateTime = (dateTimeString) => {
+        return format(dateTimeString, "dd MMMM yyyy HH:mm");
+      };
 
     return (
         <div className="ticketsContainer">
@@ -26,7 +31,7 @@ const TicketsContainer = ({ tickets, previousTickets, setQr, openQrModal, openCo
                             >
                                 <h2 className="eventTitle">{ticket.eventTitle}</h2>
                                 <div className="eventDetails">
-                                    <p className="eventTime">{ticket.eventStartTime}</p>
+                                    <p className="eventTime">{formatDateTime(ticket.eventStartTime)}</p>
                                     <p className="eventLocation">{ticket.eventLocation}</p>
                                     <p className="eventPrice">{ticket.eventPrice} BGN</p>
                                 </div>

@@ -18,16 +18,13 @@ import java.util.List;
 public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final UserService userService;
 
     public AuthService(
             JwtService jwtService,
-            PasswordEncoder passwordEncoder, UserService userService
+            PasswordEncoder passwordEncoder
     ) {
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
-
-        this.userService = userService;
     }
 
     public AuthenticationResponse register(RegisterRequest request) throws ExistingUserException {

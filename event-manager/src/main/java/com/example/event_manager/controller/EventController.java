@@ -5,6 +5,7 @@ import com.example.event_manager.dto.DisplayEventDto;
 import com.example.event_manager.dto.FilterRequest;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
+import com.example.event_manager.exception.MinGreaterThanMaxException;
 import com.example.event_manager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,7 +62,11 @@ public class EventController {
 
     @PostMapping("/filterEvents")
     public List<DisplayEventDto> filterEvents(@RequestBody FilterRequest filterRequest) {
-        return eventService.filterEvents(filterRequest);
+        try {
+            return eventService.filterEvents(filterRequest);
+        } catch (MinGreaterThanMaxException e) {
+            return null;
+        }
     }
 
 }

@@ -66,6 +66,7 @@ public class EventManagerApplication {
 		Event event2 = new Event();
 		event2.setTitle("subiranka");
 		event2.setPrice(BigDecimal.valueOf(2));
+		event2.setCapacity(30);
 		event2.setCategory(EventCategory.CULTURE);
 		event2.setLocation(location1);
 		event2.setStartTime(LocalDateTime.of(2024,12,29,18,30));
@@ -75,6 +76,7 @@ public class EventManagerApplication {
 		Event event3 = new Event();
 		event3.setTitle("teatur");
 		event3.setPrice(BigDecimal.valueOf(20));
+		event3.setCapacity(30);
 		event3.setCategory(EventCategory.CULTURE);
 		event3.setLocation(location3);
 		event3.setStartTime(LocalDateTime.of(2025,12,27,18,30));

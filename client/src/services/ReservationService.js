@@ -21,8 +21,8 @@ export const createReservation = async (eventId, guestId, firstName, lastName, e
         }
 
         const data = await response.json();
-        console.log(data);
         return data;
+        
     } catch (error) {
         console.error('Error making reservation:', error);
         throw error;

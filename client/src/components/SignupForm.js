@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as authService from '../services/authService'
 import "../style/Login.css";
 
 export const SignupForm = () => {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     fullName: "",
     username: "",
@@ -18,7 +21,7 @@ export const SignupForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
 
@@ -31,10 +34,15 @@ export const SignupForm = () => {
     
     console.log("New User:", newUser);
 
-    authService.register(newUser)
-                .then(result => {
-                    console.log(result);
-                });
+    try{
+      await authService.register(newUser);
+      navigate('../login'); 
+    } catch (error) {
+      let errorMessage = document.getElementById('errorMessage');
+        errorMessage.innerText = 'Username is already taken.';
+        errorMessage.style.color = 'red';
+    }
+               
   };
 
   return (
@@ -50,6 +58,7 @@ export const SignupForm = () => {
         </div>
         <div className="firstHalf">
           <header className="login">Sign up</header>
+          <h6 id="errorMessage"></h6>
           <form className="inputContainer" onSubmit={handleSubmit}>
             <div className="inputBox">
               <input

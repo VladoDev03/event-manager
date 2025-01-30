@@ -1,26 +1,24 @@
 import React, {useState, useContext} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../style/Login.css";
-import {login} from "../services/authService.js";
+import { login } from "../services/authService.js";
 import { AuthContext } from "../contexts/AuthContext";
 
 const LoginForm = () => {
-    
+    const navigate = useNavigate();
     const { userLogin } = useContext(AuthContext)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+
       console.log(username, password);
-      try {
-        // await login(username, password);
-        
-        login(username, password)
-            .then(result => {
-                userLogin(result);
-                console.log(result);
-            })
+      
+      try {        
+        const result = await login(username, password);
+        userLogin(result);
+        navigate('/');
       } catch (error) {
         let errorMessage = document.getElementById('errorMessage');
         errorMessage.innerText = 'Invalid username or password.';

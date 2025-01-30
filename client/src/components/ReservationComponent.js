@@ -1,13 +1,21 @@
-import React, { use, useState } from 'react';
-import { createReservation } from '../services/ReservationService';
+import { React, useContext, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
+import { AuthContext } from '../contexts/AuthContext';
 
 const ReservationComponent = ({ openModal, eventId, guestId, firstName, lastName, emial }) => {
+    const { user } = useContext(AuthContext);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleReservation = async () => {
         try {
-            setError('');
-            openModal();
+            if (user.userId) {
+                setError('');
+                openModal();
+            } else {
+                navigate('/login');
+            }
         } catch (error) {
             setError(error.message);
             console.error('Error making reservation:', error);

@@ -9,9 +9,12 @@ export async function login(username, password) {
         body: JSON.stringify({username, password})
     });
 
-    const result = response.json();
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Login failed");
+    }
 
-    return result;
+    return response.json();
 }
 
 export async function register(userData) {
@@ -23,8 +26,10 @@ export async function register(userData) {
         body: JSON.stringify(userData)
     });
 
-    const result = response.json();
-    console.log(result);
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Signup failed");
+    }
 
-    return result;
+    return response.json();
 }

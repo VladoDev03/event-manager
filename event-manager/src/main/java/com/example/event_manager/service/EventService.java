@@ -6,6 +6,7 @@ import com.example.event_manager.dto.DisplayEventDto;
 import com.example.event_manager.dto.FilterRequest;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
+import com.example.event_manager.exception.MinGreaterThanMaxException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -74,6 +75,14 @@ public class EventService {
     }
 
     public List<DisplayEventDto> filterEvents(FilterRequest filterRequest) {
+        if(filterRequest.getMinPrice().compareTo(filterRequest.getMaxPrice()) > 0) {
+            throw new MinGreaterThanMaxException("Minimum price is greater than maximum price.");
+        }
+
+        if(filterRequest.getStartDate().isAfter(filterRequest.getEndDate())) {
+            throw new MinGreaterThanMaxException("Start date is after end date.");
+        }
+
         return EventDao.getFilteredEventsByCategoryStartTimeEndTimePrice(
                 filterRequest.getCategory(),
                 filterRequest.getStartDateTime(),

@@ -1,11 +1,15 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Modal from 'react-modal';
 import Navbar from './NavBar';
 import TicketsContainer from './TicketsContainer';
 import { deleteReservation, fetchFutureReservations, fetchPreviousReservations } from '../services/ReservationService';
+import { AuthContext } from '../contexts/AuthContext';
+
 import '../style/myTickets.css';
 
 const MyTickets = () => {
+    const { user } = useContext(AuthContext);
+    
     const [tickets, setTickets] = useState([]);
     const [previousTickets, setPreviousTickets] = useState([]);
     const [qrCode, setQrCode] = useState('');
@@ -21,14 +25,14 @@ const MyTickets = () => {
 
     const fetchData = async () => {
         try {
-            const ticketsData = await fetchFutureReservations(1 /*guest id*/);
+            const ticketsData = await fetchFutureReservations(user.userId);
             setTickets(ticketsData || []);
         } catch (error) {
             console.error('Error fetching tickets', error);
         }
 
         try {
-            const previousTicketsData = await fetchPreviousReservations(1 /*guest id*/);
+            const previousTicketsData = await fetchPreviousReservations(user.userId);
             setPreviousTickets(previousTicketsData || []);
         } catch (error) {
             console.error('Error fetching tickets', error);
