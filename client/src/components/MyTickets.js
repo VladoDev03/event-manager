@@ -2,7 +2,7 @@ import React, { useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import Navbar from './NavBar';
 import TicketsContainer from './TicketsContainer';
-import { deleteReservation, fetchFutureReservations, fetchPreviousReservations } from '../services/reservationService';
+import { deleteReservation, fetchFutureReservations, fetchPreviousReservations } from '../services/ReservationService';
 import '../style/myTickets.css';
 
 const MyTickets = () => {

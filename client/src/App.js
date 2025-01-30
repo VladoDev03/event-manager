@@ -15,6 +15,7 @@ import { ReviewForm } from "./components/ReviewForm";
 import { DeleteReview } from "./components/DeleteReview";
 import { AuthProvider } from "./contexts/AuthContext";
 import useWishlist from "./hooks/useWishlist";
+import { Logout } from "./components/Logout";
 
 function App() {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
@@ -87,6 +88,15 @@ function App() {
           element={
             <div>
               <SignupForm />
+            </div>
+          }
+        />
+
+        <Route
+          path="/logout"
+          element={
+            <div>
+              <Logout />
             </div>
           }
         />

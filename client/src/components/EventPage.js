@@ -9,7 +9,7 @@ import ReservationComponent from './ReservationComponent';
 import '../style/eventStyle.css';
 import '../style/ReservationForm.css';
 
-import { createReservation } from '../services/reservationService';
+import { createReservation } from '../services/ReservationService';
 
 const EventPage = () => {
     

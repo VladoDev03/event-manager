@@ -74,6 +74,9 @@ const Navbar = () => {
           <li className="signup">
             <Link to="/signup">Sign up</Link> {}
           </li>
+          <li className="logout">
+            <Link to="/logout">Logout</Link> {}
+          </li>
         </ul>
       </div>
     </header>

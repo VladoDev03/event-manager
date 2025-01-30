@@ -1,5 +1,5 @@
 import React, { use, useState } from 'react';
-import { createReservation } from '../services/reservationService';
+import { createReservation } from '../services/ReservationService';
 
 const ReservationComponent = ({ openModal, eventId, guestId, firstName, lastName, emial }) => {
     const [error, setError] = useState('');
