@@ -1,6 +1,5 @@
 package com.example.event_manager.controller;
 
-import com.cloudinary.api.exceptions.BadRequest;
 import com.example.event_manager.dto.AuthenticationRequest;
 import com.example.event_manager.dto.AuthenticationResponse;
 import com.example.event_manager.dto.RegisterRequest;

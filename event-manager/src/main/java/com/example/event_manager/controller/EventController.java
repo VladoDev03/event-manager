@@ -19,10 +19,9 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateEventDto> createEvent(@RequestBody CreateEventDto createEventDto) {
+    public ResponseEntity<String> createEvent(@RequestBody CreateEventDto createEventDto) {
         eventService.createEvent(createEventDto);
-        return ResponseEntity.ok(new CreateEventDto());
-//        return new ResponseEntity<>("Event created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>("Event created successfully", HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
