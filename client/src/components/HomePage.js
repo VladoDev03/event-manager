@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import "../style/Homepage.css";
 import Navbar from "./NavBar";
-import EventsContainer from "./EventsContainer";
 
 const HomePage = ({ addToWishlist }) => {
   const [events] = useState([
@@ -73,7 +71,26 @@ const HomePage = ({ addToWishlist }) => {
               <span>Explore more events</span>
             </a>
           </div>
-          <EventsContainer events={events} />
+          <div className="eventsContainer">
+            {events.map((event) => (
+              <section key={event.id} className="eventWrapper">
+                <a className="eventImg" href="event.html">
+                  <img src={event.image} alt="event" />
+                </a>
+                <div className="eventDescription">
+                  <h3>{event.title}</h3>
+                  <p>{event.date}</p>
+                  <p>{event.location}</p>
+                </div>
+                <button
+                  className="favoriteButton"
+                  onClick={() => addToWishlist(event)}
+                >
+                  ❤️
+                </button>
+              </section>
+            ))}
+          </div>
         </div>
       </div>
     </>

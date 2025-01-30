@@ -137,7 +137,6 @@ hr{
     color: #ff4d4d;
     transition: transform 0.3s, color 0.3s;
 }
-
 .favoriteButton:hover {
     transform: scale(1.2);
     color: #ff1a1a;

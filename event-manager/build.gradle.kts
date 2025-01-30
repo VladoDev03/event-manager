@@ -36,10 +36,6 @@ dependencies {
 	implementation("com.cloudinary:cloudinary-http5:2.0.0")
 	implementation("com.cloudinary:cloudinary-taglib:2.0.0")
 
-// QR code generating
-	implementation("com.google.zxing:core:3.4.1")
-	implementation("com.google.zxing:javase:3.4.1")
-
 //	testing
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")

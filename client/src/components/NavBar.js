@@ -54,7 +54,7 @@ const Navbar = () => {
       <div className="navOptionsContainer">
         <ul className="optionsList">
           <li className="login">
-            <Link to="/searchEvents">Find events</Link> {}
+            <a href="findEventsPage.html">Find events</a>
           </li>
           <li className="login">
             <a href="create-event" target="_blank">
@@ -62,17 +62,16 @@ const Navbar = () => {
             </a>
           </li>
           <li className="login">
-            <Link to="/myTickets">Find my tickets</Link> {}
+            <a href="myTicketsPage.html">Find my tickets</a>
           </li>
           <li className="login">
             <Link to="/wishlist">Wish list</Link> {}
           </li>
           <li className="login">
-            {/* <a href="login.html">Log in</a> */}
             <Link to="/login">Log in</Link> {}
           </li>
           <li className="signup">
-            <a href="signup.html">Sign up</a>
+            <Link to="/signup">Sign up</Link> {}
           </li>
         </ul>
       </div>

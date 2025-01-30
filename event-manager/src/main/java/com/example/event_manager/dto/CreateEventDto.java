@@ -11,6 +11,8 @@ public class CreateEventDto {
     private int capacity;
     private LocalDateTime creationDate;
 
+    public CreateEventDto() {}
+
     public CreateEventDto(String title, String description, BigDecimal price, int capacity, LocalDateTime creationDate) {
         this.title = title;
         this.description = description;

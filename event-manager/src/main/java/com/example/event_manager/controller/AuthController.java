@@ -1,8 +1,10 @@
 package com.example.event_manager.controller;
 
+import com.cloudinary.api.exceptions.BadRequest;
 import com.example.event_manager.dto.AuthenticationRequest;
 import com.example.event_manager.dto.AuthenticationResponse;
 import com.example.event_manager.dto.RegisterRequest;
+import com.example.event_manager.exception.ExistingUserException;
 import com.example.event_manager.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,12 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
-        return ResponseEntity.ok(authService.register(request));
+        try {
+            AuthenticationResponse result = authService.register(request);
+            return ResponseEntity.ok(result);
+        } catch (ExistingUserException e) {
+            return ResponseEntity.badRequest().body(new AuthenticationResponse(null, e.getMessage()));
+        }
     }
 
     @PostMapping("/login")

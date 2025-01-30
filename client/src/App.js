@@ -3,14 +3,12 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import Wishlist from "./components/Wishlist";
 import EventForm from "./components/EventForm";
-import SearchResultPage from "./components/SearchResultPage";
-import EventPage from "./components/EventPage";
-import MyTickets from "./components/MyTickets";
 import { Auth } from "./components/Auth";
 import { ImageForm } from "./components/ImageForm";
 import { DeleteMedia } from "./components/DeleteMedia";
 import { ReviewForm } from "./components/ReviewForm";
 import { DeleteReview } from "./components/DeleteReview";
+import { SignupForm } from "./components/SignupForm";
 import { AuthProvider } from "./contexts/AuthContext";
 import useWishlist from "./hooks/useWishlist";
 
@@ -52,27 +50,13 @@ function App() {
         />
 
         <Route
-          path="/searchEvents"
+          path="/signup"
           element={
-            <SearchResultPage />
+            <div>
+              <SignupForm />
+            </div>
           }
         />
-        
-        <Route
-          path="/event/:id"
-          element={
-            <EventPage />
-          } 
-        />
-
-        <Route 
-        path="/myTickets"
-        element={
-          <MyTickets />
-        }
-        />
-
-
       </Routes>
     </div>
     </AuthProvider>

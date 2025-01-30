@@ -15,15 +15,23 @@ export async function login(userData) {
 }
 
 export async function register(userData) {
-    const response = await fetch(`${baseUrl}/register`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-    });
+    try {
+        const response = await fetch(`${baseUrl}/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
 
-    const result = response.json();
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(errorMessage || "Registration failed");
+        }
 
-    return result;
+        return await response.json();
+    } catch (error) {
+        console.error("Registration error:", error.message);
+        return { error: error.message };
+    }
 }

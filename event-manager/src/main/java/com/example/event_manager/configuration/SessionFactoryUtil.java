@@ -15,8 +15,11 @@ public class SessionFactoryUtil {
 
             configuration.addAnnotatedClass(BaseEntity.class);
             configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(Creator.class);
+            configuration.addAnnotatedClass(Guest.class);
             configuration.addAnnotatedClass(Event.class);
             configuration.addAnnotatedClass(Location.class);
+            configuration.addAnnotatedClass(EventOnLocation.class);
             configuration.addAnnotatedClass(Reservation.class);
             configuration.addAnnotatedClass(Review.class);
             configuration.addAnnotatedClass(Media.class);

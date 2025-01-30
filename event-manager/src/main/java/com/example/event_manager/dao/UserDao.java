@@ -6,60 +6,21 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public class UserDao {
-    public static void saveUser(User guest) {
+    public static void createUser(User user) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.save(guest);
+            session.save(user);
             transaction.commit();
         }
     }
 
-    public static void createUser(User guest) {
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.save(guest);
-            transaction.commit();
+    public static User getUserByUsername(String username) {
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM User WHERE username = :username", User.class)
+                    .setParameter("username", username)
+                    .uniqueResult();
         }
-    }
-
-    public static void updateUser(User guest) {
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.saveOrUpdate(guest);
-            transaction.commit();
-        }
-    }
-
-    public static void deleteUser(User guest) {
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.delete(guest);
-            transaction.commit();
-        }
-    }
-
-    public static List<User> getUsers() {
-        List<User> guests;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            guests = session.createQuery("select g from com.example.event_manager.entity.User g", User.class)
-                    .getResultList();
-            transaction.commit();
-        }
-        return guests;
-    }
-
-    public static User getUserById(long id) {
-        User guest;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            guest = session.get(User.class, id);
-            transaction.commit();
-        }
-        return guest;
     }
 }

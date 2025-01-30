@@ -12,7 +12,7 @@ public class Location extends BaseEntity {
     private String country;
     private int maxCapacity;
     @OneToMany (mappedBy = "location")
-    private Set<Event> events;
+    private Set<EventOnLocation> eventsOnLocation;
 
     public String getName() {
         return name;
@@ -34,8 +34,8 @@ public class Location extends BaseEntity {
         return maxCapacity;
     }
 
-    public Set<Event> getEvents() {
-        return events;
+    public Set<EventOnLocation> getEventsOnLocation() {
+        return eventsOnLocation;
     }
 
     public void setName(String name) {
@@ -58,7 +58,7 @@ public class Location extends BaseEntity {
         this.maxCapacity = maxCapacity;
     }
 
-    public void setEvents(Set<Event> events) {
-        this.events = events;
+    public void setEventsOnLocation(Set<EventOnLocation> eventsOnLocation) {
+        this.eventsOnLocation = eventsOnLocation;
     }
 }

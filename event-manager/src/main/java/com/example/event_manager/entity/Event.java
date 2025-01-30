@@ -1,6 +1,9 @@
 package com.example.event_manager.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -9,24 +12,20 @@ import java.util.Set;
 public class Event extends BaseEntity {
     private String title;
     private String description;
-    @Enumerated(EnumType.STRING)
-    private EventCategory category;
-    @ManyToOne (fetch = FetchType.LAZY)
-    private Location location;
     private BigDecimal price;
     private int capacity;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
     private LocalDateTime creationDate;
     private LocalDateTime updateDate;
     @OneToMany (mappedBy = "event")
+    private Set<EventOnLocation> eventOnLocations;
+    @OneToMany (mappedBy = "event")
     private Set<Media> media;
-    @ManyToOne (fetch = FetchType.LAZY)
-    private User creator;
+    @ManyToOne
+    private Creator creator;
     @OneToMany (mappedBy = "event")
     private Set<Reservation> reservations;
     @ManyToMany (mappedBy = "wishlist")
-    private Set<User> guestsHaveEventInWishlist;
+    private Set<Guest> guestsHaveEventInWishlist;
 
     public Event() {
     }
@@ -46,9 +45,6 @@ public class Event extends BaseEntity {
     public String getDescription() {
         return description;
     }
-    public EventCategory getCategory() {
-        return category;
-    }
 
     public BigDecimal getPrice() {
         return price;
@@ -66,15 +62,15 @@ public class Event extends BaseEntity {
         return updateDate;
     }
 
-    public Location getLocation() {
-        return location;
+    public Set<EventOnLocation> getEventOnLocations() {
+        return eventOnLocations;
     }
 
     public Set<Media> getMedia() {
         return media;
     }
 
-    public User getCreator() {
+    public Creator getCreator() {
         return creator;
     }
 
@@ -82,7 +78,7 @@ public class Event extends BaseEntity {
         return reservations;
     }
 
-    public Set<User> getGuestsHaveEventInWishlist() {
+    public Set<Guest> getGuestsHaveEventInWishlist() {
         return guestsHaveEventInWishlist;
     }
 
@@ -92,10 +88,6 @@ public class Event extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setCategory(EventCategory category) {
-        this.category = category;
     }
 
     public void setPrice(BigDecimal price) {
@@ -114,15 +106,15 @@ public class Event extends BaseEntity {
         this.updateDate = updateDate;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setEventOnLocations(Set<EventOnLocation> eventOnLocations) {
+        this.eventOnLocations = eventOnLocations;
     }
 
     public void setMedia(Set<Media> media) {
         this.media = media;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(Creator creator) {
         this.creator = creator;
     }
 
@@ -130,39 +122,7 @@ public class Event extends BaseEntity {
         this.reservations = reservations;
     }
 
-    public void setGuestsHaveEventInWishlist(Set<User> guestsHaveEventInWishlist) {
+    public void setGuestsHaveEventInWishlist(Set<Guest> guestsHaveEventInWishlist) {
         this.guestsHaveEventInWishlist = guestsHaveEventInWishlist;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", category=" + category.name() +
-                ", price=" + price +
-                ", capacity=" + capacity +
-                ", location=" + location.getName() +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", creationDate=" + creationDate +
-                ", updateDate=" + updateDate +
-                "} " + super.toString();
     }
 }
