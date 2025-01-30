@@ -6,6 +6,7 @@ import EventForm from "./components/EventForm";
 import SearchResultPage from "./components/SearchResultPage";
 import EventPage from "./components/EventPage";
 import MyTickets from "./components/MyTickets";
+import Login from "./components/Login";
 import { Auth } from "./components/Auth";
 import { ImageForm } from "./components/ImageForm";
 import { DeleteMedia } from "./components/DeleteMedia";
@@ -38,7 +39,7 @@ function App() {
 
         <Route path="/create-event" element={<EventForm />} />
 
-        <Route
+        {/* <Route
           path="/login"
           element={
             <div>
@@ -49,7 +50,7 @@ function App() {
               <DeleteReview />
             </div>
           }
-        />
+        /> */}
 
         <Route
           path="/searchEvents"
@@ -73,6 +74,12 @@ function App() {
         />
 
 
+        <Route
+          path="/login"
+          element={
+            <Login />
+          }
+        />
       </Routes>
     </div>
     </AuthProvider>

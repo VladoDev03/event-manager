@@ -17,8 +17,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/reservations")
 public class ReservationController {
-    @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    public ReservationController(ReservationService reservationService) {
+        this.reservationService = reservationService;
+    }
 
     @PostMapping
     public ResponseEntity<?> createReservation(@RequestBody CreateReservationDto request) throws WriterException, IOException {
@@ -38,9 +42,15 @@ public class ReservationController {
     }
 
 
-    @GetMapping("/{guestId}")
-    public List<ReservationTicketDto> getGuestReservations(@PathVariable long guestId) {
+    @GetMapping("/future/{guestId}")
+    public List<ReservationTicketDto> getFutureGuestReservations(@PathVariable long guestId) {
         System.out.println("loading tickets");
-        return reservationService.getGuestReservations(guestId);
+        return reservationService.getFutureGuestReservations(guestId);
+    }
+
+    @GetMapping("/previous/{guestId}")
+    public List<ReservationTicketDto> getPreviousGuestReservations(@PathVariable long guestId) {
+        System.out.println("loading tickets");
+        return reservationService.getPreviousGuestReservations(guestId);
     }
 }

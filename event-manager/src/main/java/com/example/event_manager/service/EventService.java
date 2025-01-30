@@ -3,6 +3,7 @@ package com.example.event_manager.service;
 import com.example.event_manager.dao.EventDao;
 import com.example.event_manager.dto.CreateEventDto;
 import com.example.event_manager.dto.DisplayEventDto;
+import com.example.event_manager.dto.FilterRequest;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
 import org.springframework.stereotype.Service;
@@ -62,17 +63,7 @@ public class EventService {
         return EventDao.getAllDisplayEventDto();
     }
 
-//    public List<Event> filterEvents(List <Event> initialEvents, EventCategory eventCategory, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime start, LocalDateTime end) {
-//        return initialEvents.stream()
-//                .filter(event -> (eventCategory == null || event.getCategory().equals(eventCategory)) &&
-//                        (minPrice == null || event.getPrice().compareTo(minPrice) >= 0) &&
-//                        (maxPrice == null || event.getPrice().compareTo(maxPrice) <= 0) &&
-//                        ((end == null || EventDao.getEventStartTime(event.getId()).isBefore(end)) ||
-//                        (start == null || EventDao.getEventEndTime(event.getId()).isAfter(start))))
-//                .collect(Collectors.toList());
-//    }
-
-    public List<DisplayEventDto> filterEvents(List <DisplayEventDto> initialEvents, EventCategory eventCategory, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime start, LocalDateTime end) {
+    public List<DisplayEventDto> filterEventsAfterSearch(List <DisplayEventDto> initialEvents, EventCategory eventCategory, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime start, LocalDateTime end) {
         return initialEvents.stream()
                 .filter(event -> (eventCategory == null || event.getCategory().equals(eventCategory)) &&
                         (minPrice == null || event.getPrice().compareTo(minPrice) >= 0) &&
@@ -80,5 +71,15 @@ public class EventService {
                         ((end == null || event.getStartTime().isBefore(end)) ||
                                 (start == null || event.getEndTime().isAfter(start))))
                 .collect(Collectors.toList());
+    }
+
+    public List<DisplayEventDto> filterEvents(FilterRequest filterRequest) {
+        return EventDao.getFilteredEventsByCategoryStartTimeEndTimePrice(
+                filterRequest.getCategory(),
+                filterRequest.getStartDateTime(),
+                filterRequest.getEndDateTime(),
+                filterRequest.getMinPrice(),
+                filterRequest.getMaxPrice()
+        );
     }
 }

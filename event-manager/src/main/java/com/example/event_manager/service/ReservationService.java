@@ -53,4 +53,18 @@ public class ReservationService {
                 .map(reservation -> ReservationDao.getReservationTicket(reservation.getId()))
                 .collect(Collectors.toList());
     }
+
+    public List<ReservationTicketDto> getFutureGuestReservations(long guestId) {
+        return ReservationDao.getFutureGuestReservations(guestId)
+                .stream()
+                .map(reservation -> ReservationDao.getReservationTicket(reservation.getId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<ReservationTicketDto> getPreviousGuestReservations(long guestId) {
+        return ReservationDao.getPreviousGuestReservations(guestId)
+                .stream()
+                .map(reservation -> ReservationDao.getReservationTicket(reservation.getId()))
+                .collect(Collectors.toList());
+    }
 }

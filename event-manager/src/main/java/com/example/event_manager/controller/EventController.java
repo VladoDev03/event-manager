@@ -60,14 +60,7 @@ public class EventController {
 
     @PostMapping("/filterEvents")
     public List<DisplayEventDto> filterEvents(@RequestBody FilterRequest filterRequest) {
-        return eventService.filterEvents(
-                filterRequest.getInitialEvents(),
-                filterRequest.getCategory(),
-                filterRequest.getMinPrice(),
-                filterRequest.getMaxPrice(),
-                filterRequest.getStartDateTime(),
-                filterRequest.getEndDateTime()
-        );
+        return eventService.filterEvents(filterRequest);
     }
 
 }

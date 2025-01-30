@@ -1,12 +1,12 @@
 const baseUrl = 'http://localhost:8080/api/auth';
 
-export async function login(userData) {
+export async function login(email, password) {
     const response = await fetch(`${baseUrl}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData)
+        body: JSON.stringify({email, password})
     });
 
     const result = response.json();
@@ -24,6 +24,7 @@ export async function register(userData) {
     });
 
     const result = response.json();
+    console.log(result);
 
     return result;
 }

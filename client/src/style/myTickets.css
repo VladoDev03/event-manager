@@ -4,6 +4,10 @@
 }
 
 .ticketsContainer {
+    margin: 0 15%;
+}
+
+.futureTickets, .previousTickets {
     display: flex;
     flex-direction: column;
     row-gap: 20px;
@@ -11,9 +15,18 @@
     align-items: center;
 }
 
+.ticketType, .noTickets{
+    margin-right: auto;
+    margin-bottom: 0;
+}
+
+.ticketType {
+    margin-top: 30px;
+}
+
 .ticketWrapper {
     display: flex;
-    width: 70%;
+    width: 100%;
     flex-direction: column;
     justify-content: space-between;
     background-color: #f9f9f9;

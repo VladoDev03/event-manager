@@ -1,6 +1,6 @@
 package com.example.event_manager.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -8,6 +8,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseEntity {
     private String username;
+    private String email;
     private String password;
     private String firstName;
     private String lastName;
@@ -21,8 +22,9 @@ public class User extends BaseEntity {
     @OneToMany (mappedBy = "creator")
     private Set<Event> events;
 
-    public User(String username, String password, String firstName, String lastName, LocalDateTime creationDate) {
+    public User(String username, String email, String password, String firstName, String lastName, LocalDateTime creationDate) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,6 +37,10 @@ public class User extends BaseEntity {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
@@ -55,6 +61,10 @@ public class User extends BaseEntity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {

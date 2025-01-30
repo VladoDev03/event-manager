@@ -47,12 +47,20 @@ export const deleteReservation = async (reservationId) => {
     } 
 };
 
-export const fetchReservations = async (guestId) => {
+export const fetchFutureReservations = async (guestId) => {
     try {
-        console.log(guestId);
-        const response = await fetch(`${baseUrl}/${guestId}`);
+        const response = await fetch(`${baseUrl}/future/${guestId}`);
         const data = await response.json();
-        console.log("data from service" + data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching reservations:', error);
+    }
+};
+
+export const fetchPreviousReservations = async (guestId) => {
+    try {
+        const response = await fetch(`${baseUrl}/previous/${guestId}`);
+        const data = await response.json();
         return data;
     } catch (error) {
         console.error('Error fetching reservations:', error);

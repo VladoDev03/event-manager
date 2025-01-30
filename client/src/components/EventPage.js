@@ -37,6 +37,10 @@ const EventPage = () => {
 
     const closeSuccessModal = () => {
         setSuccessModalIsOpen(false);
+    }
+
+    const goToMyTickets = () => {
+        setSuccessModalIsOpen(false);
         navigate('/myTickets');
     }
 
@@ -104,14 +108,6 @@ const EventPage = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required /> 
 
-                        {/* <h2>Order Summary</h2> 
-                        <div className="order-summary"> 
-                            <p><strong>Event:</strong> Speech Storytelling Masterclass</p> 
-                            <p><strong>Date:</strong> Wednesday, April 9, 9:00 - 10:30 pm EEST</p> 
-                            <p><strong>Location:</strong> NBU, 21 Montevideo street, Sofia, Bulgaria</p> 
-                            <p><strong>Fee:</strong> Free ($0.00)</p> 
-                        </div> */}
-
                         <button className="finish-reservation" type="submit" onClick={handleSubmit}>Finish reservation</button> 
                     </form> 
                 </div> 
@@ -124,10 +120,11 @@ const EventPage = () => {
                 className="modal" 
                 overlayClassName="modalOverlay" 
             >
-                <div className="container" id="successful-reservation"> 
+                <div className="container" id="successful-reservation">
+                    <button className="close-modal" onClick={closeSuccessModal}>&#10005;</button> 
                     <h1>Reservation successful!</h1> 
                     <p>Your reservation has been successfully made.</p> 
-                    <button className="go-to-tickets" onClick={closeSuccessModal}>Go to my tickets</button> 
+                    <button className="go-to-tickets" onClick={goToMyTickets}>Go to my tickets</button> 
                 </div>
             </Modal>
         </div>

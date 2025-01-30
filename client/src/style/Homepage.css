@@ -82,19 +82,22 @@ hr{
 
 .eventsContainer {
     display: flex;
+    flex-wrap: wrap; 
     gap: 20px;
 }
 
 .eventWrapper {
     position: relative;
     display: flex;
-    width: 30%;
+    width: calc(33.33% - 20px); 
     flex-direction: column;
     justify-content: space-between;
     background-color: #f9f9f9;
     padding: 15px;
     border-radius: 8px;
+    box-sizing: border-box;
 }
+
 
 .eventWrapper:hover {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
@@ -137,7 +140,6 @@ hr{
     color: #ff4d4d;
     transition: transform 0.3s, color 0.3s;
 }
-
 .favoriteButton:hover {
     transform: scale(1.2);
     color: #ff1a1a;

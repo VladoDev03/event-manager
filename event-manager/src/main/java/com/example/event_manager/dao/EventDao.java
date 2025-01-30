@@ -2,16 +2,21 @@ package com.example.event_manager.dao;
 
 import com.example.event_manager.configuration.SessionFactoryUtil;
 import com.example.event_manager.entity.Event;
+import com.example.event_manager.entity.EventCategory;
 import com.example.event_manager.entity.Location;
 import com.example.event_manager.entity.Reservation;
 import com.example.event_manager.dto.DisplayEventDto;
+import jakarta.persistence.criteria.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class EventDao {
@@ -100,7 +105,6 @@ public class EventDao {
         return event.getCapacity() <= event.getReservations().size();
     }
 
-    //    public DisplayEventDto(long id, String title, String description, EventCategory category, String locationName, BigDecimal price, LocalDateTime startTime, LocalDateTime endTime) {
     public static List<DisplayEventDto> getAllDisplayEventDto() {
         List<DisplayEventDto> events;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
@@ -111,6 +115,67 @@ public class EventDao {
             transaction.commit();
         }
         return events;
+    }
+
+    public static List<DisplayEventDto> getFilteredEventsByCategoryStartTimeEndTimePrice(EventCategory eventCategory, LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal minPrice, BigDecimal maxPrice) {
+        List<Object[]> results;
+        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Object[]> cr = cb.createQuery(Object[].class);
+
+            Root<Event> root = cr.from(Event.class);
+            Join<Event, Location> eventLocationJoin = root.join("location");
+
+            cr.multiselect(
+                    root.get("id"),
+                    root.get("title"),
+                    root.get("description"),
+                    root.get("category"),
+                    eventLocationJoin.get("name"),
+                    root.get("price"),
+                    root.get("startTime"),
+                    root.get("endTime")
+            );
+
+            Predicate wherePredicate = cb.conjunction();
+
+            if(eventCategory != null) {
+                wherePredicate = cb.and(wherePredicate, cb.equal(root.get("category"), eventCategory));
+            }
+
+            if(startDateTime != null) {
+                wherePredicate = cb.and(wherePredicate, cb.greaterThanOrEqualTo(root.get("endTime"), startDateTime));
+            }
+
+            if(endDateTime != null) {
+                wherePredicate = cb.and(wherePredicate, cb.lessThanOrEqualTo(root.get("startTime"), endDateTime));
+            }
+
+            if(minPrice != null) {
+                wherePredicate = cb.and(wherePredicate, cb.greaterThanOrEqualTo(root.get("price"), minPrice));
+            }
+
+            if(maxPrice != null) {
+                wherePredicate = cb.and(wherePredicate, cb.lessThanOrEqualTo(root.get("price"), maxPrice));
+            }
+
+            cr.where(wherePredicate);
+            cr.orderBy(cb.asc(root.get("startTime")));
+
+            results = session.createQuery(cr).getResultList();
+        }
+
+        return results.stream()
+                .map(result -> new DisplayEventDto(
+                        (long) result[0],
+                        (String) result[1],
+                        (String) result[2],
+                        (EventCategory) result[3],
+                        (String) result[4],
+                        (BigDecimal) result[5],
+                        (LocalDateTime) result[6],
+                        (LocalDateTime) result[7]))
+                .collect(Collectors.toList());
     }
 }
 

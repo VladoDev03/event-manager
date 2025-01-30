@@ -57,6 +57,30 @@ public class ReservationDao {
         return reservations;
     }
 
+    public static List<Reservation> getFutureGuestReservations(long guestId) {
+        List<Reservation> reservations;
+        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            reservations = session.createQuery("select r from Reservation r join fetch r.event join fetch r.guest where r.guest.id = :guestId and r.event.startTime > now()", Reservation.class)
+                    .setParameter("guestId", guestId)
+                    .getResultList();
+            transaction.commit();
+        }
+        return reservations;
+    }
+
+    public static List<Reservation> getPreviousGuestReservations(long guestId) {
+        List<Reservation> reservations;
+        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            reservations = session.createQuery("select r from Reservation r join fetch r.event join fetch r.guest where r.guest.id = :guestId and r.event.startTime <= now()", Reservation.class)
+                    .setParameter("guestId", guestId)
+                    .getResultList();
+            transaction.commit();
+        }
+        return reservations;
+    }
+
     public static Reservation getReservationById(long id) {
         Reservation reservation;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {

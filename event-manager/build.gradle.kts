@@ -19,8 +19,10 @@ repositories {
 
 dependencies {
 //	Hibernate
-	implementation("org.hibernate:hibernate-core:5.6.15.Final")
+	implementation("org.hibernate:hibernate-core:6.5.2.Final")
 	implementation("mysql:mysql-connector-java:8.0.18")
+	implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
+	implementation("org.hibernate.validator:hibernate-validator-annotation-processor:8.0.1.Final")
 
 //	JWTs
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")

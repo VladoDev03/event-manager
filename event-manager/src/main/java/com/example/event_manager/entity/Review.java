@@ -1,8 +1,8 @@
 package com.example.event_manager.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Entity

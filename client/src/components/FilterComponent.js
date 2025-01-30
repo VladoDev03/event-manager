@@ -29,23 +29,6 @@ const FilterComponent = ({ initialEvents, onFilter }) => {
         fetchData();
     }, []);
 
-    /* const handleFilter = async () => {
-        try {
-            const params = {
-                category,
-                minPrice,
-                maxPrice,
-                startDate,
-                endDate
-            };
-            onFilter(params);
-            const eventsData = await fetchFilteredEvents(params);
-            setEvents(eventsData); 
-        } catch (error) {
-            console.error('Error fetching events', error);
-        }
-    }; */
-
     const handleFilter = () => { 
         const params = { 
             initialEvents,
@@ -58,6 +41,16 @@ const FilterComponent = ({ initialEvents, onFilter }) => {
         onFilter(params); 
     };
 
+    const enforceMinMax = (el) => {
+        if (el.value != "") {
+          if (parseInt(el.value) < parseInt(el.min)) {
+            el.value = el.min;
+          }
+          if (parseInt(el.value) > parseInt(el.max)) {
+            el.value = el.max;
+          }
+        }
+      }
 
     return (
         <div className="filter-container">
@@ -81,6 +74,7 @@ const FilterComponent = ({ initialEvents, onFilter }) => {
                         type="date"
                         id="startDate"
                         value={startDate}
+                        max={endDate}
                         onChange={(e) => setStartDate(e.target.value)}
                     />
                 </div>
@@ -90,6 +84,7 @@ const FilterComponent = ({ initialEvents, onFilter }) => {
                         type="date"
                         id="endDate"
                         value={endDate}
+                        min={startDate}
                         onChange={(e) => setEndDate(e.target.value)}
                     />
                 </div>
@@ -100,6 +95,11 @@ const FilterComponent = ({ initialEvents, onFilter }) => {
                         id="minPrice"
                         value={minPrice}
                         min={0}
+                        max={maxPrice}
+                        onBlur={(e) => {
+                            enforceMinMax(e.target);
+                            setMinPrice(e.target.value)
+                        }}
                         onChange={(e) => setMinPrice(e.target.value)}
                         placeholder="Min Price"
                     />
@@ -111,6 +111,12 @@ const FilterComponent = ({ initialEvents, onFilter }) => {
                         id="maxPrice"
                         value={maxPrice}
                         min={minPrice}
+                        onBlur={(e) => 
+                            {
+                                enforceMinMax(e.target);
+                                setMaxPrice(e.target.value)
+                            }
+                        }
                         onChange={(e) => setMaxPrice(e.target.value)}
                         placeholder="Max Price"
                     />

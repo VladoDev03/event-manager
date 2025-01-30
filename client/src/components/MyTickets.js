@@ -2,29 +2,38 @@ import React, { useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import Navbar from './NavBar';
 import TicketsContainer from './TicketsContainer';
-import { deleteReservation, fetchReservations } from '../services/reservationService';
+import { deleteReservation, fetchFutureReservations, fetchPreviousReservations } from '../services/reservationService';
 import '../style/myTickets.css';
 
 const MyTickets = () => {
     const [tickets, setTickets] = useState([]);
+    const [previousTickets, setPreviousTickets] = useState([]);
     const [qrCode, setQrCode] = useState('');
     const [qrModalIsOpen, setqrModalIsOpen] = useState(false);
     const [confirmCancelModalIsOpen, setConfirmCancelModalIsOpen] = useState(false);
     const [reservationId, setReservationId] = useState('');
 
     useEffect(() => {
-            const fetchData = async () => {
-                try {
-                    const ticketsData = await fetchReservations(1 /*guest id*/);
-                    setTickets(ticketsData || []);
-                } catch (error) {
-                    console.error('Error fetching tickets', error);
-                }
-            };
-    
-            fetchData();
-        }, []
+        fetchData();
+        
+    }, []
     );
+
+    const fetchData = async () => {
+        try {
+            const ticketsData = await fetchFutureReservations(1 /*guest id*/);
+            setTickets(ticketsData || []);
+        } catch (error) {
+            console.error('Error fetching tickets', error);
+        }
+
+        try {
+            const previousTicketsData = await fetchPreviousReservations(1 /*guest id*/);
+            setPreviousTickets(previousTicketsData || []);
+        } catch (error) {
+            console.error('Error fetching tickets', error);
+        }
+    };
 
     const setQr = (qr) => {
         setQrCode(qr);
@@ -41,19 +50,19 @@ const MyTickets = () => {
     const openConfirmCancelModal = (reservation_id) => {
         setConfirmCancelModalIsOpen(true);
         setReservationId(reservation_id);
-        console.log(reservationId);
     }
 
     const closeConfirmCancelModal = () => {
         setConfirmCancelModalIsOpen(false);
         setReservationId();
-        console.log(reservationId)
     }
 
     const cancelReservation = async (e) => {
         e.preventDefault();
         try {
             await deleteReservation(reservationId);
+            closeConfirmCancelModal();
+            fetchData();
         } catch (error) {
             alert('Error creating reservation. Please try again.');
         }
@@ -65,7 +74,7 @@ const MyTickets = () => {
 
             <div className="mainContainer">
                 <div className="myTicketsContainer">
-                    <TicketsContainer tickets={tickets} setQr={setQr} openQrModal={openQrModal} openConfirmCancelModal={openConfirmCancelModal}/>
+                    <TicketsContainer tickets={tickets} previousTickets={previousTickets} setQr={setQr} openQrModal={openQrModal} openConfirmCancelModal={openConfirmCancelModal}/>
                 </div>
             </div>
 

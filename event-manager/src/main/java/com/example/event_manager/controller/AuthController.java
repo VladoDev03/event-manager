@@ -5,6 +5,7 @@ import com.example.event_manager.dto.AuthenticationResponse;
 import com.example.event_manager.dto.RegisterRequest;
 import com.example.event_manager.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,17 +22,25 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
-    ) {
-        return ResponseEntity.ok(authService.register(request));
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<AuthenticationResponse> register(
+//            @RequestBody RegisterRequest request
+//    ) {
+//        return ResponseEntity.ok(authService.register(request));
+//    }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
-    ) {
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
+        try{
+            AuthenticationResponse response = authService.login(request);
+            return ResponseEntity.ok(authService.login(request));
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
+
     }
+
+
 }

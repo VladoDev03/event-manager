@@ -1,12 +1,17 @@
 import React from 'react';
 import "../style/Homepage.css";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const EventsContainer = ({ events, addToWishlist }) => {
     const navigate = useNavigate();
 
     const handleEventClick = (eventId) => {
         navigate(`/event/${eventId}`);
+    };
+
+    const formatDateTime = (dateTimeString) => {
+      return format(dateTimeString, "dd MMMM yyyy HH:mm");
     };
 
     return (
@@ -18,8 +23,8 @@ const EventsContainer = ({ events, addToWishlist }) => {
                 </a>
                 <div className="eventDescription">
                   <h3>{event.title}</h3>
-                  <p>{event.date}</p>
-                  <p>{event.location}</p>
+                  <p>{formatDateTime(event.startTime)}</p>
+                  <p>{event.locationName}</p>
                   <p>{event.price} BGN</p>
                 </div>
                 <button

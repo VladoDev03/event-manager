@@ -14,37 +14,37 @@ import java.util.List;
 public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-
-    private final List<UserListDto> users;
+    private final UserService userService;
 
     public AuthService(
             JwtService jwtService,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder, UserService userService
     ) {
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
 
-        users = new ArrayList<>();
+        this.userService = userService;
     }
 
-    public AuthenticationResponse register(RegisterRequest request) {
-        String encodedPassword = passwordEncoder.encode(request.getPassword());
-
-        UserListDto user = new UserListDto(request.getEmail(), encodedPassword, "");
-        users.add(user);
-
-        var jwtToken = jwtService.generateToken(user);
-
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .build();
-    }
+//    public AuthenticationResponse register(RegisterRequest request) {
+//        String encodedPassword = passwordEncoder.encode(request.getPassword());
+//
+//        UserListDto user = new UserListDto(request.getEmail(), encodedPassword, "");
+//        users.add(user);
+//
+//        var jwtToken = jwtService.generateToken(user);
+//
+//        return AuthenticationResponse.builder()
+//                .accessToken(jwtToken)
+//                .build();
+//    }
 
     public AuthenticationResponse login(AuthenticationRequest request) {
-        var user = users.stream()
-                .filter(u -> u.getEmail().equals(request.getEmail()))
-                .findFirst()
-                .get();
+        UserListDto user = userService.getUserByEmail(request.getEmail());
+
+        if (user == null) {
+            throw new RuntimeException("Invalid credentials");
+        }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
@@ -55,5 +55,12 @@ public class AuthService {
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .build();
+    }
+
+    public boolean checkIfUserExists(AuthenticationRequest request) {
+        if(userService.getUserByEmail(request.getEmail()) == null) {
+            return false;
+        }
+        return true;
     }
 }
