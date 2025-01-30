@@ -30,6 +30,7 @@ public class EventController {
     public ResponseEntity<String> createEvent(@RequestBody CreateEventDto createEventDto) {
         eventService.createEvent(createEventDto);
         return new ResponseEntity<>("Event created successfully", HttpStatus.CREATED);
+//        return ResponseEntity.ok(new CreateEventDto());
     }
 
     @GetMapping("/{id}")

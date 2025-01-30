@@ -1,32 +1,32 @@
 package com.example.event_manager.dto;
 
 public class RegisterRequest {
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
 
-    public RegisterRequest(String firstname, String lastname, String email, String password) {
-        setFirstname(firstname);
-        setLastname(lastname);
+    public RegisterRequest(String firstName, String lastName, String email, String password) {
+        setFirstName(firstName);
+        setLastName(lastName);
         setEmail(email);
         setPassword(password);
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

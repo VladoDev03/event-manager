@@ -57,10 +57,4 @@ public class AuthService {
                 .build();
     }
 
-    public boolean checkIfUserExists(AuthenticationRequest request) {
-        if(userService.getUserByEmail(request.getEmail()) == null) {
-            return false;
-        }
-        return true;
-    }
 }
