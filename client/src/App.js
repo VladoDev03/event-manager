@@ -7,6 +7,7 @@ import SearchResultPage from "./components/SearchResultPage";
 import EventPage from "./components/EventPage";
 import MyTickets from "./components/MyTickets";
 import Login from "./components/Login";
+import { SignupForm } from "./components/SignupForm";
 import { Auth } from "./components/Auth";
 import { ImageForm } from "./components/ImageForm";
 import { DeleteMedia } from "./components/DeleteMedia";
@@ -80,6 +81,16 @@ function App() {
             <Login />
           }
         />
+
+        <Route
+          path="/signup"
+          element={
+            <div>
+              <SignupForm />
+            </div>
+          }
+        />
+
       </Routes>
     </div>
     </AuthProvider>

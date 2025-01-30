@@ -3,13 +3,13 @@ package com.example.event_manager.dto;
 public class RegisterRequest {
     private String firstName;
     private String lastName;
-    private String email;
+    private String username;
     private String password;
 
-    public RegisterRequest(String firstName, String lastName, String email, String password) {
-        setFirstName(firstName);
-        setLastName(lastName);
-        setEmail(email);
+    public RegisterRequest(String firstname, String lastname, String email, String password) {
+        setFirstName(firstname);
+        setLastName(lastname);
+        setUsername(email);
         setPassword(password);
     }
 
@@ -29,12 +29,12 @@ public class RegisterRequest {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String email) {
+        this.username = email;
     }
 
     public String getPassword() {

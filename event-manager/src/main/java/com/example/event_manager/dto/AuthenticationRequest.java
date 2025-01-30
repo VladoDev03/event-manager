@@ -1,24 +1,24 @@
 package com.example.event_manager.dto;
 
 public class AuthenticationRequest {
-    private String email;
+    private String username;
     private String password;
 
-    public AuthenticationRequest(String email, String password) {
-        setEmail(email);
+    public AuthenticationRequest(String username, String password) {
+        setUsername(username);
         setPassword(password);
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {

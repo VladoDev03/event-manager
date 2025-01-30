@@ -81,4 +81,14 @@ public class UserDao {
         }
 
     }
+
+    public static User getUserByUsername(String username) {
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM User WHERE username = :username", User.class)
+                    .setParameter("username", username)
+                    .uniqueResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
 }

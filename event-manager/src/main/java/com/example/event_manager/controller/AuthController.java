@@ -3,6 +3,7 @@ package com.example.event_manager.controller;
 import com.example.event_manager.dto.AuthenticationRequest;
 import com.example.event_manager.dto.AuthenticationResponse;
 import com.example.event_manager.dto.RegisterRequest;
+import com.example.event_manager.exception.ExistingUserException;
 import com.example.event_manager.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,18 +23,23 @@ public class AuthController {
         this.authService = authService;
     }
 
-//    @PostMapping("/register")
-//    public ResponseEntity<AuthenticationResponse> register(
-//            @RequestBody RegisterRequest request
-//    ) {
-//        return ResponseEntity.ok(authService.register(request));
-//    }
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> register(
+            @RequestBody RegisterRequest request
+    ) {
+        try {
+            AuthenticationResponse result = authService.register(request);
+            return ResponseEntity.ok(result);
+        } catch (ExistingUserException e) {
+            return ResponseEntity.badRequest().body(new AuthenticationResponse(null, e.getMessage(), 0));
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
         try{
             AuthenticationResponse response = authService.login(request);
-            return ResponseEntity.ok(authService.login(request));
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

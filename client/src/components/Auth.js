@@ -9,7 +9,7 @@ export function Auth() {
     const [logData, setLogData] = useState();
 
     const newUser = {
-        email: "testUser1@gmail.com",
+        username: "testUser1@gmail.com",
         password: "testtesttest"
     };
 

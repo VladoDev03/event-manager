@@ -96,7 +96,6 @@ public class EventManagerApplication {
 		User guest = new User();
 		guest.setFirstName("Tanya");
 		guest.setLastName("Mehandzhieva");
-		guest.setEmail("smehandzhieva@gmail.com");
 		guest.setUsername("tanya_meh");
 		guest.setPassword("0000");
 		UserDao.saveUser(guest);

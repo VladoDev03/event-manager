@@ -10,13 +10,13 @@ public class UserService {
 
     public UserListDto getUserByEmail(String email) {
         User user = UserDao.getUserByEmail(email);
-        if(user != null) {
+        /*if(user != null) {
             return new UserListDto(
                     user.getEmail(),
                     user.getPassword(),
                     user.getUsername()
             );
-        }
+        }*/
 
         return null;
     }

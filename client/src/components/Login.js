@@ -1,17 +1,26 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import { Link } from "react-router-dom";
 import "../style/Login.css";
 import {login} from "../services/authService.js";
+import { AuthContext } from "../contexts/AuthContext";
 
 const LoginForm = () => {
     
-    const [email, setEmail] = useState('');
+    const { userLogin } = useContext(AuthContext)
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+      console.log(username, password);
       try {
-        await login(email, password);
+        // await login(username, password);
+        
+        login(username, password)
+            .then(result => {
+                userLogin(result);
+                console.log(result);
+            })
       } catch (error) {
         let errorMessage = document.getElementById('errorMessage');
         errorMessage.innerText = 'Invalid username or password.';
@@ -38,11 +47,11 @@ const LoginForm = () => {
           <form className="inputContainer">
             <div className="inputBox">
               <input 
-              type="email" 
+              type="username" 
               className="searchBoxLog" 
-              placeholder="Email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="username" 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
               />
             </div>
@@ -64,7 +73,7 @@ const LoginForm = () => {
             </div>
           </form>
           <div className="signupPrompt">
-            Don't have an account? <a href="signup.html">Sign up</a>
+            Don't have an account? <Link to="/signup">Sign up</Link> {}
           </div>
         </div>
         <div className="secondHalf"></div>
