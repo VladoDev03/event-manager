@@ -22,7 +22,6 @@
 }
 
 input, select {
-    text-transform: capitalize;
     width: 100%;
     padding: 10px;
     margin-top: 10px;

@@ -27,10 +27,11 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createEvent(@RequestBody CreateEventDto createEventDto) {
-        eventService.createEvent(createEventDto);
-        return new ResponseEntity<>("Event created successfully", HttpStatus.CREATED);
-//        return ResponseEntity.ok(new CreateEventDto());
+    public ResponseEntity<CreateEventDto> createEvent(@RequestBody CreateEventDto createEventDto) {
+        var res = eventService.createEvent(createEventDto);
+        System.out.println(createEventDto);
+//        return new ResponseEntity<>("Event created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -42,17 +43,6 @@ public class EventController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateEvent(@PathVariable long id, @RequestBody CreateEventDto createEventDto) {
-        eventService.updateEvent(id, createEventDto);
-        return new ResponseEntity<>("Event updated successfully", HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEvent(@PathVariable long id) {
-        eventService.deleteEvent(id);
-        return new ResponseEntity<>("Event deleted successfully", HttpStatus.OK);
-    }
 
     @GetMapping("/allEvents")
     public List<DisplayEventDto> getAllEvents() {
@@ -63,5 +53,4 @@ public class EventController {
     public List<DisplayEventDto> filterEvents(@RequestBody FilterRequest filterRequest) {
         return eventService.filterEvents(filterRequest);
     }
-
 }

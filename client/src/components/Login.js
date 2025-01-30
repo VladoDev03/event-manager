@@ -5,17 +5,16 @@ import {login} from "../services/authService.js";
 import { AuthContext } from "../contexts/AuthContext";
 
 const LoginForm = () => {
-    
     const { userLogin } = useContext(AuthContext)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const { user } = useContext(AuthContext);
+    console.log(user.userId);
 
     const handleSubmit = async (e) => {
       e.preventDefault();
       console.log(username, password);
       try {
-        // await login(username, password);
-        
         login(username, password)
             .then(result => {
                 userLogin(result);
@@ -27,8 +26,6 @@ const LoginForm = () => {
         errorMessage.style.color = 'red';
       }
     }
-    
-
 
   return (
     <div className="signupBody">

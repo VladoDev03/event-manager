@@ -16,6 +16,12 @@ public class Media extends BaseEntity {
         this.publicId = publicId;
     }
 
+    public Media(String url, String publicId, Event event) {
+        this.url = url;
+        this.publicId = publicId;
+        this.event = event;
+    }
+
     public String getUrl() {
         return url;
     }

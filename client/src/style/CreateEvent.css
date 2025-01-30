@@ -22,6 +22,10 @@ h1{
     margin-bottom:30px;
 }
 
+#category, #title, #description, #location {
+    text-transform: capitalize;
+}
+
 .sectionTitle {
     font-size: 1.2rem;
     margin-bottom: 20px;
@@ -57,7 +61,6 @@ input, select, textarea {
 
 textarea {
     resize: vertical;
-    height: 120px;
 }
 
 .submitBtn {

@@ -15,15 +15,24 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventService {
-    public void createEvent(CreateEventDto createEventDto) {
+    public CreateEventDto createEvent(CreateEventDto createEventDto) {
+
         Event event = new Event(
                 createEventDto.getTitle(),
                 createEventDto.getDescription(),
                 createEventDto.getPrice(),
                 createEventDto.getCapacity(),
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                createEventDto.getCategory(),
+                createEventDto.getStartTime(),
+                createEventDto.getEndTime(),
+                createEventDto.getLocation()
         );
         EventDao.createEvent(event);
+
+        createEventDto.setId(event.getId());
+
+        return createEventDto;
     }
 
     public CreateEventDto getEventById(long id) {
@@ -34,30 +43,16 @@ public class EventService {
                     event.getDescription(),
                     event.getPrice(),
                     event.getCapacity(),
-                    event.getCreationDate()
+                    event.getCreationDate(),
+                    event.getCategory(),
+                    event.getStartTime(),
+                    event.getEndTime(),
+                    event.getLocation()
             );
         }
         return null;
     }
 
-    public void updateEvent(long id, CreateEventDto createEventDto) {
-        Event event = EventDao.getEventById(id);
-        if (event != null) {
-            event.setTitle(createEventDto.getTitle());
-            event.setDescription(createEventDto.getDescription());
-            event.setPrice(createEventDto.getPrice());
-            event.setCapacity(createEventDto.getCapacity());
-            event.setCreationDate(createEventDto.getCreationDate());
-            EventDao.updateEvent(event);
-        }
-    }
-
-    public void deleteEvent(long id) {
-        Event event = EventDao.getEventById(id);
-        if (event != null) {
-            EventDao.deleteEvent(event);
-        }
-    }
 
     public List<DisplayEventDto> getAllEvents() {
         return EventDao.getAllDisplayEventDto();

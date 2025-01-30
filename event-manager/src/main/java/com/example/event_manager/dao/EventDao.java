@@ -66,12 +66,25 @@ public class EventDao {
         return events;
     }
 
-    public static Location getEventLocation(long id) {
+//    public static Location getEventLocation(long id) {
+//        Event event;
+//        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+//            Transaction transaction = session.beginTransaction();
+//            event = session
+//                    .createQuery("select e from Event e join fetch e.location where e.id = :id", Event.class)
+//                    .setParameter("id", id)
+//                    .getSingleResult();
+//            transaction.commit();
+//        }
+//        return event.getLocation();
+//    }
+
+    public static String getEventLocation(long id) {
         Event event;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             event = session
-                    .createQuery("select e from Event e join fetch e.location where e.id = :id", Event.class)
+                    .createQuery("select e from Event e where e.id = :id", Event.class)
                     .setParameter("id", id)
                     .getSingleResult();
             transaction.commit();
@@ -178,4 +191,3 @@ public class EventDao {
                 .collect(Collectors.toList());
     }
 }
-
