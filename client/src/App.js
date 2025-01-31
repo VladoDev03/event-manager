@@ -23,25 +23,25 @@ function App() {
   return (
     <AuthProvider>
       <div>
-      <Routes>
-        <Route
-          path="/"
-          element={<HomePage addToWishlist={addToWishlist} />}
-        />
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage addToWishlist={addToWishlist} />}
+          />
 
-        <Route
-          path="/wishlist"
-          element={
-            <Wishlist
-              wishlist={wishlist}
-              removeFromWishlist={removeFromWishlist}
-            />
-          }
-        />
+          <Route
+            path="/wishlist"
+            element={
+              <Wishlist
+                wishlist={wishlist}
+                removeFromWishlist={removeFromWishlist}
+              />
+            }
+          />
 
-        <Route path="/create-event" element={<EventForm />} />
+          <Route path="/create-event" element={<EventForm />} />
 
-        {/* <Route
+          {/* <Route
           path="/login"
           element={
             <div>
@@ -54,63 +54,45 @@ function App() {
           }
         /> */}
 
-        <Route
-          path="/searchEvents"
-          element={
-            <SearchResultPage />
-          }
-        />
-        
-        <Route
-          path="/event/:eventId"
-          element={
-            <EventPage />
-          } 
-        />
+          <Route
+            path="/searchEvents"
+            element={<SearchResultPage addToWishlist={addToWishlist} />}
+          />
 
-        <Route 
-        path="/myTickets"
-        element={
-          <MyTickets />
-        }
-        />
+          <Route path="/event/:eventId" element={<EventPage />} />
 
+          <Route path="/myTickets" element={<MyTickets />} />
 
-        <Route
-          path="/login"
-          element={
-            <Login />
-          }
-        />
+          <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/signup"
-          element={
-            <div>
-              <SignupForm />
-            </div>
-          }
-        />
+          <Route
+            path="/signup"
+            element={
+              <div>
+                <SignupForm />
+              </div>
+            }
+          />
 
-        <Route
-          path="/logout"
-          element={
-            <div>
-              <Logout />
-            </div>
-          }
-        />
+          <Route
+            path="/logout"
+            element={
+              <div>
+                <Logout />
+              </div>
+            }
+          />
 
-        <Route
-          path="/add-media/:eventId"
-          element={
-            <div>
-              <ImageForm />
-            </div>
-          }
-        />
-      </Routes>
-    </div>
+          <Route
+            path="/add-media/:eventId"
+            element={
+              <div>
+                <ImageForm />
+              </div>
+            }
+          />
+        </Routes>
+      </div>
     </AuthProvider>
   );
 }

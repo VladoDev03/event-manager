@@ -1,41 +1,38 @@
 import React from "react";
 import "../style/Wishlist.css";
 import Navbar from "./NavBar";
+import { format } from "date-fns";
 
 const Wishlist = ({ wishlist, removeFromWishlist }) => {
+  const formatDateTime = (dateTimeString) => {
+    return format(dateTimeString, "dd MMMM yyyy HH:mm");
+  };
+
   return (
     <>
       <Navbar />
       <div className="likesSection">
         <h1>Wish List</h1>
-        <div>
+        <div className="eventsContainer">
           {wishlist.length > 0 ? (
             wishlist.map((event) => (
-              <div key={event.id} className="eventWrapperWishList">
-                <div className="eventDetails">
-                  <a className="eventTitle" href="event.html">
-                    <h3>{event.title}</h3>
-                  </a>
-                  <p class="eventDate">{event.date}</p>
-                  <p>{event.location}</p>
-                  <p>{event.price}</p>
+              <section key={event.id} className="eventWrapper">
+                <div className="eventDescription">
+                  <h3>{event.title}</h3>
+                  <p>{formatDateTime(event.startTime)}</p>
+                  <p>{event.locationName}</p>
+                  <p>{event.price} BGN</p>
                 </div>
-                <div class="eventImageContainer">
-                  <img
-                    src={event.image}
-                    alt="JSTalks Event"
-                    class="eventImage"
-                  />
-                  <div className="eventActions">
-                    <button
-                      className="removeButton"
-                      onClick={() => removeFromWishlist(event.id)}
-                    >
-                      ❤️
-                    </button>
-                  </div>
-                </div>
-              </div>
+                <button
+                  className="removeButton"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeFromWishlist(event.id);
+                  }}
+                >
+                  ❤️
+                </button>
+              </section>
             ))
           ) : (
             <p>No events in your wishlist yet.</p>

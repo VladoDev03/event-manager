@@ -1,167 +1,182 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import Modal from 'react-modal';
+import React, { useState, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Modal from "react-modal";
 
-import Navbar from './NavBar';
-import EventInfo from './EventInfo';
-import ReservationComponent from './ReservationComponent';
-import { AuthContext } from '../contexts/AuthContext';
+import Navbar from "./NavBar";
+import EventInfo from "./EventInfo";
+import ReservationComponent from "./ReservationComponent";
+import { AuthContext } from "../contexts/AuthContext";
 
-import '../style/eventStyle.css';
-import '../style/ReservationForm.css';
+import "../style/eventStyle.css";
+import "../style/ReservationForm.css";
 
-import { createReservation } from '../services/ReservationService';
+import { createReservation } from "../services/ReservationService";
 
 const EventPage = () => {
-    
-    const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
-    const { eventId } = useParams();
-    
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
-    const [fullCapacityIsOpen, setFullCapacityIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  const { eventId } = useParams();
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
+  const [fullCapacityIsOpen, setFullCapacityIsOpen] = useState(false);
 
-    console.log(eventId);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
 
-    const openModal = () => {
-        setModalIsOpen(true);
+  console.log(eventId);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const openSuccessModal = () => {
+    setModalIsOpen(false);
+    setSuccessModalIsOpen(true);
+  };
+
+  const closeSuccessModal = () => {
+    setSuccessModalIsOpen(false);
+  };
+
+  const goToMyTickets = () => {
+    setSuccessModalIsOpen(false);
+    navigate("/myTickets");
+  };
+
+  const openFullCapacityModal = () => {
+    setModalIsOpen(false);
+    setFullCapacityIsOpen(true);
+  };
+
+  const closeFullCapacityModal = () => {
+    setFullCapacityIsOpen(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(eventId, user.userId, firstName, lastName, email);
+      await createReservation(eventId, user.userId, firstName, lastName, email);
+      openSuccessModal();
+    } catch (error) {
+      openFullCapacityModal();
+      // alert('Error creating reservation. Please try again.');
     }
+  };
 
-    const closeModal = () => {
-        setModalIsOpen(false);
-    }
+  return (
+    <div id="eventPage">
+      <Navbar />
+      <div className="mainContainer">
+        <div className="eventAndReservationContainer">
+          <EventInfo eventId={eventId} />
+          <ReservationComponent openModal={openModal} />
+        </div>
+      </div>
 
-    const openSuccessModal = () => {
-        setModalIsOpen(false);
-        setSuccessModalIsOpen(true);
-    }
-
-    const closeSuccessModal = () => {
-        setSuccessModalIsOpen(false);
-    }
-
-    const goToMyTickets = () => {
-        setSuccessModalIsOpen(false);
-        navigate('/myTickets');
-    }
-
-    const openFullCapacityModal = () => {
-        setModalIsOpen(false);
-        setFullCapacityIsOpen(true);
-    }
-
-    const closeFullCapacityModal = () => {
-        setFullCapacityIsOpen(false);
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            console.log(eventId, user.userId, firstName, lastName, email);
-            await createReservation(eventId, user.userId, firstName, lastName, email);
-            openSuccessModal();
-        } catch (error) {
-            openFullCapacityModal();
-            // alert('Error creating reservation. Please try again.');
-        }
-    }
-
-    return (
-        <div id="eventPage">
-            <Navbar />
-            <div className="mainContainer">
-                <div className="bannerContainer">
-                    <img src="https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:d97d126b-e18a-5797-8802-2b457ac10518/component?assetType=TEMPLATE&etag=867813dd4f024cae8df2d0dfd2a91435&revision=e707f25d-6eef-4d42-9881-f62be17f2998&component_id=f5e79f54-25f0-40f7-9a1e-a87b7f696f81" alt="banner" />
-                </div>
-                <div className="eventAndReservationContainer">
-                    <EventInfo eventId={eventId}/>
-                    <ReservationComponent openModal={openModal}/>
-                </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Reservation Form"
+        className="modal"
+        overlayClassName="modalOverlay"
+      >
+        <div className="container">
+          <h1>Event Reservation Form</h1>
+          <button className="close-modal" onClick={closeModal}>
+            &#10005;
+          </button>
+          <form>
+            <h2>Contact Information</h2>
+            <div className="names">
+              <div className="first-name">
+                <label htmlFor="first-name">First Name:</label>
+                <input
+                  type="text"
+                  id="first-name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="last-name">
+                <label htmlFor="last-name">Last Name:</label>
+                <input
+                  type="text"
+                  id="last-name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                />
+              </div>
             </div>
 
-            <Modal 
-                isOpen={modalIsOpen} 
-                onRequestClose={closeModal} 
-                contentLabel="Reservation Form" 
-                className="modal" 
-                overlayClassName="modalOverlay" 
-            > 
-                <div className="container"> 
-                    <h1>Event Reservation Form</h1> 
-                    <button className="close-modal" onClick={closeModal}>&#10005;</button> 
-                    <form> 
-                        <h2>Contact Information</h2> 
-                        <div className="names"> 
-                            <div className="first-name"> 
-                                <label htmlFor="first-name">First Name:</label> 
-                                <input 
-                                type="text" 
-                                id="first-name"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
-                                required /> 
-                            </div> 
-                            <div className="last-name"> 
-                                <label htmlFor="last-name">Last Name:</label> 
-                                <input 
-                                type="text" 
-                                id="last-name" 
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                                required /> 
-                            </div>
-                        </div> 
-                            
-                        <label htmlFor="email">Email Address:</label> 
-                        <input 
-                        type="email" 
-                        id="email" 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required /> 
+            <label htmlFor="email">Email Address:</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
 
-                        <button className="finish-reservation" type="submit" onClick={handleSubmit}>Finish reservation</button> 
-                    </form> 
-                </div> 
-            </Modal>
-
-            <Modal 
-                isOpen={successModalIsOpen} 
-                onRequestClose={closeSuccessModal} 
-                contentLabel="Reservation Success" 
-                className="modal" 
-                overlayClassName="modalOverlay" 
+            <button
+              className="finish-reservation"
+              type="submit"
+              onClick={handleSubmit}
             >
-                <div className="container" id="successful-reservation">
-                    <button className="close-modal" onClick={closeSuccessModal}>&#10005;</button> 
-                    <h1>Reservation successful!</h1> 
-                    <p>Your reservation has been successfully made.</p> 
-                    <button className="go-to-tickets" onClick={goToMyTickets}>Go to my tickets</button> 
-                </div>
-            </Modal>
-
-            <Modal 
-                isOpen={fullCapacityIsOpen} 
-                onRequestClose={closeFullCapacityModal} 
-                contentLabel="Reservation fail" 
-                className="modal" 
-                overlayClassName="modalOverlay" 
-            >
-                <div className="container" id="unsuccessful-reservation">
-                    <button className="close-modal" onClick={closeFullCapacityModal}>&#10005;</button> 
-                    <h1>No more free spots for this event.</h1> 
-                    <p>We're sorry to inform you that this event is at its full capacity.</p>
-                    <h3>Best of luck next time!</h3> 
-                </div>
-            </Modal>
+              Finish reservation
+            </button>
+          </form>
         </div>
-    );
+      </Modal>
+
+      <Modal
+        isOpen={successModalIsOpen}
+        onRequestClose={closeSuccessModal}
+        contentLabel="Reservation Success"
+        className="modal"
+        overlayClassName="modalOverlay"
+      >
+        <div className="container" id="successful-reservation">
+          <button className="close-modal" onClick={closeSuccessModal}>
+            &#10005;
+          </button>
+          <h1>Reservation successful!</h1>
+          <p>Your reservation has been successfully made.</p>
+          <button className="go-to-tickets" onClick={goToMyTickets}>
+            Go to my tickets
+          </button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={fullCapacityIsOpen}
+        onRequestClose={closeFullCapacityModal}
+        contentLabel="Reservation fail"
+        className="modal"
+        overlayClassName="modalOverlay"
+      >
+        <div className="container" id="unsuccessful-reservation">
+          <button className="close-modal" onClick={closeFullCapacityModal}>
+            &#10005;
+          </button>
+          <h1>No more free spots for this event.</h1>
+          <p>
+            We're sorry to inform you that this event is at its full capacity.
+          </p>
+          <h3>Best of luck next time!</h3>
+        </div>
+      </Modal>
+    </div>
+  );
 };
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 export default EventPage;
