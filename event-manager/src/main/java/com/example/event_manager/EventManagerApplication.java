@@ -19,39 +19,6 @@ public class EventManagerApplication {
 		SpringApplication.run(EventManagerApplication.class, args);
 		SessionFactoryUtil.getSessionFactory().openSession();
 
-		/**/
-		Location location1 = new Location();
-		location1.setName("Ndk Sofia");
-		location1.setAddress("Vitosha street 45");
-		location1.setCity("Sofia");
-		location1.setCountry("Bulgaria");
-		location1.setMaxCapacity(45);
-		LocationDao.createLocation(location1);
-
-		Location location2 = new Location();
-		location2.setName("Ndk Sofia podlez");
-		location2.setAddress("Vitosha street 45");
-		location2.setCity("Sofia");
-		location2.setCountry("Bulgaria");
-		location2.setMaxCapacity(45);
-		LocationDao.createLocation(location2);
-
-		Location location3 = new Location();
-		location3.setName("Vitoshka");
-		location3.setAddress("Vitosha street 45");
-		location3.setCity("Sofia");
-		location3.setCountry("Bulgaria");
-		location3.setMaxCapacity(45);
-		LocationDao.createLocation(location3);
-
-		Location location4 = new Location();
-		location4.setName("Ndk plovdiv");
-		location4.setAddress("Vitosha street 45");
-		location4.setCity("Plovdiv");
-		location4.setCountry("Bulgaria");
-		location4.setMaxCapacity(45);
-		LocationDao.createLocation(location4);
-
 		Event event1 = new Event();
 		event1.setTitle("koncert");
 		event1.setPrice(BigDecimal.valueOf(25));
@@ -107,5 +74,9 @@ public class EventManagerApplication {
 
 		EventService eventService1 = new EventService();
 		System.out.println(eventService1.getEventsByName("e"));
+		System.out.println();
+		System.out.println(eventService1.getEventsByLocation("ndk"));
+		System.out.println();
+		System.out.println(eventService1.getEventsByTitleAndLocation("", "vit"));
 	}
 }

@@ -3,7 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import Wishlist from "./components/Wishlist";
 import EventForm from "./components/EventForm";
-import SearchResultPage from "./components/SearchResultPage";
+import SearchResultPage from "./components/SearchResultsPage";
+import FindEventsPage from "./components/FindEventsPage";
 import EventPage from "./components/EventPage";
 import MyTickets from "./components/MyTickets";
 import Login from "./components/Login";
@@ -55,9 +56,16 @@ function App() {
         /> */}
 
         <Route
-          path="/searchEvents"
+          path="/searchEvents/:params"
           element={
             <SearchResultPage />
+          }
+        />
+
+        <Route
+          path="/findEvents"
+          element={
+            <FindEventsPage />
           }
         />
         

@@ -84,12 +84,8 @@ export const fetchFilteredEvents = async (params) => {
   try {
     console.log(params);
     console.log(JSON.stringify(params));
-      const response = await fetch(`${API_URL}/filterEvents`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(params),
+      const response = await fetch(`${API_URL}/filterEvents?${params}`, {
+        method: 'GET'
       });
       if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -120,3 +116,43 @@ export const fetchAllEvents = async () => {
         throw error;
     }
 }
+
+export const fetchSearchedEvents = async (queryParams) => {
+  try {
+    console.log(`${API_URL}/search?${queryParams}`);
+      const response = await fetch(`${API_URL}/search?${queryParams}`, {
+      });
+      
+      if (!response.ok) {
+          throw new Error('Error fetching searched events');
+      }
+  
+      const data = await response.json();
+      console.log(data);
+      return data;
+  } catch (error) {
+      console.error('Error fetching searched events: ', error);
+      throw error;
+  }
+}
+
+export const fetchFilteredSearchedEvents = async (queryParams) => {
+  try {
+    console.log(`${API_URL}/events?${queryParams}`);
+
+    const response = await fetch(`${API_URL}/search/filter?${queryParams}`); 
+
+    if (!response.ok) {
+      throw new Error('Error fetching events');
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+
+  } catch (error) {
+    console.error('Error fetching events: ', error);
+    throw error;
+  }
+};
+

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -63,19 +64,106 @@ public class EventController {
 
     @GetMapping("/search")
     public List<DisplayEventDto> getEventsByCriteria(
-            @RequestParam(value = "title", required = false) String title) {
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "location", required = false) String location
+    ) {
         // Handle combined filtering
-        if (title != null) {
+        if (title != null && location != null) {
+            return eventService.getEventsByTitleAndLocation(title, location);
+        } else if (title != null) {
             return eventService.getEventsByName(title);
+        } else if (location != null) {
+            return eventService.getEventsByLocation(location);
         } else {
             return null;
         }
     }
 
-    @PostMapping("/filterEvents")
-    public List<DisplayEventDto> filterEvents(@RequestBody FilterRequest filterRequest) {
+    @GetMapping("/filterEvents")
+    public List<DisplayEventDto> filterEvents(
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "startDate", required = false) String startDateTime,
+            @RequestParam(value = "endDate", required = false) String endDateTime,
+            @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
+            @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice
+    ) {
         try {
-            return eventService.filterEvents(filterRequest);
+            LocalDate startDateParam = null;
+            LocalDate endDateParam = null;
+            LocalDateTime startDateTimeParam = null;
+            LocalDateTime endDateTimeParam = null;
+
+            if(startDateTime!= null && !startDateTime.equals("null")){
+                startDateParam = LocalDate.parse(startDateTime);
+                startDateTimeParam = LocalDateTime.of(startDateParam.getYear(), startDateParam.getMonth(), startDateParam.getDayOfMonth(), 0, 0);
+            }
+
+            if(endDateTime != null && !endDateTime.equals("null")){
+                endDateParam = LocalDate.parse(endDateTime);
+                endDateTimeParam = LocalDateTime.of(endDateParam.getYear(), endDateParam.getMonth(), endDateParam.getDayOfMonth(), 23,59);
+            }
+
+            if(category == null || category.equals("null")) {
+                return eventService.filterEvents(
+                        null,
+                        startDateTimeParam,
+                        endDateTimeParam,
+                        minPrice,
+                        maxPrice);
+            }
+            return eventService.filterEvents(
+                    EventCategory.valueOf(category.toUpperCase()),
+                    startDateTimeParam,
+                    endDateTimeParam,
+                    minPrice,
+                    maxPrice);
+        } catch (MinGreaterThanMaxException e) {
+            return null;
+        }
+    }
+
+    @GetMapping("/search/filter")
+    public List<DisplayEventDto> getFilteredEventsAfterSearch(
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "location", required = false) String location,
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "startDate", required = false) String startDateTime,
+            @RequestParam(value = "endDate", required = false) String endDateTime,
+            @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
+            @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice
+    ) {
+        try {
+            LocalDate startDateParam = null;
+            LocalDate endDateParam = null;
+            LocalDateTime startDateTimeParam = null;
+            LocalDateTime endDateTimeParam = null;
+
+            if(startDateTime!= null && !startDateTime.equals("null")){
+                startDateParam = LocalDate.parse(startDateTime);
+                startDateTimeParam = LocalDateTime.of(startDateParam.getYear(), startDateParam.getMonth(), startDateParam.getDayOfMonth(), 0, 0);
+            }
+
+            if(endDateTime != null && !endDateTime.equals("null")){
+                endDateParam = LocalDate.parse(endDateTime);
+                endDateTimeParam = LocalDateTime.of(endDateParam.getYear(), endDateParam.getMonth(), endDateParam.getDayOfMonth(), 23,59);
+            }
+
+            if(category == null || category.equals("null")) {
+                return eventService.filterEventsAfterSearch(title,
+                        location,
+                        null,
+                        startDateTimeParam,
+                        endDateTimeParam,
+                        minPrice,
+                        maxPrice);
+            }
+            return eventService.filterEventsAfterSearch(title,
+                    location,
+                    EventCategory.valueOf(category.toUpperCase()),
+                    startDateTimeParam,
+                    endDateTimeParam,
+                    minPrice,
+                    maxPrice);
         } catch (MinGreaterThanMaxException e) {
             return null;
         }

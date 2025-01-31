@@ -5,10 +5,6 @@ import { fetchFilteredEvents } from "../services/eventService";
 import "../style/FilteredSearch.css";
 
 const FilterComponent = ({ initialEvents, onFilter }) => {
-    /* const location = useLocation();
-    const initialEvents = location.state?.initialEvents || [];
-
-    const [events, setEvents] = useState(initialEvents); */
     const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState('');
     const [minPrice, setMinPrice] = useState('');
@@ -30,14 +26,14 @@ const FilterComponent = ({ initialEvents, onFilter }) => {
     }, []);
 
     const handleFilter = () => { 
-        const params = { 
-            initialEvents,
+        const params = new URLSearchParams ({ 
             category: category.toUpperCase().replaceAll(' ', '_') || null, 
-            minPrice, 
-            maxPrice, 
             startDate: startDate || null, 
-            endDate: endDate || null
-        }; 
+            endDate: endDate || null,
+            minPrice, 
+            maxPrice
+        }).toString(); 
+
         onFilter(params); 
     };
 

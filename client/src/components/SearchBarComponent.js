@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useNavigate } from 'react-router-dom';
+import { fetchSearchedEvents } from '../services/eventService';
 
 const SearchBarComponent = () => {
+    const navigate = useNavigate();
+
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
-    // const [location, setLocation] = useState('');
-    // const [name, setName] = useState('');
-    // const history = useHistory();
 
-    // const handleSearch = async () => {
-    //     try {
-    //         const params = {location, name,};
-    //         const response = await fetch('http://localhost:8080/searchEvents', {params});
-    //         history.push({
-    //             pathname: '/filterEvents',
-    //             state: {initialEvents: response.data}
-    //         });
-    //     } catch (error) {
-    //         console.error('Error searching events', error);
-    //     }
-    // };
+    const handleSearch = async () => { 
+        const params = new URLSearchParams(); 
+        
+        if (title) params.append('title', title);
+        if (location) params.append('location', location);
 
+        navigate(`/searchEvents/${params}`);
+        await fetchSearchedEvents(params); 
+    };
+    
     return (
         <div className="searchbarContainer">
         <div className="searchEvents">
@@ -28,6 +25,8 @@ const SearchBarComponent = () => {
             type="text"
             className="searchBox"
             placeholder="Search events"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className="searchCity">
@@ -36,10 +35,12 @@ const SearchBarComponent = () => {
             type="text"
             className="searchBox"
             placeholder="Choose a location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
           />
         </div>
         <div className="searchButtonContainer">
-          <button className="searchButton">
+          <button className="searchButton" onClick={handleSearch}>
             <svg
               aria-label="search button"
               xmlns="http://www.w3.org/2000/svg"
@@ -55,6 +56,8 @@ const SearchBarComponent = () => {
                 clipRule="evenodd"
               ></path>
             </svg>
+
+            
           </button>
         </div>
       </div>

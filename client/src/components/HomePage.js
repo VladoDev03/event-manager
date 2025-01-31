@@ -42,9 +42,9 @@ const HomePage = ({ addToWishlist }) => {
             <div className="popularEventsTitle">
               <h2>Popular events</h2>
             </div>
-            <a className="exporeMoreEvents">
+            {/* <a className="exporeMoreEvents"> */}
               <Link to="/searchEvents">Explore more events</Link> {}
-            </a>
+            {/* </a> */}
           </div>
           <EventsContainer events={events} addToWishlist={addToWishlist} />
         </div>

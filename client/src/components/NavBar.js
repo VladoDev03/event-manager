@@ -26,7 +26,7 @@ const Navbar = () => {
       { user.userId ? (<div className="navOptionsContainer">
         <ul className="optionsList">
           <li className="login">
-            <Link to="/searchEvents">Find events</Link> {}
+            <Link to="/findEvents">Find events</Link> {}
           </li>
           <li className="login">
             <a href="create-event" target="_blank">
@@ -48,7 +48,7 @@ const Navbar = () => {
       (<div className="navOptionsContainer">
         <ul className="optionsList">
           <li className="login">
-            <Link to="/searchEvents">Find events</Link> {}
+            <Link to="/findEvents">Find events</Link> {}
           </li>
           <li className="login">
           <Link to="/signup">

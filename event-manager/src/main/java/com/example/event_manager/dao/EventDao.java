@@ -3,7 +3,7 @@ package com.example.event_manager.dao;
 import com.example.event_manager.configuration.SessionFactoryUtil;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
-import com.example.event_manager.entity.Location;
+
 import com.example.event_manager.entity.Reservation;
 import com.example.event_manager.dto.DisplayEventDto;
 import jakarta.persistence.criteria.*;
@@ -104,6 +104,32 @@ public class EventDao {
         return events;
     }
 
+    public static List<DisplayEventDto> getEventsByNameAndLocation(String title, String location){
+        List<Event> events;
+        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()){
+            Transaction transaction = session.beginTransaction();
+            events = session.createQuery("SELECT e FROM Event e WHERE " +
+                            "(:title IS NULL OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
+                            "(:location IS NULL OR LOWER(e.location) LIKE LOWER(CONCAT('%', :location, '%')))", Event.class)
+                    .setParameter("title",title)
+                    .setParameter("location", location)
+                    .getResultList();
+            transaction.commit();
+        }
+
+        return events.stream()
+                .map(result -> new DisplayEventDto(
+                        (long) result.getId(),
+                        (String) result.getTitle(),
+                        (String) result.getDescription(),
+                        (EventCategory) result.getCategory(),
+                        (String) result.getLocation(),
+                        (BigDecimal) result.getPrice(),
+                        (LocalDateTime) result.getStartTime(),
+                        (LocalDateTime) result.getEndTime()))
+                .collect(Collectors.toList());
+    }
+
     public static List<DisplayEventDto> getEventsByName(String title) {
         List<Event> results;
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
@@ -127,6 +153,29 @@ public class EventDao {
 
     }
 
+    public static List<DisplayEventDto> getEventsByLocation(String location){
+        List<Event> events;
+        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()){
+            Transaction transaction = session.beginTransaction();
+            events = session.createQuery("SELECT e FROM Event e WHERE (:location IS NULL OR LOWER(e.location) LIKE LOWER(CONCAT('%', :location, '%')))",Event.class)
+                    .setParameter("location",location)
+                    .getResultList();
+            transaction.commit();
+        }
+
+        return events.stream()
+                .map(result -> new DisplayEventDto(
+                        (long) result.getId(),
+                        (String) result.getTitle(),
+                        (String) result.getDescription(),
+                        (EventCategory) result.getCategory(),
+                        (String) result.getLocation(),
+                        (BigDecimal) result.getPrice(),
+                        (LocalDateTime) result.getStartTime(),
+                        (LocalDateTime) result.getEndTime()))
+                .collect(Collectors.toList());
+    }
+
     public static List<DisplayEventDto> getFilteredEventsByCategoryStartTimeEndTimePrice(EventCategory eventCategory, LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal minPrice, BigDecimal maxPrice) {
         List<Object[]> results;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
@@ -147,6 +196,76 @@ public class EventDao {
             );
 
             Predicate wherePredicate = cb.conjunction();
+
+            if(eventCategory != null) {
+                wherePredicate = cb.and(wherePredicate, cb.equal(root.get("category"), eventCategory));
+            }
+
+            if(startDateTime != null) {
+                wherePredicate = cb.and(wherePredicate, cb.greaterThanOrEqualTo(root.get("endTime"), startDateTime));
+            }
+
+            if(endDateTime != null) {
+                wherePredicate = cb.and(wherePredicate, cb.lessThanOrEqualTo(root.get("startTime"), endDateTime));
+            }
+
+            if(minPrice != null) {
+                wherePredicate = cb.and(wherePredicate, cb.greaterThanOrEqualTo(root.get("price"), minPrice));
+            }
+
+            if(maxPrice != null) {
+                wherePredicate = cb.and(wherePredicate, cb.lessThanOrEqualTo(root.get("price"), maxPrice));
+            }
+
+            cr.where(wherePredicate);
+            cr.orderBy(cb.asc(root.get("startTime")));
+
+            results = session.createQuery(cr).getResultList();
+        }
+
+        return results.stream()
+                .map(result -> new DisplayEventDto(
+                        (long) result[0],
+                        (String) result[1],
+                        (String) result[2],
+                        (EventCategory) result[3],
+                        (String) result[4],
+                        (BigDecimal) result[5],
+                        (LocalDateTime) result[6],
+                        (LocalDateTime) result[7]))
+                .collect(Collectors.toList());
+    }
+
+    public static List<DisplayEventDto> getFilteredEventsAfterSearch(String title, String location, EventCategory eventCategory, LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal minPrice, BigDecimal maxPrice) {
+        List<Object[]> results;
+        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Object[]> cr = cb.createQuery(Object[].class);
+
+            Root<Event> root = cr.from(Event.class);
+
+            cr.multiselect(
+                    root.get("id"),
+                    root.get("title"),
+                    root.get("description"),
+                    root.get("category"),
+                    root.get("location"),
+                    root.get("price"),
+                    root.get("startTime"),
+                    root.get("endTime")
+            );
+
+            Predicate wherePredicate = cb.conjunction();
+
+            /*title IS NULL OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%')*/
+
+            if(title != null && !title.isEmpty()) {
+                wherePredicate = cb.and(wherePredicate, cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
+            }
+
+            if(location != null && !location.isEmpty()) {
+                wherePredicate = cb.and(wherePredicate, cb.like(cb.lower(root.get("location")), "%" + location.toLowerCase() + "%"));
+            }
 
             if(eventCategory != null) {
                 wherePredicate = cb.and(wherePredicate, cb.equal(root.get("category"), eventCategory));

@@ -1,7 +1,6 @@
 package com.example.event_manager.dto;
 
 import com.example.event_manager.entity.EventCategory;
-import com.example.event_manager.entity.Location;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

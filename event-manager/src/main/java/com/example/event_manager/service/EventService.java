@@ -83,39 +83,52 @@ public class EventService {
         return EventDao.getAllDisplayEventDto();
     }
 
-    public List<DisplayEventDto> filterEventsAfterSearch(List <DisplayEventDto> initialEvents, EventCategory eventCategory, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime start, LocalDateTime end) {
-        return initialEvents.stream()
-                .filter(event -> (eventCategory == null || event.getCategory().equals(eventCategory)) &&
-                        (minPrice == null || event.getPrice().compareTo(minPrice) >= 0) &&
-                        (maxPrice == null || event.getPrice().compareTo(maxPrice) <= 0) &&
-                        ((end == null || event.getStartTime().isBefore(end)) ||
-                                (start == null || event.getEndTime().isAfter(start))))
-                .collect(Collectors.toList());
-    }
-
     //search
     public List<DisplayEventDto> getEventsByName(String title){
         return EventDao.getEventsByName(title);
     }
 
-    public List<DisplayEventDto> filterEvents(FilterRequest filterRequest) {
-        if(filterRequest.getMinPrice() != null && filterRequest.getMaxPrice() != null) {
-            if (filterRequest.getMinPrice().compareTo(filterRequest.getMaxPrice()) > 0) {
+    public List<DisplayEventDto> getEventsByLocation(String location){
+        return EventDao.getEventsByLocation(location);
+    }
+
+    public List<DisplayEventDto> getEventsByTitleAndLocation(String title, String location){
+        return EventDao.getEventsByNameAndLocation(title, location);
+    }
+
+    public List<DisplayEventDto> filterEvents(EventCategory eventCategory, LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal minPrice, BigDecimal maxPrice) {
+        if(minPrice != null && maxPrice != null) {
+            if (minPrice.compareTo(maxPrice) > 0) {
                 throw new MinGreaterThanMaxException("Minimum price is greater than maximum price.");
             }
         }
-        if(filterRequest.getStartDateTime() != null && filterRequest.getEndDateTime() != null) {
-            if (filterRequest.getStartDate().isAfter(filterRequest.getEndDate())) {
+        if(startDateTime != null && endDateTime != null) {
+            if (startDateTime.isAfter(endDateTime)) {
                 throw new MinGreaterThanMaxException("Start date is after end date.");
             }
         }
 
         return EventDao.getFilteredEventsByCategoryStartTimeEndTimePrice(
-                filterRequest.getCategory(),
-                filterRequest.getStartDateTime(),
-                filterRequest.getEndDateTime(),
-                filterRequest.getMinPrice(),
-                filterRequest.getMaxPrice()
+                eventCategory,
+                startDateTime,
+                endDateTime,
+                minPrice,
+                maxPrice
         );
+    }
+
+    public List<DisplayEventDto> filterEventsAfterSearch(String title, String location, EventCategory eventCategory, LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal minPrice, BigDecimal maxPrice) {
+        if(minPrice != null && maxPrice!= null) {
+            if (minPrice.compareTo(maxPrice) > 0) {
+                throw new MinGreaterThanMaxException("Minimum price is greater than maximum price.");
+            }
+        }
+        if(startDateTime != null && endDateTime != null) {
+            if (startDateTime.isAfter(endDateTime)) {
+                throw new MinGreaterThanMaxException("Start date is after end date.");
+            }
+        }
+
+        return EventDao.getFilteredEventsAfterSearch(title, location, eventCategory, startDateTime, endDateTime, minPrice, maxPrice);
     }
 }
