@@ -3,10 +3,10 @@ import Navbar from "./NavBar";
 import FilterComponent from "./FilterComponent";
 import "../style/Homepage.css";
 import { useLocation, useParams } from 'react-router-dom';
-import { fetchSearchedEvents, fetchFilteredEvents, fetchFilteredSearchedEvents } from '../services/eventService';
+import { fetchSearchedEvents, fetchFilteredSearchedEvents } from '../services/eventService';
 import EventsContainer from './EventsContainer';
 
-const SearchResultPage = () => {
+const SearchResultPage = ({addToWishlist}) => {
 
     const [events, setEvents] = useState([]);
     const { params } = useParams();
@@ -42,7 +42,7 @@ const SearchResultPage = () => {
         <Navbar/>
         <div className="mainContainer">
             <FilterComponent onFilter={handleFilter}/>
-            <EventsContainer events={events} />
+            <EventsContainer events={events}  addToWishlist={addToWishlist} />
         </div>
     </>
 );

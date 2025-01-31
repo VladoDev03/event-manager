@@ -58,14 +58,14 @@ function App() {
         <Route
           path="/searchEvents/:params"
           element={
-            <SearchResultPage />
+            <SearchResultPage addToWishlist={addToWishlist}/>
           }
         />
 
         <Route
           path="/findEvents"
           element={
-            <FindEventsPage />
+            <FindEventsPage/>
           }
         />
         

@@ -96,8 +96,7 @@ const EventForm = () => {
       <div className="logo">
         <a href="/">
           <img
-            src="https://1000logos.net/wp-content/uploads/2017/05/Pepsi-logo.png"
-            alt="logo"
+            src="https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/537ec30a-379d-42ed-9912-75af8cb47205.png?auto=format%2Ccompress&fit=max&w=256&q=75&ch=Width%2CDPR"            alt="logo"
           />
         </a>
       </div>

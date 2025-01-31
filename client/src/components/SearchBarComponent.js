@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory, useNavigate } from 'react-router-dom';
 import { fetchSearchedEvents } from '../services/eventService';
+import "../style/NavBar.css";
 
 const SearchBarComponent = () => {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ const SearchBarComponent = () => {
         <div className="searchEvents">
           <input
             type="text"
-            className="searchBox"
+            className="searchBoxNav"
             placeholder="Search events"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -33,7 +34,7 @@ const SearchBarComponent = () => {
           <hr />
           <input
             type="text"
-            className="searchBox"
+            className="searchBoxNav"
             placeholder="Choose a location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}

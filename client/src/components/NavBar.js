@@ -14,8 +14,7 @@ const Navbar = () => {
       <div className="logo">
         <Link to="/">
           <img
-            src="https://1000logos.net/wp-content/uploads/2017/05/Pepsi-logo.png"
-            alt="logo"
+            src="https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/537ec30a-379d-42ed-9912-75af8cb47205.png?auto=format%2Ccompress&fit=max&w=256&q=75&ch=Width%2CDPR"            alt="logo"
           />
         </Link>
       </div>
@@ -29,7 +28,7 @@ const Navbar = () => {
             <Link to="/findEvents">Find events</Link> {}
           </li>
           <li className="login">
-            <a href="create-event" target="_blank">
+            <a href="/create-event" target="_blank">
               Create events
             </a>
           </li>
@@ -39,7 +38,7 @@ const Navbar = () => {
           <li className="login">
             <Link to="/wishlist">Wish list</Link> {}
           </li>
-          <li className="logout">
+          <li className="login">
             <Link to="/logout">Logout</Link> {}
           </li>
         </ul>
@@ -64,7 +63,7 @@ const Navbar = () => {
           <li className="login">
             <Link to="/login">Log in</Link> {}
           </li>
-          <li className="signup">
+          <li className="login">
             <Link to="/signup">Sign up</Link> {}
           </li>
         </ul>

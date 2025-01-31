@@ -3,10 +3,9 @@ import { useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 
 export function ImageForm() {
+    const navigate = useNavigate();
     const [files, setFiles] = useState(null);
     const {eventId} = useParams();
-
-    console.log(eventId);
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -26,6 +25,7 @@ export function ImageForm() {
         try {
             const result = await mediaService.uploadMedia(formData);
             console.log("Media URLs:", result);
+            navigate("/");
         } catch (error) {
             console.error("Error uploading images:", error.message);
         }
