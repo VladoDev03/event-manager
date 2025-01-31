@@ -1,11 +1,13 @@
 package com.example.event_manager.service;
 
 import com.example.event_manager.dao.EventDao;
+import com.example.event_manager.dao.UserDao;
 import com.example.event_manager.dto.CreateEventDto;
 import com.example.event_manager.dto.DisplayEventDto;
 import com.example.event_manager.dto.FilterRequest;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
+import com.example.event_manager.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,8 +18,10 @@ import java.util.stream.Collectors;
 @Service
 public class EventService {
     public CreateEventDto createEvent(CreateEventDto createEventDto) {
+        User user = UserDao.getUserById(createEventDto.getUserId());
 
         Event event = new Event(
+                createEventDto.getId(),
                 createEventDto.getTitle(),
                 createEventDto.getDescription(),
                 createEventDto.getPrice(),
@@ -28,6 +32,7 @@ public class EventService {
                 createEventDto.getEndTime(),
                 createEventDto.getLocation()
         );
+        event.setCreator(user);
         EventDao.createEvent(event);
 
         createEventDto.setId(event.getId());
@@ -47,7 +52,8 @@ public class EventService {
                     event.getCategory(),
                     event.getStartTime(),
                     event.getEndTime(),
-                    event.getLocation()
+                    event.getLocation(),
+                    event.getCreator().getId()
             );
         }
         return null;

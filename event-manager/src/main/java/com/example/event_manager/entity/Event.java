@@ -29,6 +29,11 @@ public class Event extends BaseEntity {
     public Event() {
     }
 
+    public Event(long id, String title, String description, BigDecimal price, int capacity, LocalDateTime creationDate,EventCategory category, LocalDateTime startTime, LocalDateTime endTime, String location) {
+        this(title, description, price, capacity, creationDate, category, startTime, endTime, location);
+        this.id = id;
+    }
+
     public Event(String title, String description, BigDecimal price, int capacity, LocalDateTime creationDate,EventCategory category, LocalDateTime startTime, LocalDateTime endTime, String location) {
         this.title = title;
         this.description = description;

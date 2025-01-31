@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import {useNavigate} from 'react-router-dom';
 import "../style/CreateEvent.css";
 import { createEvent } from "../services/eventService";
 import { fetchCategories } from "../services/categoriesService";
@@ -8,8 +9,10 @@ import { ImageForm } from "./ImageForm";
 const EventForm = () => {
   const [categories, setCategories] = useState([]);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    userId: user.userId,
     title: "",
     category: "",
     startTime: "",
@@ -42,15 +45,6 @@ const EventForm = () => {
     capacity: "",
   });
 
-  const pictureHandler = (e) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles && selectedFiles.length > 0) {
-      setFiles(selectedFiles);
-    } else {
-      setFiles(null);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     formData.category = formData.category.toUpperCase().replaceAll(" ", "_");
@@ -65,7 +59,7 @@ const EventForm = () => {
     } else {
       errorsCopy.capacity = "";
     }
-    if (formData.price <= 0) {
+    if (formData.price < 0) {
       errorsCopy.price = "Price must be greater than zero.";
       isValid = false;
     } else {
@@ -78,8 +72,10 @@ const EventForm = () => {
 
     try {
       resEvent = await createEvent(formData);
+      console.log(formData);
       alert("Event created successfully!");
       setFormData({
+        userId: user.userId,
         title: "",
         category: "",
         startTime: "",
@@ -89,6 +85,7 @@ const EventForm = () => {
         description: "",
         price: 0,
       });
+      navigate(`../add-media/${resEvent.id}`);
     } catch (error) {
       alert("Error creating event. Please try again.");
     }

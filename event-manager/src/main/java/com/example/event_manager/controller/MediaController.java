@@ -18,9 +18,9 @@ public class MediaController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> uploadMedia(@RequestParam("files") MultipartFile[] files) {
+    public ResponseEntity<?> uploadMedia(@RequestParam("files") MultipartFile[] files, @RequestParam("eventId") long eventId) {
         try {
-            String imageUrls = cloudinaryService.uploadMedia(files);
+            String imageUrls = cloudinaryService.uploadMedia(files, eventId);
             return ResponseEntity.ok(imageUrls);
         } catch (IOException e) {
             return ResponseEntity.status(500).body("Failed to upload images: " + e.getMessage());

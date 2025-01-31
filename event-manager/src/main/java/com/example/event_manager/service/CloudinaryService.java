@@ -21,11 +21,13 @@ import java.util.UUID;
 @Service
 public class CloudinaryService {
     private final Cloudinary cloudinary;
+    private final MediaService mediaService;
 
     public CloudinaryService(
             @Value("${cloudinary.cloud_name}") String cloudName,
             @Value("${cloudinary.api_key}") String apiKey,
-            @Value("${cloudinary.api_secret}") String apiSecret) {
+            @Value("${cloudinary.api_secret}") String apiSecret, MediaService mediaService) {
+        this.mediaService = mediaService;
         cloudinary = new Cloudinary(ObjectUtils.asMap(
                 "cloud_name", cloudName,
                 "api_key", apiKey,
@@ -33,7 +35,7 @@ public class CloudinaryService {
         ));
     }
 
-    public String uploadMedia(MultipartFile file) throws IOException {
+    public String uploadMedia(MultipartFile file, long eventId) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename != null && originalFilename.contains(".")
                 ? originalFilename.substring(originalFilename.lastIndexOf("."))
@@ -58,16 +60,16 @@ public class CloudinaryService {
         String publicId = (String) uploadResult.get("public_id");
         String url = (String) uploadResult.get("url");
 
-        CreateMediaDto media = new CreateMediaDto(url, publicId);
-        MediaDao.createMedia(media);
+        CreateMediaDto media = new CreateMediaDto(url, publicId, eventId);
+        mediaService.createMedia(media);
 
         return url;
     }
 
-    public String uploadMedia(MultipartFile[] files) throws IOException {
+    public String uploadMedia(MultipartFile[] files, long eventId) throws IOException {
         StringBuilder urls = new StringBuilder();
         for (MultipartFile file : files) {
-            String url = uploadMedia(file);
+            String url = uploadMedia(file, eventId);
             urls.append(url).append("\n");
         }
         return urls.toString();

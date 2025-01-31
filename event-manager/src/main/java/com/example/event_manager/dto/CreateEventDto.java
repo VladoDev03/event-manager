@@ -1,13 +1,13 @@
 package com.example.event_manager.dto;
 
 import com.example.event_manager.entity.EventCategory;
-import org.springframework.cglib.core.Local;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class CreateEventDto {
     private long id;
+    private long userId;
     private String title;
     private String description;
     private BigDecimal price;
@@ -21,7 +21,7 @@ public class CreateEventDto {
     public CreateEventDto() {
     }
 
-    public CreateEventDto(String title, String description, BigDecimal price, int capacity, LocalDateTime creationDate, EventCategory category, LocalDateTime startTime, LocalDateTime endTime, String location) {
+    public CreateEventDto(String title, String description, BigDecimal price, int capacity, LocalDateTime creationDate, EventCategory category, LocalDateTime startTime, LocalDateTime endTime, String location, long userId) {
         this.title = title;
         this.description = description;
         this.price = price;
@@ -31,6 +31,7 @@ public class CreateEventDto {
         this.startTime = startTime;
         this.endTime = endTime;
         this.location = location;
+        this.userId = userId;
     }
 
     public long getId() {
@@ -75,6 +76,10 @@ public class CreateEventDto {
 
     public String getLocation() {
         return location;
+    }
+
+    public long getUserId() {
+        return userId;
     }
 
     public void setCategory(EventCategory category) {
