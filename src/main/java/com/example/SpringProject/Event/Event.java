@@ -11,6 +11,7 @@ import javax.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -20,11 +21,10 @@ public class Event extends BaseEntity {
     private String description;
     private BigDecimal price;
     private int capacity;
+    private String location;
     private LocalDate creationDate;
     @Column(name = "updateDate", columnDefinition = "DATE")
-    private LocalDate updateDate;
-    @OneToMany(mappedBy = "event")
-    private Set<EventOnLocation> eventOnLocations;
+    private LocalDateTime updateDate;
     @OneToMany(mappedBy = "event")
     private Set<Media> media;
     @ManyToOne
@@ -37,10 +37,11 @@ public class Event extends BaseEntity {
     public Event() {
     }
 
-    public Event(long id, String title, String description, BigDecimal price, int capacity, LocalDate creationDate, LocalDate updateDate, Creator creator) {
+    public Event(String title, String description,String location, BigDecimal price, int capacity, LocalDate creationDate, LocalDateTime updateDate, Creator creator, long id) {
         super(id);
         this.title = title;
         this.description = description;
+        this.location = location;
         this.price = price;
         this.capacity = capacity;
         this.creationDate = creationDate;
@@ -48,9 +49,9 @@ public class Event extends BaseEntity {
         this.creator = creator;
     }
 
-    public Event(long id, String title, String description, BigDecimal price, int capacity, LocalDate creationDate, LocalDate updateDate,
-                 Set<EventOnLocation> eventOnLocations, Set<Media> media, Creator creator, Set<Reservation> reservations,
-                 Set<Guest> guestsHaveEventInWishlist){
+    public Event(String title, String description, BigDecimal price, int capacity, LocalDate creationDate, LocalDateTime updateDate,
+                 String location, Set<Media> media, Creator creator, Set<Reservation> reservations,
+                 Set<Guest> guestsHaveEventInWishlist, long id){
         super(id);
         this.title = title;
         this.description = description;
@@ -58,7 +59,7 @@ public class Event extends BaseEntity {
         this.capacity = capacity;
         this.creationDate = creationDate;
         this.updateDate = updateDate;
-        this.eventOnLocations = eventOnLocations;
+        this.location = location;
         this.media = media;
         this.creator = creator;
         this.reservations = reservations;
@@ -105,20 +106,20 @@ public class Event extends BaseEntity {
         this.creationDate = creationDate;
     }
 
-    public LocalDate getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(LocalDate updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 
-    public Set<EventOnLocation> getEventOnLocations() {
-        return eventOnLocations;
+    public String getLocation() {
+        return location;
     }
 
-    public void setEventOnLocations(Set<EventOnLocation> eventOnLocations) {
-        this.eventOnLocations = eventOnLocations;
+    public void setLocations(String location) {
+        this.location = location;
     }
 
     public Set<Media> getMedia() {

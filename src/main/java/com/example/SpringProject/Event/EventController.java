@@ -36,15 +36,15 @@ public class EventController {
     @GetMapping("/search")
     public List<EventDto> getEventsByCriteria(
             @RequestParam(value = "title", required = false) String title,
-            @RequestParam(value = "date", required = false) LocalDate date
+            @RequestParam(value = "location", required = false) String location
     ) {
         // Handle combined filtering
-        if (title != null && date != null) {
-            return eventService.getEventsByTitleAndDate(title, date);
+        if (title != null && location != null) {
+            return eventService.getEventsByTitleAndLocation(title, location);
         } else if (title != null) {
             return eventService.getEventsByName(title);
-        } else if (date != null) {
-            return eventService.getAllByDate(date);
+        } else if (location != null) {
+            return eventService.getAllByLocation(location);
         } else {
             return eventService.getEvents(); // Return all events if no criteria provided
         }
@@ -56,8 +56,8 @@ public class EventController {
         return eventService.getEventsByCreatorUserName(username);
     }
 
-    @GetMapping("/date")
-    public List<EventDto> getEventsByDate(@RequestParam(value = "date", required = false) LocalDate date){
-        return eventService.getAllByDate(date);
+    @GetMapping("/location")
+    public List<EventDto> getEventsByDate(@RequestParam(value = "location", required = false) String location){
+        return eventService.getAllByLocation(location);
     }
 }

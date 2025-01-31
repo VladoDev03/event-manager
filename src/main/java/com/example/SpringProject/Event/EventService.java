@@ -13,16 +13,16 @@ import java.util.stream.Collectors;
 public class EventService {
 
     public List<EventDto> getEvents(){
-        return EventDao.getEvents().stream().
-                map(event -> new EventDto(
-                        event.getTitle(),
-                        event.getDescription(),
-                        event.getPrice(),
-                        event.getCapacity(),
-                        event.getCreationDate(),
-                        event.getUpdateDate(),
-                        event.getCreator().getId()))
-                .collect(Collectors.toList());
+        return EventDao.getEvents().stream().map(event -> new EventDto(
+                event.getTitle(),
+                event.getDescription(),
+                event.getLocation(),
+                event.getPrice(),
+                event.getCapacity(),
+                event.getCreationDate(),
+                event.getUpdateDate(),
+                event.getCreator().getId()
+        )).collect(Collectors.toList());
     }
     public void saveEvent(Event event){
         EventDao.createEvent(event);
@@ -35,6 +35,7 @@ public class EventService {
              return new EventDto(
                      event.getTitle(),
                      event.getDescription(),
+                     event.getLocation(),
                      event.getPrice(),
                      event.getCapacity(),
                      event.getCreationDate(),
@@ -47,6 +48,7 @@ public class EventService {
         return EventDao.getEventsByName(title).stream().map(event -> new EventDto(
                 event.getTitle(),
                 event.getDescription(),
+                event.getLocation(),
                 event.getPrice(),
                 event.getCapacity(),
                 event.getCreationDate(),
@@ -59,6 +61,7 @@ public class EventService {
                 .stream().map(event -> new EventDto(
                         event.getTitle(),
                         event.getDescription(),
+                        event.getLocation(),
                         event.getPrice(),
                         event.getCapacity(),
                         event.getCreationDate(),
@@ -66,11 +69,12 @@ public class EventService {
                         event.getCreator().getId()
                 )).collect(Collectors.toList());
     }
-    public List<EventDto> getAllByDate(LocalDate date){
-        return EventDao.getEventsByDate(date)
+    public List<EventDto> getAllByLocation(String location){
+        return EventDao.getEventsByLocation(location)
                 .stream().map(event -> new EventDto(
                         event.getTitle(),
                         event.getDescription(),
+                        event.getLocation(),
                         event.getPrice(),
                         event.getCapacity(),
                         event.getCreationDate(),
@@ -79,11 +83,12 @@ public class EventService {
                 )).collect(Collectors.toList());
     }
 
-    public List<EventDto> getEventsByTitleAndDate(String title, LocalDate date) {
-        return EventDao.getEventsByNameAndDate(title, date)
-                .stream()
-                .map(event -> new EventDto(event.getTitle(),
+    public List<EventDto> getEventsByTitleAndLocation(String title, String location) {
+        return EventDao.getEventsByNameAndLocation(title, location)
+                .stream().map(event -> new EventDto(
+                        event.getTitle(),
                         event.getDescription(),
+                        event.getLocation(),
                         event.getPrice(),
                         event.getCapacity(),
                         event.getCreationDate(),

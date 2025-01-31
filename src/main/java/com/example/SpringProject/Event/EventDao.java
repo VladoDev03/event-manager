@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public class EventDao {
     public static void createEvent(Event event) {
-        event.setUpdateDate(event.getUpdateDate().atStartOfDay(ZoneId.of("UTC")).toLocalDate());
+
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             System.out.println("Saving event with date: " + event.getUpdateDate());
@@ -62,15 +62,15 @@ public class EventDao {
         return events;
     }
 
-    public static List<Event> getEventsByNameAndDate(String title, LocalDate date){
+    public static List<Event> getEventsByNameAndLocation(String title, String location){
         List<Event> events;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()){
             Transaction transaction = session.beginTransaction();
             events = session.createQuery("SELECT e FROM Event e WHERE " +
                     "(:title IS NULL OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
-                    "(:date IS NULL OR e.updateDate = :date)", Event.class)
+                    "(:location IS NULL OR e.location = :location)", Event.class)
                     .setParameter("title",title)
-                    .setParameter("date", date)
+                    .setParameter("location", location)
                     .getResultList();
             transaction.commit();
         }
@@ -89,12 +89,12 @@ public class EventDao {
     }
 
 
-    public static List<Event> getEventsByDate(LocalDate date){
+    public static List<Event> getEventsByLocation(String location){
         List<Event> events;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()){
             Transaction transaction = session.beginTransaction();
-            events = session.createQuery("SELECT e FROM Event e WHERE e.updateDate = :date",Event.class)
-                    .setParameter("date",date)
+            events = session.createQuery("SELECT e FROM Event e WHERE (:location IS NULL OR LOWER(e.location) LIKE LOWER(CONCAT('%', :location, '%')))",Event.class)
+                    .setParameter("location",location)
                     .getResultList();
             transaction.commit();
         }

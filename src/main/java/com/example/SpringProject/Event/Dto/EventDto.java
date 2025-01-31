@@ -2,22 +2,25 @@ package com.example.SpringProject.Event.Dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class EventDto {
     private String title;
     private String description;
+    private String location;
     private BigDecimal price;
     private int capacity;
     private LocalDate creationDate;
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
     private Long creatorId;
 
 
     public EventDto() {
     }
 
-    public EventDto(String title, String description,
-                    BigDecimal price, int capacity, LocalDate creationDate, LocalDate updateDate, Long creatorId) {
+    public EventDto(String title, String description, String location,
+                    BigDecimal price, int capacity, LocalDate creationDate, LocalDateTime updateDate, Long creatorId
+                    ) {
         this.title = title;
         this.description = description;
         this.price = price;
@@ -25,8 +28,16 @@ public class EventDto {
         this.creationDate = creationDate;
         this.updateDate = updateDate;
         this.creatorId = creatorId;
+        this.location = location;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getTitle() {
         return title;
@@ -68,11 +79,11 @@ public class EventDto {
         this.creationDate = creationDate;
     }
 
-    public LocalDate getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(LocalDate updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 
@@ -82,5 +93,19 @@ public class EventDto {
 
     public void setCreatorId(Long creatorId) {
         this.creatorId = creatorId;
+    }
+
+    @Override
+    public String toString() {
+        return "EventDto{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", location='" + location + '\'' +
+                ", price=" + price +
+                ", capacity=" + capacity +
+                ", creationDate=" + creationDate +
+                ", updateDate=" + updateDate +
+                ", creatorId=" + creatorId +
+                '}';
     }
 }
