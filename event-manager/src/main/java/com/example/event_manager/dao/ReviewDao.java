@@ -23,7 +23,13 @@ public class ReviewDao {
 
     public static void createReview(CreateReviewDto review) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Review reviewToAdd = new Review(review.getRating(), review.getComment(), review.getReviewTime());
+            Review reviewToAdd = new Review(
+                    review.getRating(),
+                    review.getComment(),
+                    review.getReviewTime(),
+                    ReservationDao.getReservationByEventIdAndUserId(review.getEventId(), review.getUserId())
+            );
+
             Transaction transaction = session.beginTransaction();
             session.save(reviewToAdd);
             transaction.commit();

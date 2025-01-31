@@ -22,3 +22,21 @@ export async function deleteMedia(mediaId) {
 
     return result
 }
+
+export const getMediaByEventId = async (id) => {
+    try {
+      const response = await fetch(`${baseUrl}/${id}`, {
+        method: 'GET',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error fetching event by ID');
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching event by ID:', error);
+      throw error;
+    }
+  };

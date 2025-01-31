@@ -202,4 +202,24 @@ public class ReservationDao {
         return reservationTicketDto;
     }
 
+    public static Reservation getReservationByEventIdAndUserId(long eventId, long userId) {
+        Reservation reservation;
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            reservation = session
+                    .createQuery(
+                            "select r from Reservation r" +
+                                    " join fetch r.guest as g" +
+                                    " join fetch r.event as e" +
+                                    " where r.guest.id = :userId" +
+                                    " and r.event.id = :eventId",
+                            Reservation.class)
+                    .setParameter("userId", userId)
+                    .setParameter("eventId", eventId)
+                    .getSingleResult();
+            transaction.commit();
+        }
+        return reservation;
+    }
+
 }

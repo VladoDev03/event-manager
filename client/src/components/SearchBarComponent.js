@@ -15,8 +15,10 @@ const SearchBarComponent = () => {
         if (title) params.append('title', title);
         if (location) params.append('location', location);
 
-        navigate(`/searchEvents/${params}`);
-        await fetchSearchedEvents(params); 
+        if(title || location) {
+            navigate(`/searchEvents/${params}`);
+        }
+        
     };
     
     return (

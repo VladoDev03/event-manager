@@ -40,6 +40,10 @@ export function ImageForm() {
         }
     };
 
+    const cancelImage = () => {
+        navigate(`../event/${eventId}`);
+    }
+
     return (
         <form onSubmit={submitHandler} method="post" encType="multipart/form-data">
             <div>
@@ -54,6 +58,7 @@ export function ImageForm() {
                 />
             </div>
             <input type="submit" value="Share" />
+            <input type="button" onClick={cancelImage} value="Cancel" />
         </form>
     );
 }

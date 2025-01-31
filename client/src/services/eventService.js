@@ -82,14 +82,13 @@ export const deleteEvent = async (id) => {
 
 export const fetchFilteredEvents = async (params) => {
   try {
-    console.log(params);
-    console.log(JSON.stringify(params));
       const response = await fetch(`${API_URL}/filterEvents?${params}`, {
         method: 'GET'
       });
       if (!response.ok) {
           throw new Error('Network response was not ok');
       }
+      console.log(response);
       const data = await response.json();
       return data;
   } catch (error) {
@@ -120,13 +119,13 @@ export const fetchAllEvents = async () => {
 export const fetchSearchedEvents = async (queryParams) => {
   try {
     console.log(`${API_URL}/search?${queryParams}`);
-      const response = await fetch(`${API_URL}/search?${queryParams}`, {
-      });
+      const response = await fetch(`${API_URL}/search?${queryParams}`);
       
       if (!response.ok) {
           throw new Error('Error fetching searched events');
       }
   
+      console.log(response);
       const data = await response.json();
       console.log(data);
       return data;

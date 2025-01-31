@@ -1,24 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getEventById } from '../services/eventService';
+import { format } from 'date-fns';
 
-const EventInfo = () => {
+const EventInfo = ({ eventId, setEventUserId, setEventEndDate }) => {
+    const [event, setEvent] = useState(null);
+
+    const formatDate = (date) => {
+        return format(date, "dd MMMM yyyy");
+    };
+    const formatTime = (time) => {
+        return format(time, "dd MMMM yyyy HH:mm");
+    };
+
+    useEffect(() => {
+        const fetchEvent = async () => {
+            const data = await getEventById(eventId);
+            setEvent(data);
+            setEventUserId(data.userId);
+            setEventEndDate(formatDate(data.endTime));
+        };
+        fetchEvent();
+    }, [eventId]);
+
+    if (!event) return <p>Loading event details...</p>;
+
+    const date = event.startTime ? new Date(event.startTime).toISOString().split('T')[0] : "";
+
+
     return (
         <div className="eventInfoContainer">
-            <time className="eventDateHeader" dateTime="2024-11-07">Thursday, November 7</time>
-            <h1 className="eventTitle">Event title</h1>
-            <p className="eventSummary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad nesciunt libero distinctio at eum, nulla pariatur quae doloribus perferendis error quidem dolores facilis repellendus ipsam fugit? Alias deserunt unde dignissimos.</p>
+            <p className="eventDateHeader">{formatDate(date)}</p>
+            <h1 className="eventTitle">{event.title || "Event title"}</h1>
+            <p className="eventSummary">{event.summary || "No summary available."}</p>
             <div className="dateAndTimeWrapper">
                 <h2>Date and time</h2>
-                <span>Thursday, November 7 6:30-8pm</span>
+                <span>{formatTime(event.startTime) || "Time not specified"} | {formatTime(event.endTime) || "Time not specified"}</span>
             </div>
             <div className="locationWrapper">
                 <h2>Location</h2>
-                <span>NBU</span>
+                <span>{event.location || "Location not specified"}</span>
             </div>
             <div className="eventDescription">
                 <h2>About this event</h2>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis cupiditate sed eligendi maiores exercitationem, sit numquam autem dolor! Illo magnam corrupti porro laborum molestias minus aliquid, ea excepturi laboriosam nisi!</p>
-                <br />
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure iste animi adipisci cum eligendi, sunt itaque distinctio ab et. Porro incidunt vel magni nisi ducimus maxime earum quidem, beatae voluptatibus.</p>
+                <p>{event.description || "No description available."}</p>
+            </div>
+            <div>
+                {
+                    event.medias.map(m => {
+                        return <img key={m.url} src={m.url}></img>
+                    })
+                }
             </div>
         </div>
     );

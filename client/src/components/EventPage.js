@@ -11,6 +11,8 @@ import '../style/eventStyle.css';
 import '../style/ReservationForm.css';
 
 import { createReservation } from '../services/ReservationService';
+import { ReviewForm } from './ReviewForm';
+
 
 const EventPage = () => {
     
@@ -25,6 +27,11 @@ const EventPage = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [eventUserId, setEventUserId] = useState(0);
+    const [eventEndDate, setEventEndDate] = useState();
+    // console.log(eventEndDate);
+
+    console.log(eventId)
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -60,7 +67,6 @@ const EventPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(eventId, user.userId, firstName, lastName, email);
             await createReservation(eventId, user.userId, firstName, lastName, email);
             openSuccessModal();
         } catch (error) {
@@ -69,13 +75,27 @@ const EventPage = () => {
         }
     }
 
+    const compareDates = eventEndDate => {
+        let now = new Date();
+        let eventDate = new Date(eventEndDate);
+        if (now.getTime() < eventDate.getTime()) {
+            return true;
+        } else if (now.getTime() > eventDate.getTime()) {
+            return false;
+        }
+    };
+
+    const redirectToAddMedia = () => {
+        navigate(`../add-media/${eventId}`);
+    }
+    
     return (
         <div id="eventPage">
             <Navbar />
             <div className="mainContainer">
                 <div className="eventAndReservationContainer">
-                    <EventInfo eventId={eventId}/>
-                    <ReservationComponent openModal={openModal}/>
+                <EventInfo eventId={eventId} setEventUserId={setEventUserId} setEventEndDate={setEventEndDate} />
+                {compareDates(eventEndDate) ? <ReservationComponent openModal={openModal} /> : ''}
                 </div>
             </div>
 
@@ -154,6 +174,8 @@ const EventPage = () => {
                     <h3>Best of luck next time!</h3> 
                 </div>
             </Modal>
+            {user.userId != eventUserId ? <ReviewForm eventId={eventId} /> : ''}
+            {user.userId == eventUserId ? <button type='button' onClick={redirectToAddMedia}>Add Media</button> : ''}
         </div>
     );
 };

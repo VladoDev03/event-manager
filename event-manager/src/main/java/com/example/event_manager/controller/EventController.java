@@ -2,8 +2,7 @@ package com.example.event_manager.controller;
 
 import com.example.event_manager.dto.CreateEventDto;
 import com.example.event_manager.dto.DisplayEventDto;
-import com.example.event_manager.dto.FilterRequest;
-import com.example.event_manager.entity.Event;
+import com.example.event_manager.dto.EventMediaDto;
 import com.example.event_manager.entity.EventCategory;
 import com.example.event_manager.exception.MinGreaterThanMaxException;
 import com.example.event_manager.service.EventService;
@@ -37,10 +36,10 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CreateEventDto> getEventById(@PathVariable long id) {
-        CreateEventDto createEventDto = eventService.getEventById(id);
-        if (createEventDto != null) {
-            return new ResponseEntity<>(createEventDto, HttpStatus.OK);
+    public ResponseEntity<EventMediaDto> getEventById(@PathVariable long id) {
+        EventMediaDto dto = eventService.getEventWithMediaById(id);
+        if (dto != null) {
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
