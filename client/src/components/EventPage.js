@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Modal from 'react-modal';
 
 import Navbar from './NavBar';
@@ -14,18 +14,21 @@ import { ReviewForm } from './ReviewForm';
 import { AuthContext } from '../contexts/AuthContext';
 
 const EventPage = () => {
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const navigate = useNavigate();
-    
+
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+
     const [eventUserId, setEventUserId] = useState(0);
-    
-    const {id} = useParams();
+    const [eventEndDate, setEventEndDate] = useState();
+    console.log(eventEndDate);
+
+    const { id } = useParams();
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -59,6 +62,17 @@ const EventPage = () => {
         }
     }
 
+    const compareDates = eventEndDate => {
+        let now = new Date();
+        let eventDate = new Date(eventEndDate);
+
+        if (now.getTime() < eventDate.getTime()) {
+            return true;
+        } else if (now.getTime() > eventDate.getTime()) {
+            return false;
+        }
+    };
+
     return (
         <div id="eventPage">
             <Navbar />
@@ -67,69 +81,69 @@ const EventPage = () => {
                     <img src="https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:d97d126b-e18a-5797-8802-2b457ac10518/component?assetType=TEMPLATE&etag=867813dd4f024cae8df2d0dfd2a91435&revision=e707f25d-6eef-4d42-9881-f62be17f2998&component_id=f5e79f54-25f0-40f7-9a1e-a87b7f696f81" alt="banner" />
                 </div>
                 <div className="eventAndReservationContainer">
-                    <EventInfo eventId={id} setEventUserId={setEventUserId} />
-                    <ReservationComponent openModal={openModal}/>
+                    <EventInfo eventId={id} setEventUserId={setEventUserId} setEventEndDate={setEventEndDate} />
+                    {compareDates(eventEndDate) ? <ReservationComponent openModal={openModal} /> : ''}
                 </div>
             </div>
 
-            <Modal 
-                isOpen={modalIsOpen} 
-                onRequestClose={closeModal} 
-                contentLabel="Reservation Form" 
-                className="modal" 
-                overlayClassName="modalOverlay" 
-            > 
-                <div className="container"> 
-                    <h1>Event Reservation Form</h1> 
-                    <button className="close-modal" onClick={closeModal}>&#10005;</button> 
-                    <form> 
-                        <h2>Contact Information</h2> 
-                        <div className="names"> 
-                            <div className="first-name"> 
-                                <label htmlFor="first-name">First Name:</label> 
-                                <input 
-                                type="text" 
-                                id="first-name"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
-                                required /> 
-                            </div> 
-                            <div className="last-name"> 
-                                <label htmlFor="last-name">Last Name:</label> 
-                                <input 
-                                type="text" 
-                                id="last-name" 
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                                required /> 
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Reservation Form"
+                className="modal"
+                overlayClassName="modalOverlay"
+            >
+                <div className="container">
+                    <h1>Event Reservation Form</h1>
+                    <button className="close-modal" onClick={closeModal}>&#10005;</button>
+                    <form>
+                        <h2>Contact Information</h2>
+                        <div className="names">
+                            <div className="first-name">
+                                <label htmlFor="first-name">First Name:</label>
+                                <input
+                                    type="text"
+                                    id="first-name"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    required />
                             </div>
-                        </div> 
-                            
-                        <label htmlFor="email">Email Address:</label> 
-                        <input 
-                        type="email" 
-                        id="email" 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required /> 
+                            <div className="last-name">
+                                <label htmlFor="last-name">Last Name:</label>
+                                <input
+                                    type="text"
+                                    id="last-name"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    required />
+                            </div>
+                        </div>
 
-                        <button className="finish-reservation" type="submit" onClick={handleSubmit}>Finish reservation</button> 
-                    </form> 
-                </div> 
+                        <label htmlFor="email">Email Address:</label>
+                        <input
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required />
+
+                        <button className="finish-reservation" type="submit" onClick={handleSubmit}>Finish reservation</button>
+                    </form>
+                </div>
             </Modal>
 
-            <Modal 
-                isOpen={successModalIsOpen} 
-                onRequestClose={closeSuccessModal} 
-                contentLabel="Reservation Success" 
-                className="modal" 
-                overlayClassName="modalOverlay" 
+            <Modal
+                isOpen={successModalIsOpen}
+                onRequestClose={closeSuccessModal}
+                contentLabel="Reservation Success"
+                className="modal"
+                overlayClassName="modalOverlay"
             >
                 <div className="container" id="successful-reservation">
-                    <button className="close-modal" onClick={closeSuccessModal}>&#10005;</button> 
-                    <h1>Reservation successful!</h1> 
-                    <p>Your reservation has been successfully made.</p> 
-                    <button className="go-to-tickets" onClick={goToMyTickets}>Go to my tickets</button> 
+                    <button className="close-modal" onClick={closeSuccessModal}>&#10005;</button>
+                    <h1>Reservation successful!</h1>
+                    <p>Your reservation has been successfully made.</p>
+                    <button className="go-to-tickets" onClick={goToMyTickets}>Go to my tickets</button>
                 </div>
             </Modal>
             {user.userId != eventUserId ? <ReviewForm eventId={id} /> : ''}

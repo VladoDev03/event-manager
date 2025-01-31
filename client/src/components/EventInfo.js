@@ -2,21 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { getEventById } from '../services/eventService';
 import { format } from 'date-fns';
 
-const EventInfo = ({ eventId, setEventUserId }) => {
+const EventInfo = ({ eventId, setEventUserId, setEventEndDate }) => {
     const [event, setEvent] = useState(null);
-
-    useEffect(() => {
-        const fetchEvent = async () => {
-            const data = await getEventById(eventId);
-            setEvent(data);
-            setEventUserId(data.userId)
-        };
-        fetchEvent();
-    }, [eventId]);
-
-    if (!event) return <p>Loading event details...</p>;
-
-    const date = event.startTime ? new Date(event.startTime).toISOString().split('T')[0] : "";
 
     const formatDate = (date) => {
         return format(date, "dd MMMM yyyy");
@@ -25,6 +12,20 @@ const EventInfo = ({ eventId, setEventUserId }) => {
     const formatTime = (time) => {
         return format(time, "dd MMMM yyyy HH:mm");
     };
+
+    useEffect(() => {
+        const fetchEvent = async () => {
+            const data = await getEventById(eventId);
+            setEvent(data);
+            setEventUserId(data.userId);
+            setEventEndDate(formatDate(data.endTime));
+        };
+        fetchEvent();
+    }, [eventId]);
+
+    if (!event) return <p>Loading event details...</p>;
+
+    const date = event.startTime ? new Date(event.startTime).toISOString().split('T')[0] : "";
 
     return (
         <div className="eventInfoContainer">
