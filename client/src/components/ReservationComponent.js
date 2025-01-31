@@ -48,7 +48,7 @@ const ReservationComponent = ({
 
   return (
     <div className="eventReservationWrapper">
-      <p>{eventPrice} BGN</p>
+      <p>{eventPrice} BG</p>
       <div className="reservationBtn">
         <button onClick={handleReservation}>Reserve a spot</button>
       </div>
