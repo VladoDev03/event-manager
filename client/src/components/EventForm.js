@@ -85,6 +85,7 @@ const EventForm = () => {
         description: "",
         price: 0,
       });
+      console.log(formData);
       navigate(`../add-media/${resEvent.id}`);
     } catch (error) {
       alert("Error creating event. Please try again.");

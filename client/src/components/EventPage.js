@@ -73,6 +73,10 @@ const EventPage = () => {
         }
     };
 
+    const redirectToAddMedia = () => {
+      navigate(`../add-media/${id}`);
+    }
+
     return (
         <div id="eventPage">
             <Navbar />
@@ -147,6 +151,7 @@ const EventPage = () => {
                 </div>
             </Modal>
             {user.userId != eventUserId ? <ReviewForm eventId={id} /> : ''}
+            {user.userId == eventUserId ? <button type='button' onClick={redirectToAddMedia}>Add Media</button> : ''}
         </div>
     );
 };

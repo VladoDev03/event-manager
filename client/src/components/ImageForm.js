@@ -5,6 +5,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 export function ImageForm() {
     const [files, setFiles] = useState(null);
     const {eventId} = useParams();
+    const navigate = useNavigate();
 
     console.log(eventId);
 
@@ -40,6 +41,10 @@ export function ImageForm() {
         }
     };
 
+    const cancelImage = () => {
+        navigate(`../event/${eventId}`);
+    }
+
     return (
         <form onSubmit={submitHandler} method="post" encType="multipart/form-data">
             <div>
@@ -54,6 +59,7 @@ export function ImageForm() {
                 />
             </div>
             <input type="submit" value="Share" />
+            <input type="button" onClick={cancelImage} value="Cancel" />
         </form>
     );
 }
