@@ -73,7 +73,7 @@ const HomePage = ({ addToWishlist }) => {
               <span>Explore more events</span>
             </a>
           </div>
-          <EventsContainer events={events} />
+          <EventsContainer events={events} addToWishlist={addToWishlist} />
         </div>
       </div>
     </>

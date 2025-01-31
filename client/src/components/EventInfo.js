@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { getEventById } from '../services/eventService';
 import { format } from 'date-fns';
 
-const EventInfo = ({ eventId }) => {
+const EventInfo = ({ eventId, setEventUserId }) => {
     const [event, setEvent] = useState(null);
 
     useEffect(() => {
         const fetchEvent = async () => {
             const data = await getEventById(eventId);
             setEvent(data);
-            console.log(data)
+            setEventUserId(data.userId)
         };
         fetchEvent();
     }, [eventId]);
