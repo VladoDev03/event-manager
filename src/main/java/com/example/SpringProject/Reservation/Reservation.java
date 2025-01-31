@@ -4,9 +4,8 @@ import com.example.SpringProject.BaseEntity.BaseEntity;
 import com.example.SpringProject.Event.Event;
 import com.example.SpringProject.Guest.Guest;
 import com.example.SpringProject.Review.Review;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import javax.persistence.*;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

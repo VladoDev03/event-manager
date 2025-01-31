@@ -2,8 +2,8 @@ package com.example.SpringProject.Media;
 
 import com.example.SpringProject.BaseEntity.BaseEntity;
 import com.example.SpringProject.Event.Event;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.*;
+
 
 @Entity
 public class Media extends BaseEntity {

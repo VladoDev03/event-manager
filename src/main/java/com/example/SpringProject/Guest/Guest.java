@@ -3,9 +3,8 @@ package com.example.SpringProject.Guest;
 import com.example.SpringProject.BaseEntity.BaseEntity;
 import com.example.SpringProject.Event.Event;
 import com.example.SpringProject.Reservation.Reservation;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import javax.persistence.*;
+
 
 import java.util.Set;
 

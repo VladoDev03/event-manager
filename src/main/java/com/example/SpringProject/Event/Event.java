@@ -6,7 +6,7 @@ import com.example.SpringProject.EventOnLocation.EventOnLocation;
 import com.example.SpringProject.Guest.Guest;
 import com.example.SpringProject.Media.Media;
 import com.example.SpringProject.Reservation.Reservation;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 
 import java.math.BigDecimal;
@@ -21,6 +21,7 @@ public class Event extends BaseEntity {
     private BigDecimal price;
     private int capacity;
     private LocalDate creationDate;
+    @Column(name = "updateDate", columnDefinition = "DATE")
     private LocalDate updateDate;
     @OneToMany(mappedBy = "event")
     private Set<EventOnLocation> eventOnLocations;

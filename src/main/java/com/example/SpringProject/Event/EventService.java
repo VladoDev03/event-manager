@@ -11,15 +11,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventService {
-    private final EventRepository eventRepository;
-
-    @Autowired
-    public EventService(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
-    }
 
     public List<EventDto> getEvents(){
-        return eventRepository.findAll().stream().
+        return EventDao.getEvents().stream().
                 map(event -> new EventDto(
                         event.getTitle(),
                         event.getDescription(),
@@ -31,10 +25,11 @@ public class EventService {
                 .collect(Collectors.toList());
     }
     public void saveEvent(Event event){
-        eventRepository.save(event);
+        EventDao.createEvent(event);
     }
+
     public EventDto getEventById(Long id){
-         Event event = eventRepository.findById(id).orElse(null);
+         Event event = EventDao.getEventById(id);
 
          if (event != null){
              return new EventDto(
@@ -49,7 +44,7 @@ public class EventService {
          return null;
     }
     public List<EventDto> getEventsByName(String title){
-        return eventRepository.getAllByName(title).stream().map(event -> new EventDto(
+        return EventDao.getEventsByName(title).stream().map(event -> new EventDto(
                 event.getTitle(),
                 event.getDescription(),
                 event.getPrice(),
@@ -60,7 +55,7 @@ public class EventService {
         )).collect(Collectors.toList());
     }
     public List<EventDto> getEventsByCreatorUserName(String username){
-        return eventRepository.getAllByCreatorUserName(username)
+        return EventDao.getEventsByCreatorUsername(username)
                 .stream().map(event -> new EventDto(
                         event.getTitle(),
                         event.getDescription(),
@@ -72,7 +67,7 @@ public class EventService {
                 )).collect(Collectors.toList());
     }
     public List<EventDto> getAllByDate(LocalDate date){
-        return eventRepository.getAllByDate(date)
+        return EventDao.getEventsByDate(date)
                 .stream().map(event -> new EventDto(
                         event.getTitle(),
                         event.getDescription(),
@@ -85,7 +80,7 @@ public class EventService {
     }
 
     public List<EventDto> getEventsByTitleAndDate(String title, LocalDate date) {
-        return eventRepository.findByTitleAndDate(title, date)
+        return EventDao.getEventsByNameAndDate(title, date)
                 .stream()
                 .map(event -> new EventDto(event.getTitle(),
                         event.getDescription(),

@@ -1,7 +1,8 @@
 package com.example.SpringProject.User;
 
 import com.example.SpringProject.BaseEntity.BaseEntity;
-import jakarta.persistence.*;
+import javax.persistence.*;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

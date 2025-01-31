@@ -3,8 +3,8 @@ package com.example.SpringProject.EventOnLocation;
 import com.example.SpringProject.BaseEntity.BaseEntity;
 import com.example.SpringProject.Event.Event;
 import com.example.SpringProject.Location.Location;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.*;
+
 
 import java.time.LocalDateTime;
 

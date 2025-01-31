@@ -1,8 +1,6 @@
 package com.example.SpringProject.Creator;
 
 import com.example.SpringProject.Creator.Dto.CreatorDto;
-import com.example.SpringProject.User.User;
-import com.example.SpringProject.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,24 +9,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class CreatorService {
-    private final CreatorRepository creatorRepository;
-
-    @Autowired
-    public CreatorService(CreatorRepository creatorRepository) {
-        this.creatorRepository = creatorRepository;
-    }
 
     public List<CreatorDto> getCreators(){
-        return creatorRepository.findAll().stream().map(creator -> new CreatorDto(creator.getFirstName()))
+        return CreatorDao.getCreators().stream().map(creator -> new CreatorDto(creator.getFirstName()))
                 .collect(Collectors.toList());
     }
 
     public void saveCreator(Creator creator){
-        creatorRepository.save(creator);
+        CreatorDao.createCreator(creator);
     }
 
     public CreatorDto getCreatorById(Long id){
-        Creator creator = creatorRepository.findById(id).orElse(null);
+        Creator creator = CreatorDao.getCreatorById(id);
 
         if (creator != null){
             return new CreatorDto(creator.getFirstName());

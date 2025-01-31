@@ -2,10 +2,8 @@ package com.example.SpringProject.Review;
 
 import com.example.SpringProject.BaseEntity.BaseEntity;
 import com.example.SpringProject.Reservation.Reservation;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import javax.persistence.*;
+
 
 import java.time.LocalDateTime;
 

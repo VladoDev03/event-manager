@@ -2,8 +2,8 @@ package com.example.SpringProject.Creator;
 
 import com.example.SpringProject.Event.Event;
 import com.example.SpringProject.User.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import javax.persistence.*;
+
 
 import java.time.LocalDateTime;
 import java.util.List;

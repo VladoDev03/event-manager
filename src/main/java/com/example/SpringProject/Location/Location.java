@@ -2,9 +2,8 @@ package com.example.SpringProject.Location;
 
 import com.example.SpringProject.BaseEntity.BaseEntity;
 import com.example.SpringProject.EventOnLocation.EventOnLocation;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import javax.persistence.*;
+
 
 import java.util.Set;
 
