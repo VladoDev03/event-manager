@@ -22,7 +22,7 @@ public class ReviewController {
 
     @PostMapping()
     public ResponseEntity<?> uploadReview(@RequestBody UploadReviewDto review) {
-        CreateReviewDto result =  reviewService.createReview(review);
+        CreateReviewDto result = reviewService.createReview(review);
 
         return ResponseEntity.ok(result);
     }

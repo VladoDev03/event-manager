@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import Modal from 'react-modal';
 
 import Navbar from './NavBar';
@@ -10,6 +10,7 @@ import '../style/eventStyle.css';
 import '../style/ReservationForm.css';
 
 import { createReservation } from '../services/ReservationService';
+import { ReviewForm } from './ReviewForm';
 
 const EventPage = () => {
     
@@ -21,6 +22,9 @@ const EventPage = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    
+    const {id} = useParams();
+    console.log(id);
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -127,6 +131,7 @@ const EventPage = () => {
                     <button className="go-to-tickets" onClick={goToMyTickets}>Go to my tickets</button> 
                 </div>
             </Modal>
+            <ReviewForm eventId={id} />
         </div>
     );
 };

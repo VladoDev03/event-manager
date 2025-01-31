@@ -14,7 +14,9 @@ public class ReviewService {
         CreateReviewDto createReviewDto = new CreateReviewDto(
                 reviewDto.getRating(),
                 reviewDto.getComment(),
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                reviewDto.getEventId(),
+                reviewDto.getUserId()
         );
 
         ReviewDao.createReview(createReviewDto);

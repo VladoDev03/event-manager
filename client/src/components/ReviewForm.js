@@ -1,10 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import * as reviewService from '../services/reviewService';
+import { AuthContext } from '../contexts/AuthContext';
+import { fetchRatings } from '../services/ratingService';
 
-export const ReviewForm = () => {
-    const [rating, setRating] = useState(null); // Initialize rating to null
+export const ReviewForm = ({ eventId }) => {
+    const [rating, setRating] = useState(null);
+    const [ratingsList, setRatingsList] = useState([]);
     const [comment, setComment] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const { user } = useContext(AuthContext);
+
+    useEffect(() => {
+        const loadRatings = async () => {
+            try {
+                const data = await fetchRatings();
+                setRatingsList(data);
+            } catch (error) {
+                console.error("Failed to fetch ratings", error);
+            }
+        };
+
+        loadRatings();
+    }, []);
 
     const handleRatingClick = star => {
         setRating(star);
@@ -19,12 +36,17 @@ export const ReviewForm = () => {
         if (rating === null) {
             alert('Please select a rating.');
         } else {
-            const review = { rating, comment };
-            const result = await reviewService.uploadReview(review);
+            const review = {
+                'rating': rating,
+                'comment': comment,
+                'eventId': parseInt(eventId),
+                'userId': user.userId
+            };
 
-            console.log('Review Submitted:', result);
             console.log(review);
-            
+            const result = await reviewService.uploadReview(review);
+            console.log('Review Submitted:', result);
+
             setSubmitted(true);
         }
     };

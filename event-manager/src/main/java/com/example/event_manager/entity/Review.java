@@ -16,6 +16,11 @@ public class Review extends BaseEntity {
 
     public Review() {}
 
+    public Review(Rating rating, String comment, LocalDateTime reviewTime, Reservation reservation) {
+        this(rating, comment, reviewTime);
+        this.reservation = reservation;
+    }
+
     public Review(Rating rating, String comment, LocalDateTime reviewTime) {
         this.rating = rating;
         this.comment = comment;
