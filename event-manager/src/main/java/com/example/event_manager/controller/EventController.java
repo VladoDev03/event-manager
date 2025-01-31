@@ -28,10 +28,11 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createEvent(@RequestBody CreateEventDto createEventDto) {
-        eventService.createEvent(createEventDto);
-        return new ResponseEntity<>("Event created successfully", HttpStatus.CREATED);
-//        return ResponseEntity.ok(new CreateEventDto());
+    public ResponseEntity<CreateEventDto> createEvent(@RequestBody CreateEventDto createEventDto) {
+        var res = eventService.createEvent(createEventDto);
+        System.out.println(createEventDto);
+//        return new ResponseEntity<>("Event created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -58,6 +59,17 @@ public class EventController {
     @GetMapping("/allEvents")
     public List<DisplayEventDto> getAllEvents() {
         return eventService.getAllEvents();
+    }
+
+    @GetMapping("/search")
+    public List<DisplayEventDto> getEventsByCriteria(
+            @RequestParam(value = "title", required = false) String title) {
+        // Handle combined filtering
+        if (title != null) {
+            return eventService.getEventsByName(title);
+        } else {
+            return null;
+        }
     }
 
     @PostMapping("/filterEvents")

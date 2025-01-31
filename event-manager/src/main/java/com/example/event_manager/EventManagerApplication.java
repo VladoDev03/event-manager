@@ -58,7 +58,7 @@ public class EventManagerApplication {
 		event1.setCapacity(30);
 		event1.setCategory(EventCategory.MUSIC);
 		event1.setCreationDate(LocalDateTime.now());
-		event1.setLocation(location1);
+		event1.setLocation("Ndk Sofia");
 		event1.setStartTime(LocalDateTime.of(2024,12,27,18,30));
 		event1.setEndTime(LocalDateTime.of(2024,12,27,22,30));
 		EventDao.createEvent(event1);
@@ -68,7 +68,7 @@ public class EventManagerApplication {
 		event2.setPrice(BigDecimal.valueOf(2));
 		event2.setCapacity(30);
 		event2.setCategory(EventCategory.CULTURE);
-		event2.setLocation(location1);
+		event2.setLocation("Ndk Sofia");
 		event2.setStartTime(LocalDateTime.of(2024,12,29,18,30));
 		event2.setEndTime(LocalDateTime.of(2024,12,30,20,30));
 		EventDao.createEvent(event2);
@@ -78,7 +78,7 @@ public class EventManagerApplication {
 		event3.setPrice(BigDecimal.valueOf(20));
 		event3.setCapacity(30);
 		event3.setCategory(EventCategory.CULTURE);
-		event3.setLocation(location3);
+		event3.setLocation("Vitoshka");
 		event3.setStartTime(LocalDateTime.of(2025,12,27,18,30));
 		event3.setEndTime(LocalDateTime.of(2025,12,27,22,30));
 		EventDao.createEvent(event3);
@@ -104,5 +104,8 @@ public class EventManagerApplication {
 		/**/
 
 		System.out.println(EventDao.isEventFull(1));
+
+		EventService eventService1 = new EventService();
+		System.out.println(eventService1.getEventsByName("e"));
 	}
 }

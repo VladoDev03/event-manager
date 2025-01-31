@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import "../style/Homepage.css";
 import Navbar from "./NavBar";
 import EventsContainer from "./EventsContainer";
 
 const HomePage = ({ addToWishlist }) => {
+  const navigate = useNavigate();
+
   const [events] = useState([
     {
       id: 1,
@@ -34,46 +36,17 @@ const HomePage = ({ addToWishlist }) => {
             alt="banner"
           />
         </div>
-        <div className="iconCategoryBrowseContainer">
-          <a className="iconCategory">
-            <div className="iconWrapper">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhcGz5Y2viMsk4NWscvM51coJgpM4X2FYDcw&s"
-                alt="iconParty"
-              />
-              <p className="iconTitle">Party</p>
-            </div>
-          </a>
-          <a className="iconCategory">
-            <div className="iconWrapper">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhcGz5Y2viMsk4NWscvM51coJgpM4X2FYDcw&s"
-                alt="iconParty"
-              />
-              <p className="iconTitle">Party</p>
-            </div>
-          </a>
-          <a className="iconCategory">
-            <div className="iconWrapper">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhcGz5Y2viMsk4NWscvM51coJgpM4X2FYDcw&s"
-                alt="iconParty"
-              />
-              <p className="iconTitle">Party</p>
-            </div>
-          </a>
-        </div>
-        <hr />
+       
         <div className="popularEventsContainer">
           <div className="popularEventsTitleContainer">
             <div className="popularEventsTitle">
               <h2>Popular events</h2>
             </div>
-            <a className="exporeMoreEvents" href="event.html">
-              <span>Explore more events</span>
+            <a className="exporeMoreEvents">
+              <Link to="/searchEvents">Explore more events</Link> {}
             </a>
           </div>
-          <EventsContainer events={events} />
+          <EventsContainer events={events} addToWishlist={addToWishlist} />
         </div>
       </div>
     </>

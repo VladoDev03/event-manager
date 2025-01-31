@@ -189,7 +189,7 @@ public class ReservationDao {
         reservationTicketDto.setEventId(event.getId());
         reservationTicketDto.setEventTitle(event.getTitle());
         reservationTicketDto.setEventStartTime(event.getStartTime());
-        reservationTicketDto.setEventLocation(EventDao.getEventLocation(event.getId()).getName());
+        reservationTicketDto.setEventLocation(event.getLocation());
         reservationTicketDto.setEventPrice(event.getPrice());
 
         reservationTicketDto.setReservationId(reservation.getId());

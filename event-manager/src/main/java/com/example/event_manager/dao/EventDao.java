@@ -59,24 +59,11 @@ public class EventDao {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             events = session
-                    .createQuery("select e from Event e join fetch e.location left join fetch e.media left join fetch e.reservations left join fetch e.guestsHaveEventInWishlist", Event.class)
+                    .createQuery("select e from Event e left join fetch e.media left join fetch e.reservations left join fetch e.guestsHaveEventInWishlist", Event.class)
                     .getResultList();
             transaction.commit();
         }
         return events;
-    }
-
-    public static Location getEventLocation(long id) {
-        Event event;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            event = session
-                    .createQuery("select e from Event e join fetch e.location where e.id = :id", Event.class)
-                    .setParameter("id", id)
-                    .getSingleResult();
-            transaction.commit();
-        }
-        return event.getLocation();
     }
 
     public static Set<Reservation> getEventReservations(long id) {
@@ -110,11 +97,34 @@ public class EventDao {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             events = session
-                    .createQuery("SELECT new com.example.event_manager.dto.DisplayEventDto(e.id, e.title, e.description, e.category, e.location.name, e.price, e.startTime, e.endTime) FROM Event e", DisplayEventDto.class)
+                    .createQuery("SELECT new com.example.event_manager.dto.DisplayEventDto(e.id, e.title, e.description, e.category, e.location, e.price, e.startTime, e.endTime) FROM Event e", DisplayEventDto.class)
                     .getResultList();
             transaction.commit();
         }
         return events;
+    }
+
+    public static List<DisplayEventDto> getEventsByName(String title) {
+        List<Event> results;
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            results = session.createQuery("SELECT e FROM Event e WHERE (:title IS NULL OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%')))",
+                    Event.class).setParameter("title",title).getResultList();
+            transaction.commit();
+        }
+
+        return results.stream()
+                .map(result -> new DisplayEventDto(
+                        (long) result.getId(),
+                        (String) result.getTitle(),
+                        (String) result.getDescription(),
+                        (EventCategory) result.getCategory(),
+                        (String) result.getLocation(),
+                        (BigDecimal) result.getPrice(),
+                        (LocalDateTime) result.getStartTime(),
+                        (LocalDateTime) result.getEndTime()))
+                .collect(Collectors.toList());
+
     }
 
     public static List<DisplayEventDto> getFilteredEventsByCategoryStartTimeEndTimePrice(EventCategory eventCategory, LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal minPrice, BigDecimal maxPrice) {
@@ -124,14 +134,13 @@ public class EventDao {
             CriteriaQuery<Object[]> cr = cb.createQuery(Object[].class);
 
             Root<Event> root = cr.from(Event.class);
-            Join<Event, Location> eventLocationJoin = root.join("location");
 
             cr.multiselect(
                     root.get("id"),
                     root.get("title"),
                     root.get("description"),
                     root.get("category"),
-                    eventLocationJoin.get("name"),
+                    root.get("location"),
                     root.get("price"),
                     root.get("startTime"),
                     root.get("endTime")

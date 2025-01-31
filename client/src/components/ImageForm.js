@@ -1,8 +1,12 @@
 import * as mediaService from '../services/mediaService';
 import { useState } from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 
 export function ImageForm() {
     const [files, setFiles] = useState(null);
+    const {eventId} = useParams();
+
+    console.log(eventId);
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -16,6 +20,8 @@ export function ImageForm() {
         Array.from(files).forEach((file) => {
             formData.append("files", file);
         });
+
+        formData.append('eventId', eventId);
 
         try {
             const result = await mediaService.uploadMedia(formData);
@@ -37,7 +43,6 @@ export function ImageForm() {
     return (
         <form onSubmit={submitHandler} method="post" encType="multipart/form-data">
             <div>
-                <label htmlFor="picture">Image</label>
                 <input 
                     id="picture" 
                     type="file" 

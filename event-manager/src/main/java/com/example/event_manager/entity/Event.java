@@ -11,14 +11,12 @@ public class Event extends BaseEntity {
     private String description;
     @Enumerated(EnumType.STRING)
     private EventCategory category;
-    @ManyToOne (fetch = FetchType.LAZY)
-    private Location location;
+    private String location;
     private BigDecimal price;
     private int capacity;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalDateTime creationDate;
-    private LocalDateTime updateDate;
     @OneToMany (mappedBy = "event")
     private Set<Media> media;
     @ManyToOne (fetch = FetchType.LAZY)
@@ -31,12 +29,21 @@ public class Event extends BaseEntity {
     public Event() {
     }
 
-    public Event(String title, String description, BigDecimal price, int capacity, LocalDateTime creationDate) {
+    public Event(long id, String title, String description, BigDecimal price, int capacity, LocalDateTime creationDate,EventCategory category, LocalDateTime startTime, LocalDateTime endTime, String location) {
+        this(title, description, price, capacity, creationDate, category, startTime, endTime, location);
+        this.id = id;
+    }
+
+    public Event(String title, String description, BigDecimal price, int capacity, LocalDateTime creationDate,EventCategory category, LocalDateTime startTime, LocalDateTime endTime, String location) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.capacity = capacity;
         this.creationDate = creationDate;
+        this.category = category;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.location = location;
     }
 
     public String getTitle() {
@@ -62,11 +69,7 @@ public class Event extends BaseEntity {
         return creationDate;
     }
 
-    public LocalDateTime getUpdateDate() {
-        return updateDate;
-    }
-
-    public Location getLocation() {
+    public String getLocation() {
         return location;
     }
 
@@ -110,11 +113,7 @@ public class Event extends BaseEntity {
         this.creationDate = creationDate;
     }
 
-    public void setUpdateDate(LocalDateTime updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public void setLocation(Location location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
@@ -158,11 +157,10 @@ public class Event extends BaseEntity {
                 ", category=" + category.name() +
                 ", price=" + price +
                 ", capacity=" + capacity +
-                ", location=" + location.getName() +
+                ", location=" + location +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", creationDate=" + creationDate +
-                ", updateDate=" + updateDate +
                 "} " + super.toString();
     }
 }

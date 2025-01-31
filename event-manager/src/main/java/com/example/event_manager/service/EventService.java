@@ -1,11 +1,13 @@
 package com.example.event_manager.service;
 
 import com.example.event_manager.dao.EventDao;
+import com.example.event_manager.dao.UserDao;
 import com.example.event_manager.dto.CreateEventDto;
 import com.example.event_manager.dto.DisplayEventDto;
 import com.example.event_manager.dto.FilterRequest;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
+import com.example.event_manager.entity.User;
 import com.example.event_manager.exception.MinGreaterThanMaxException;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +18,27 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventService {
-    public void createEvent(CreateEventDto createEventDto) {
+    public CreateEventDto createEvent(CreateEventDto createEventDto) {
+        User user = UserDao.getUserById(createEventDto.getUserId());
+
         Event event = new Event(
+                createEventDto.getId(),
                 createEventDto.getTitle(),
                 createEventDto.getDescription(),
                 createEventDto.getPrice(),
                 createEventDto.getCapacity(),
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                createEventDto.getCategory(),
+                createEventDto.getStartTime(),
+                createEventDto.getEndTime(),
+                createEventDto.getLocation()
         );
+        event.setCreator(user);
         EventDao.createEvent(event);
+
+        createEventDto.setId(event.getId());
+
+        return createEventDto;
     }
 
     public CreateEventDto getEventById(long id) {
@@ -35,7 +49,12 @@ public class EventService {
                     event.getDescription(),
                     event.getPrice(),
                     event.getCapacity(),
-                    event.getCreationDate()
+                    event.getCreationDate(),
+                    event.getCategory(),
+                    event.getStartTime(),
+                    event.getEndTime(),
+                    event.getLocation(),
+                    event.getCreator().getId()
             );
         }
         return null;
@@ -74,13 +93,21 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    public List<DisplayEventDto> filterEvents(FilterRequest filterRequest) {
-        if(filterRequest.getMinPrice().compareTo(filterRequest.getMaxPrice()) > 0) {
-            throw new MinGreaterThanMaxException("Minimum price is greater than maximum price.");
-        }
+    //search
+    public List<DisplayEventDto> getEventsByName(String title){
+        return EventDao.getEventsByName(title);
+    }
 
-        if(filterRequest.getStartDate().isAfter(filterRequest.getEndDate())) {
-            throw new MinGreaterThanMaxException("Start date is after end date.");
+    public List<DisplayEventDto> filterEvents(FilterRequest filterRequest) {
+        if(filterRequest.getMinPrice() != null && filterRequest.getMaxPrice() != null) {
+            if (filterRequest.getMinPrice().compareTo(filterRequest.getMaxPrice()) > 0) {
+                throw new MinGreaterThanMaxException("Minimum price is greater than maximum price.");
+            }
+        }
+        if(filterRequest.getStartDateTime() != null && filterRequest.getEndDateTime() != null) {
+            if (filterRequest.getStartDate().isAfter(filterRequest.getEndDate())) {
+                throw new MinGreaterThanMaxException("Start date is after end date.");
+            }
         }
 
         return EventDao.getFilteredEventsByCategoryStartTimeEndTimePrice(

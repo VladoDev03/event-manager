@@ -101,6 +101,14 @@ function App() {
           }
         />
 
+        <Route
+          path="/add-media/:eventId"
+          element={
+            <div>
+              <ImageForm />
+            </div>
+          }
+        />
       </Routes>
     </div>
     </AuthProvider>

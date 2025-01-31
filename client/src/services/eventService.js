@@ -14,7 +14,7 @@ export const createEvent = async (eventData) => {
       throw new Error('Error creating event');
     }
 
-    const data = await response.text();
+    const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error creating event:', error);
