@@ -2,9 +2,7 @@ package com.example.event_manager.service;
 
 import com.example.event_manager.dao.EventDao;
 import com.example.event_manager.dao.UserDao;
-import com.example.event_manager.dto.CreateEventDto;
-import com.example.event_manager.dto.DisplayEventDto;
-import com.example.event_manager.dto.FilterRequest;
+import com.example.event_manager.dto.*;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
 import com.example.event_manager.entity.User;
@@ -59,6 +57,30 @@ public class EventService {
         return null;
     }
 
+    public EventMediaDto getEventWithMediaById(long id) {
+        Event event = EventDao.getEventByIdWithMedia(id);
+        if (event != null) {
+            return new EventMediaDto(
+                    event.getTitle(),
+                    event.getDescription(),
+                    event.getPrice(),
+                    event.getCapacity(),
+                    event.getCreationDate(),
+                    event.getCategory(),
+                    event.getStartTime(),
+                    event.getEndTime(),
+                    event.getLocation(),
+                    event.getCreator().getId(),
+                    event.getMedia()
+                            .stream()
+                            .map(m -> {
+                                return new MediaDto(m.getUrl(), m.getPublicId());
+                    })
+                            .toList()
+            );
+        }
+        return null;
+    }
 
     public List<DisplayEventDto> getAllEvents() {
         return EventDao.getAllDisplayEventDto();

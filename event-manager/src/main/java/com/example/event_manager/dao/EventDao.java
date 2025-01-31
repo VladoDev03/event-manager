@@ -38,6 +38,19 @@ public class EventDao {
         return event;
     }
 
+    public static Event getEventByIdWithMedia(long id) {
+        Event event;
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            event = session
+                    .createQuery("select e from Event e left join fetch e.media where e.id = :id", Event.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+            transaction.commit();
+        }
+        return event;
+    }
+
     public static void updateEvent(Event event) {
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
