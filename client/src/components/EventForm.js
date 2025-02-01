@@ -146,6 +146,7 @@ const EventForm = () => {
                 type="datetime-local"
                 id="startTime"
                 value={formData.startTime}
+                min={new Date().toISOString().slice(0, -8)}
                 max={formData.endTime}
                 onChange={handleChange}
                 required
@@ -157,7 +158,7 @@ const EventForm = () => {
                 type="datetime-local"
                 id="endTime"
                 value={formData.endTime}
-                min={formData.startTime}
+                min={(formData.startTime > new Date().toISOString().slice(0, -8)) ? (formData.startTime) : (new Date().toISOString().slice(0, -8))}
                 onChange={handleChange}
                 required
               />

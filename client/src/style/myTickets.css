@@ -1,4 +1,3 @@
-
 .myTicketsContainer{
     margin:50px 100px;
 }
@@ -56,7 +55,6 @@
     display: flex;
     flex-direction: row;
     padding: 0;
-    max-width: 100%;
     /* column-gap: 20px; */
 }
 
@@ -129,6 +127,19 @@
 
 .modal #confirmCancelation h3 {
     width: 50px;
+}
+
+.ticketDownload {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.ticketDownload h4 {
+    color: #d1410c;
+    text-decoration: none;
 }
 
 .confirm-cancel-btn {

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { getEventById } from "../services/eventService";
 import { format } from "date-fns";
 import "../style/Homepage.css";
+import { useNavigate } from "react-router-dom";
 
 const EventInfo = ({ eventId, setEventUserId, setEventEndDate }) => {
+  const navigate = useNavigate();
   const [event, setEvent] = useState(null);
 
   const formatDate = (date) => {
@@ -15,10 +17,15 @@ const EventInfo = ({ eventId, setEventUserId, setEventEndDate }) => {
 
   useEffect(() => {
     const fetchEvent = async () => {
-      const data = await getEventById(eventId);
-      setEvent(data);
-      setEventUserId(data.userId);
-      setEventEndDate(formatDate(data.endTime));
+      try{
+        const data = await getEventById(eventId);
+        setEvent(data);
+        setEventUserId(data.userId);
+        setEventEndDate(formatTime(data.endTime));
+      } catch (error) {
+        console.error("Failed to fetch event", error);
+        navigate("/notFound");
+      }
     };
     fetchEvent();
   }, [eventId]);

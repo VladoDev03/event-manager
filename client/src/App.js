@@ -18,6 +18,7 @@ import { DeleteReview } from "./components/DeleteReview";
 import { AuthProvider } from "./contexts/AuthContext";
 import useWishlist from "./hooks/useWishlist";
 import { Logout } from "./components/Logout";
+import { NotFound } from "./components/NotFoundPage";
 
 function App() {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
@@ -96,6 +97,21 @@ function App() {
               </div>
             }
           />
+
+        <Route
+          path="/notFound"
+          element={
+            <NotFound />
+        }
+        />
+
+        <Route
+          path="/*"
+          element={
+            <NotFound />
+        }
+        />
+
         </Routes>
       </div>
     </AuthProvider>

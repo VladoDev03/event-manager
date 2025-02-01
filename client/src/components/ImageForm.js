@@ -1,13 +1,36 @@
 import * as mediaService from "../services/mediaService";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import { getEventById } from "../services/eventService";
 
 export function ImageForm() {
   const navigate = useNavigate();
   const [files, setFiles] = useState(null);
   const { eventId } = useParams();
   const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if(!user.userId) {
+      navigate("/login");
+    }
+    
+    const fetchEvent = async () => {
+      try{
+        const data = await getEventById(eventId);
+        console.log(data)
+        
+        if(user.userId && data.userId != user.userId) {
+          navigate("/notFound");
+        }
+      } catch (eventError) {
+        console.error("Failed to fetch event", eventError);
+        navigate("/notFound");
+      }
+    };
+
+    fetchEvent();
+  }, [eventId]);
 
   const submitHandler = async (e) => {
     e.preventDefault();

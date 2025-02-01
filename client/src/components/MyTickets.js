@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { Navigate, useNavigate } from "react-router-dom";
 import Modal from 'react-modal';
 import Navbar from './NavBar';
 import TicketsContainer from './TicketsContainer';
@@ -8,17 +9,26 @@ import { AuthContext } from '../contexts/AuthContext';
 import '../style/myTickets.css';
 
 const MyTickets = () => {
+    const navigate = useNavigate();
     const { user } = useContext(AuthContext);
+
+    useEffect(() => {
+        });
     
     const [tickets, setTickets] = useState([]);
     const [previousTickets, setPreviousTickets] = useState([]);
-    const [qrCode, setQrCode] = useState('');
+    const [qrCode, setQrCode] = useState('')
+    const [qrCodeId, setQrCodeId] = useState('');
     const [qrModalIsOpen, setqrModalIsOpen] = useState(false);
     const [confirmCancelModalIsOpen, setConfirmCancelModalIsOpen] = useState(false);
     const [reservationId, setReservationId] = useState('');
 
     useEffect(() => {
+        if(!user.userId){
+          navigate("/login");
+    }else{
         fetchData();
+    }
         
     }, []
     );
@@ -41,6 +51,10 @@ const MyTickets = () => {
 
     const setQr = (qr) => {
         setQrCode(qr);
+    }
+
+    const setQrId = (qrId) => {
+        setQrCodeId(qrId);
     }
 
     const openQrModal = () => {
@@ -78,7 +92,7 @@ const MyTickets = () => {
 
             <div className="mainContainer">
                 <div className="myTicketsContainer">
-                    <TicketsContainer tickets={tickets} previousTickets={previousTickets} setQr={setQr} openQrModal={openQrModal} openConfirmCancelModal={openConfirmCancelModal}/>
+                    <TicketsContainer tickets={tickets} previousTickets={previousTickets} setQr={setQr} setQrId={setQrId} openQrModal={openQrModal} openConfirmCancelModal={openConfirmCancelModal}/>
                 </div>
             </div>
 
@@ -92,7 +106,12 @@ const MyTickets = () => {
                 <div className="container" id="qr-code"> 
                     <h3>Your QR Code</h3>
                     <button className="close-modal" onClick={closeQrModal}>&#10005;</button>
-                    {qrCode && <img src={`data:image/png;base64,${qrCode}`} alt="QR Code" />}
+                    {qrCode && 
+                    <a className="ticketDownload" href={`data:image/png;base64,${qrCode}`} download={`ticket#${qrCodeId}`}>
+                    <img src={`data:image/png;base64,${qrCode}`} alt="QR Code" />
+                    <h4>Download ticket</h4>
+                    </a>
+                    }
                 </div>
             </Modal> 
 

@@ -76,9 +76,11 @@ const EventPage = () => {
   const compareDates = (eventEndDate) => {
     let now = new Date();
     let eventDate = new Date(eventEndDate);
+
+    console.log(eventDate);
     if (now.getTime() < eventDate.getTime()) {
       return true;
-    } else if (now.getTime() > eventDate.getTime()) {
+    } else if (now.getTime() >= eventDate.getTime()) {
       return false;
     }
   };

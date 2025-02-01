@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
 
-const TicketsContainer = ({ tickets, previousTickets, setQr, openQrModal, openConfirmCancelModal }) => {
+const TicketsContainer = ({ tickets, previousTickets, setQr, setQrId, openQrModal, openConfirmCancelModal }) => {
     const navigate = useNavigate();
 
     const handleEventClick = (eventId) => {
@@ -48,7 +48,9 @@ const TicketsContainer = ({ tickets, previousTickets, setQr, openQrModal, openCo
                             className="openTicket"
                             onClick={() => {
                                 openQrModal(ticket)
-                                setQr(ticket.reservationQrCode)}}
+                                setQr(ticket.reservationQrCode)
+                                setQrId(ticket.reservationId)
+                            }}
                             >
                                 Open ticket
                             </h4>
@@ -79,7 +81,7 @@ const TicketsContainer = ({ tickets, previousTickets, setQr, openQrModal, openCo
                             >
                                 <h2 className="eventTitle">{ticket.eventTitle}</h2>
                                 <div className="eventDetails">
-                                    <p className="eventTime">{ticket.eventStartTime}</p>
+                                    <p className="eventTime">{formatDateTime(ticket.eventStartTime)}</p>
                                     <p className="eventLocation">{ticket.eventLocation}</p>
                                     <p className="eventPrice">{ticket.eventPrice} BGN</p>
                                 </div>
