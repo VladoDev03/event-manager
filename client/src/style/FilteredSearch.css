@@ -36,12 +36,13 @@ input, select {
 #apply-filters {
     height: 38px;
     width: 16%;
-    padding: 10px 20px;
+    padding: 15px;
     border-radius: 5px;
     background-color: #d1410c;;;
     color: white;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #apply-filters:hover {

@@ -5,7 +5,6 @@ import Navbar from "./NavBar";
 import EventsContainer from "./EventsContainer";
 import { fetchAllEvents } from "../services/eventService";
 
-
 const HomePage = ({ addToWishlist }) => {
   const navigate = useNavigate();
   const [initialEvents, setInitialEvents] = useState([]);
@@ -27,16 +26,16 @@ const HomePage = ({ addToWishlist }) => {
   return (
     <>
       <Navbar />
-      <div className="mainContainer">       
+      <div className="mainContainer">
         <div className="popularEventsContainer">
           <div className="popularEventsTitleContainer">
             <div className="popularEventsTitle">
               <h2>Popular events</h2>
             </div>
-              <Link to="/searchEvents">Explore more events</Link> {}
+            <Link to="/searchEvents">Explore more events</Link> {}
           </div>
-          <EventsContainer events={events} addToWishlist={addToWishlist} />
         </div>
+        <EventsContainer events={events} addToWishlist={addToWishlist} />
       </div>
     </>
   );

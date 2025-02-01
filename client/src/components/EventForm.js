@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "../style/CreateEvent.css";
 import { createEvent } from "../services/eventService";
 import { fetchCategories } from "../services/categoriesService";
@@ -96,12 +96,17 @@ const EventForm = () => {
       <div className="logo">
         <a href="/">
           <img
-            src="https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/537ec30a-379d-42ed-9912-75af8cb47205.png?auto=format%2Ccompress&fit=max&w=256&q=75&ch=Width%2CDPR"            alt="logo"
+            src="https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/537ec30a-379d-42ed-9912-75af8cb47205.png?auto=format%2Ccompress&fit=max&w=256&q=75&ch=Width%2CDPR"
+            alt="logo"
           />
         </a>
       </div>
       <div className="mainContainerCreateEvent">
-        <form onSubmit={handleSubmit} method="post" encType="multipart/form-data">
+        <form
+          onSubmit={handleSubmit}
+          method="post"
+          encType="multipart/form-data"
+        >
           <h1>Create an event</h1>
           <h2 className="sectionTitle">Event Details</h2>
           <div className="eventDetails">
