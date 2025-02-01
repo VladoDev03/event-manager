@@ -1,6 +1,7 @@
 package com.example.event_manager.dao;
 
 import com.example.event_manager.configuration.SessionFactoryUtil;
+import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.Reservation;
 import com.example.event_manager.entity.User;
 import com.example.event_manager.exception.EntityNotFoundException;
@@ -60,7 +61,10 @@ public class UserDao {
         User user;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            user = session.get(User.class, id);
+            user = session
+                    .createQuery("select u from User u left join fetch u.wishlist where u.id = :id", User.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
             transaction.commit();
         }
 

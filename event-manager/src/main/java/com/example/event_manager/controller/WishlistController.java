@@ -1,8 +1,13 @@
 package com.example.event_manager.controller;
 
 import com.example.event_manager.dto.CreateEventDto;
+import com.example.event_manager.dto.DisplayEventDto;
+import com.example.event_manager.dto.WishlistRequest;
+import com.example.event_manager.exception.EntityNotFoundException;
 import com.example.event_manager.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,20 +25,22 @@ public class WishlistController {
 
     // Add an event to the wishlist
     @PostMapping("/add")
-    public CreateEventDto addEventToWishlist(@RequestBody CreateEventDto event) {
-        return wishlistService.addEventToWishlist(event);
+    public ResponseEntity<String> addEventToWishlist(@RequestBody WishlistRequest wishlist) throws EntityNotFoundException {
+        System.out.println("Workds");
+        wishlistService.addEventToWishlist(wishlist.getEventId(), wishlist.getUserId());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // Remove an event from the wishlist
-    @DeleteMapping("/remove/{id}")
-    public boolean removeEventFromWishlist(@PathVariable Long id) {
-        return wishlistService.removeEventFromWishlist(id);
+    @DeleteMapping("/remove")
+    public boolean removeEventFromWishlist(@RequestBody WishlistRequest wishlist) {
+        return wishlistService.removeEventFromWishlist(wishlist.getEventId(), wishlist.getUserId());
     }
 
     // Get all events in the wishlist
-    @GetMapping
-    public List<CreateEventDto> getWishlist() {
-        return wishlistService.getWishlist();
+    @GetMapping("/{id}")
+    public List<DisplayEventDto> getWishlist(@PathVariable long id) {
+        return wishlistService.getWishlist(id);
     }
 }
 

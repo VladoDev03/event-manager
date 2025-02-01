@@ -10,35 +10,25 @@ import EventPage from "./components/EventPage";
 import MyTickets from "./components/MyTickets";
 import Login from "./components/Login";
 import { SignupForm } from "./components/SignupForm";
-import { Auth } from "./components/Auth";
 import { ImageForm } from "./components/ImageForm";
-import { DeleteMedia } from "./components/DeleteMedia";
-import { ReviewForm } from "./components/ReviewForm";
-import { DeleteReview } from "./components/DeleteReview";
 import { AuthProvider } from "./contexts/AuthContext";
-import useWishlist from "./hooks/useWishlist";
 import { Logout } from "./components/Logout";
 import { NotFound } from "./components/NotFoundPage";
 
 function App() {
-  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
-
   return (
     <AuthProvider>
       <div>
         <Routes>
           <Route
             path="/"
-            element={<HomePage addToWishlist={addToWishlist} />}
+            element={<HomePage />}
           />
 
           <Route
             path="/wishlist"
             element={
-              <Wishlist
-                wishlist={wishlist}
-                removeFromWishlist={removeFromWishlist}
-              />
+              <Wishlist />
             }
           />
 
@@ -60,7 +50,7 @@ function App() {
 
           <Route
             path="/searchEvents/:params"
-            element={<SearchResultPage addToWishlist={addToWishlist} />}
+            element={<SearchResultPage />}
           />
 
           <Route path="/findEvents" element={<FindEventsPage />} />

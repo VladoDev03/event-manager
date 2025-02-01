@@ -15,7 +15,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "guest")
     private Set<Reservation> reservations;
+
     @ManyToMany
+    @JoinTable(name = "guestsHaveEventInWishlist")
     private Set<Event> wishlist;
 
     @OneToMany (mappedBy = "creator")

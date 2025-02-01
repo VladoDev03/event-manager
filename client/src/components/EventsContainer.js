@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../style/Homepage.css";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import { AuthContext } from "../contexts/AuthContext";
+import { addToWishlist } from "../services/wishlistService";
 
-const EventsContainer = ({ events, addToWishlist }) => {
+const EventsContainer = ({ events }) => {
   const navigate = useNavigate();
+  const {user} = useContext(AuthContext);
 
   const handleEventClick = (eventId) => {
     navigate(`/event/${eventId}`);
@@ -34,7 +37,10 @@ const EventsContainer = ({ events, addToWishlist }) => {
             </div>
             <button
               className="favoriteButton"
-              onClick={() => addToWishlist(event)}
+              onClick={e => {
+                e.stopPropagation();
+                addToWishlist(event.id, user.userId)
+              }}
             >
               ❤️
             </button>

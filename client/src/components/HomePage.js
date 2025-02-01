@@ -35,7 +35,7 @@ const HomePage = ({ addToWishlist }) => {
             <Link to="/searchEvents">Explore more events</Link> {}
           </div>
         </div>
-        <EventsContainer events={events} addToWishlist={addToWishlist} />
+        <EventsContainer events={events} />
       </div>
     </>
   );

@@ -35,7 +35,12 @@ public class EventDao {
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             event = session
-                    .createQuery("select e from Event e join fetch e.creator where e.id = :id", Event.class)
+                    .createQuery(
+                            "select e from Event e" +
+                                    " left join fetch e.creator" +
+                                    " left join fetch e.guestsHaveEventInWishlist" +
+                                    " where e.id = :id"
+                            , Event.class)
                     .setParameter("id", id)
                     .getSingleResult();
             transaction.commit();
@@ -103,7 +108,35 @@ public class EventDao {
         return events;
     }
 
+    public static List<DisplayEventDto> getUserWishlist(long userId) {
+        List<DisplayEventDto> events;
 
+        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()){
+            Transaction transaction = session.beginTransaction();
+            events = session.createQuery(
+                            "select e from Event e" +
+                                    " join fetch e.guestsHaveEventInWishlist u" +
+                                    " where u.id = :userId"
+                            , Event.class)
+                    .setParameter("userId", userId)
+                    .getResultList()
+                    .stream()
+                    .map(e -> new DisplayEventDto(
+                            e.getId(),
+                            e.getTitle(),
+                            e.getDescription(),
+                            e.getCategory(),
+                            e.getLocation(),
+                            e.getPrice(),
+                            e.getStartTime(),
+                            e.getEndTime()
+                    ))
+                    .toList();
+            transaction.commit();
+        }
+
+        return events;
+    }
 
     public static Set<Reservation> getEventReservations(long id) {
         Event event;
@@ -345,4 +378,3 @@ public class EventDao {
                 .collect(Collectors.toList());
     }
 }
-
