@@ -25,3 +25,13 @@ export async function deleteReview(reviewId) {
 
     return result
 }
+
+export async function getReviewsByEventId(eventId) {
+    const response = await fetch(`${baseUrl}/event/${eventId}`);
+  
+    if (!response.ok) {
+      throw new Error(`Failed to fetch reviews: ${response.statusText}`);
+    }
+  
+    return response.json();
+  }

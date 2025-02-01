@@ -224,4 +224,5 @@ body {
     width: calc((100% - 60px) / 4); 
     max-width: 200px; 
     height: auto;
+    margin-bottom: 50px;
 }

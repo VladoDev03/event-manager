@@ -3,8 +3,9 @@ import { getEventById } from "../services/eventService";
 import { format } from "date-fns";
 import "../style/Homepage.css";
 import { useNavigate } from "react-router-dom";
+import Reviews from "./Reviews";
 
-const EventInfo = ({ eventId, setEventUserId, setEventEndDate }) => {
+const EventInfo = ({ eventId, setEventUserId, setEventEndDate, setReviewExists }) => {
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
 
@@ -65,6 +66,7 @@ const EventInfo = ({ eventId, setEventUserId, setEventEndDate }) => {
           )
         )}
       </div>
+    <Reviews eventId={eventId} userId={event.userId} setReviewExists={setReviewExists}/>
     </div>
   );
 };

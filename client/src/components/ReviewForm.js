@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as reviewService from "../services/reviewService";
 import { AuthContext } from "../contexts/AuthContext";
 import { fetchRatings } from "../services/ratingService";
 
-export const ReviewForm = ({ eventId }) => {
+export const ReviewForm = ({ eventId, setReviewExists }) => {
+  const navigate = useNavigate();
   const [rating, setRating] = useState(null);
   const [ratingsList, setRatingsList] = useState([]);
   const [comment, setComment] = useState("");
@@ -46,6 +48,8 @@ export const ReviewForm = ({ eventId }) => {
       console.log(review);
       const result = await reviewService.uploadReview(review);
       console.log("Review Submitted:", result);
+      setReviewExists(true);
+      navigate(`/event/${eventId}`);
 
       setSubmitted(true);
     }

@@ -1,6 +1,7 @@
 package com.example.event_manager.controller;
 
 import com.example.event_manager.dto.CreateReviewDto;
+import com.example.event_manager.dto.ReviewDataDto;
 import com.example.event_manager.dto.UploadReviewDto;
 import com.example.event_manager.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/review")
@@ -35,5 +37,15 @@ public class ReviewController {
         reviewService.deleteReview(Long.parseLong(reviewId));
         
         return ResponseEntity.ok(reviewId);
+    }
+
+    @GetMapping("/event/{eventId}")
+    public ResponseEntity<List<ReviewDataDto>> getReviewsByEventId(@PathVariable long eventId) {
+        try {
+            List<ReviewDataDto> reviews = reviewService.getReviewsByEventId(eventId);
+            return ResponseEntity.ok(reviews);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body(null);
+        }
     }
 }

@@ -27,6 +27,7 @@ const EventPage = () => {
   const [email, setEmail] = useState("");
   const [eventUserId, setEventUserId] = useState(0);
   const [eventEndDate, setEventEndDate] = useState();
+  const [reviewExists, setReviewExists] = useState(false);
   // console.log(eventEndDate);
 
   console.log(eventId);
@@ -98,6 +99,7 @@ const EventPage = () => {
             eventId={eventId}
             setEventUserId={setEventUserId}
             setEventEndDate={setEventEndDate}
+            setReviewExists={setReviewExists}
           />
           {compareDates(eventEndDate) ? (
             <ReservationComponent openModal={openModal} />
@@ -199,8 +201,8 @@ const EventPage = () => {
         </div>
       </Modal>
       <div className="eventAndReservationContainer">
-        {user.userId != eventUserId && !compareDates(eventEndDate) ? (
-          <ReviewForm eventId={eventId} />
+        {(user.userId != eventUserId && !compareDates(eventEndDate) && !reviewExists) ? (
+          <ReviewForm eventId={eventId} setReviewExists={setReviewExists} />
         ) : (
           ""
         )}

@@ -5,10 +5,14 @@ import com.example.event_manager.entity.Rating;
 public class ReviewDataDto {
     private final Rating rating;
     private final String comment;
+    private final long eventId;
+    private final long userId;
 
-    public ReviewDataDto(Rating rating, String comment) {
+    public ReviewDataDto(Rating rating, String comment, long eventId, long userId) {
         this.rating = rating;
         this.comment = comment;
+        this.eventId = eventId;
+        this.userId = userId;
     }
 
     public Rating getRating() {
@@ -17,5 +21,13 @@ public class ReviewDataDto {
 
     public String getComment() {
         return comment;
+    }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+    public long getUserId() {
+        return userId;
     }
 }
