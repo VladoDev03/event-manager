@@ -1,5 +1,6 @@
 package com.example.event_manager.controller;
 
+import com.example.event_manager.exception.NotCreatorException;
 import com.example.event_manager.service.MediaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class MediaController {
         try {
             mediaService.createMedia(files, eventId, userId);
             return ResponseEntity.status(201).body("Media uploaded successfully");
-        } catch (IOException e) {
+        } catch (IOException | NotCreatorException e) {
             return ResponseEntity.status(500).body("Failed to upload images: " + e.getMessage());
         }
     }

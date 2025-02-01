@@ -3,8 +3,10 @@ package com.example.event_manager.service;
 import com.example.event_manager.dao.EventDao;
 import com.example.event_manager.dao.MediaDao;
 import com.example.event_manager.dto.CreateMediaDto;
+import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.Media;
 import com.example.event_manager.exception.EntityNotFoundException;
+import com.example.event_manager.exception.NotCreatorException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,11 +21,17 @@ public class MediaService {
         this.cloudinaryService = cloudinaryService;
     }
 
-    public void createMedia(MultipartFile[] files, long eventId, long userId) throws IOException {
+    public void createMedia(MultipartFile[] files, long eventId, long userId) throws IOException, NotCreatorException {
+        Event event = null;
+
         try {
-            EventDao.getEventById(eventId);
+            event = EventDao.getEventById(eventId);
         } catch (EntityNotFoundException e) {
             throw new RuntimeException(e);
+        }
+
+        if (userId != event.getCreator().getId()) {
+            throw new NotCreatorException(userId, eventId);
         }
 
         cloudinaryService

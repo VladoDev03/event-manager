@@ -33,7 +33,10 @@ public class EventDao {
         Event event;
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            event = session.get(Event.class, id);
+            event = session
+                    .createQuery("select e from Event e join fetch e.creator where e.id = :id", Event.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
             transaction.commit();
         }
 
