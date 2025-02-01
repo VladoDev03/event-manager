@@ -4,7 +4,7 @@ import * as reviewService from "../services/reviewService";
 import { AuthContext } from "../contexts/AuthContext";
 import { fetchRatings } from "../services/ratingService";
 
-export const ReviewForm = ({ eventId, setReviewExists }) => {
+export const ReviewForm = ({ eventId, setReviewExists, reviews, setReviews }) => {
   const navigate = useNavigate();
   const [rating, setRating] = useState(null);
   const [ratingsList, setRatingsList] = useState([]);
@@ -45,11 +45,12 @@ export const ReviewForm = ({ eventId, setReviewExists }) => {
         userId: user.userId,
       };
 
-      console.log(review);
       const result = await reviewService.uploadReview(review);
       console.log("Review Submitted:", result);
       setReviewExists(true);
       navigate(`/event/${eventId}`);
+
+      setReviews(oldReviews => [...oldReviews, result]);
 
       setSubmitted(true);
     }

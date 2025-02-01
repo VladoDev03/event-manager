@@ -5,7 +5,7 @@ import "../style/Homepage.css";
 import { useNavigate } from "react-router-dom";
 import Reviews from "./Reviews";
 
-const EventInfo = ({ eventId, setEventUserId, setEventEndDate, setReviewExists }) => {
+const EventInfo = ({ eventId, setEventUserId, setEventEndDate, setReviewExists, reviews, setReviews }) => {
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
 
@@ -66,7 +66,13 @@ const EventInfo = ({ eventId, setEventUserId, setEventEndDate, setReviewExists }
           )
         )}
       </div>
-    <Reviews eventId={eventId} userId={event.userId} setReviewExists={setReviewExists}/>
+    <Reviews
+      eventId={eventId}
+      userId={event.userId}
+      setReviewExists={setReviewExists}
+      reviews={reviews}
+      setReviews={setReviews}
+    />
     </div>
   );
 };

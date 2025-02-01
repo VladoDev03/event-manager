@@ -17,6 +17,7 @@ const EventPage = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const { eventId } = useParams();
+  const [reviews, setReviews] = useState([]);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
@@ -28,9 +29,6 @@ const EventPage = () => {
   const [eventUserId, setEventUserId] = useState(0);
   const [eventEndDate, setEventEndDate] = useState();
   const [reviewExists, setReviewExists] = useState(false);
-  // console.log(eventEndDate);
-
-  console.log(eventId);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -78,7 +76,6 @@ const EventPage = () => {
     let now = new Date();
     let eventDate = new Date(eventEndDate);
 
-    console.log(eventDate);
     if (now.getTime() < eventDate.getTime()) {
       return true;
     } else if (now.getTime() >= eventDate.getTime()) {
@@ -100,6 +97,8 @@ const EventPage = () => {
             setEventUserId={setEventUserId}
             setEventEndDate={setEventEndDate}
             setReviewExists={setReviewExists}
+            reviews={reviews}
+            setReviews={setReviews}
           />
           {compareDates(eventEndDate) ? (
             <ReservationComponent openModal={openModal} />
@@ -202,7 +201,7 @@ const EventPage = () => {
       </Modal>
       <div className="eventAndReservationContainer">
         {(user.userId != eventUserId && !compareDates(eventEndDate) && !reviewExists) ? (
-          <ReviewForm eventId={eventId} setReviewExists={setReviewExists} />
+          <ReviewForm eventId={eventId} setReviewExists={setReviewExists} reviews={reviews} setReviews={setReviews} />
         ) : (
           ""
         )}

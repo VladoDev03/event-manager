@@ -13,7 +13,7 @@ export async function uploadReview(review) {
         throw new Error(`Failed to upload review: ${response.statusText}`);
     }
 
-    return await response.text();
+    return await response.json();
 }
 
 export async function deleteReview(reviewId) {

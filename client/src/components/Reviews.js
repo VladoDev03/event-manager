@@ -2,8 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { getReviewsByEventId } from "../services/reviewService";
 import { AuthContext } from "../contexts/AuthContext";
 
-function Reviews({ eventId, setReviewExists }) {
-  const [reviews, setReviews] = useState([]);
+function Reviews({ eventId, setReviewExists, reviews, setReviews }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
@@ -44,7 +43,7 @@ function Reviews({ eventId, setReviewExists }) {
       ) : (
         <ul>
           {reviews.map((review) => (
-            <li key={review.id || review.comment}>
+            <li key={`u${review.userId}e${review.eventId}`}>
               <p>
                 <strong>Rating:</strong> {review.rating}
               </p>
