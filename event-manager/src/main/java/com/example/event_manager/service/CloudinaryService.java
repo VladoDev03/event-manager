@@ -2,8 +2,6 @@ package com.example.event_manager.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.example.event_manager.EventManagerApplication;
-import com.example.event_manager.dao.MediaDao;
 import com.example.event_manager.dto.CreateMediaDto;
 import com.example.event_manager.entity.Media;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,23 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CloudinaryService {
     private final Cloudinary cloudinary;
-    private final MediaService mediaService;
 
     public CloudinaryService(
             @Value("${cloudinary.cloud_name}") String cloudName,
             @Value("${cloudinary.api_key}") String apiKey,
-            @Value("${cloudinary.api_secret}") String apiSecret, MediaService mediaService) {
-        this.mediaService = mediaService;
+            @Value("${cloudinary.api_secret}") String apiSecret) {
         cloudinary = new Cloudinary(ObjectUtils.asMap(
                 "cloud_name", cloudName,
                 "api_key", apiKey,
@@ -35,7 +26,7 @@ public class CloudinaryService {
         ));
     }
 
-    public String uploadMedia(MultipartFile file, long eventId) throws IOException {
+    public CreateMediaDto uploadMedia(MultipartFile file, long eventId) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename != null && originalFilename.contains(".")
                 ? originalFilename.substring(originalFilename.lastIndexOf("."))
@@ -61,23 +52,22 @@ public class CloudinaryService {
         String url = (String) uploadResult.get("url");
 
         CreateMediaDto media = new CreateMediaDto(url, publicId, eventId);
-        mediaService.createMedia(media);
 
-        return url;
+        return media;
     }
 
-    public String uploadMedia(MultipartFile[] files, long eventId) throws IOException {
-        StringBuilder urls = new StringBuilder();
+    public List<CreateMediaDto> uploadMedia(MultipartFile[] files, long eventId, long userId) throws IOException {
+        List<CreateMediaDto> mediaList = new ArrayList<>();
+
         for (MultipartFile file : files) {
-            String url = uploadMedia(file, eventId);
-            urls.append(url).append("\n");
+            CreateMediaDto dto = uploadMedia(file, eventId);
+            mediaList.add(dto);
         }
-        return urls.toString();
+
+        return mediaList;
     }
 
-    public void deleteMedia(long mediaId) throws IOException {
-        Media media = MediaDao.getMediaById(mediaId);
-        MediaDao.deleteMedia(media);
+    public void deleteMedia(Media media) throws IOException {
         deleteImage(media.getPublicId());
     }
 

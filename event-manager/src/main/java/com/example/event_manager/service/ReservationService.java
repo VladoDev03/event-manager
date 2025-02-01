@@ -2,20 +2,43 @@ package com.example.event_manager.service;
 
 import com.example.event_manager.dao.EventDao;
 import com.example.event_manager.dao.ReservationDao;
+import com.example.event_manager.dao.UserDao;
 import com.example.event_manager.dto.CreateReservationDto;
 import com.example.event_manager.dto.ReservationDto;
 import com.example.event_manager.dto.ReservationTicketDto;
+import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.Reservation;
+import com.example.event_manager.exception.EntityNotFoundException;
+import com.example.event_manager.exception.EventFinishedException;
 import com.google.zxing.WriterException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
-    public ReservationDto createReservation(CreateReservationDto createReservationDto) throws IOException, WriterException {
+    public ReservationDto createReservation(CreateReservationDto createReservationDto) throws IOException, WriterException, EntityNotFoundException, EventFinishedException {
+        Event event;
+
+        try {
+            event = EventDao.getEventById(createReservationDto.getEventId());
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            UserDao.getUserById(createReservationDto.getGuestId());
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (LocalDateTime.now().isAfter(event.getEndTime())) {
+            throw new EventFinishedException(createReservationDto.getEventId(), event.getTitle());
+        }
+
         if (EventDao.isEventFull(createReservationDto.getEventId())){
             throw new IllegalStateException("Event is full");
         }

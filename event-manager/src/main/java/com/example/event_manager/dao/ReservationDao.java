@@ -5,6 +5,7 @@ import com.example.event_manager.configuration.SessionFactoryUtil;
 import com.example.event_manager.dto.CreateReservationDto;
 import com.example.event_manager.dto.ReservationTicketDto;
 import com.example.event_manager.entity.*;
+import com.example.event_manager.exception.EntityNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -171,6 +172,8 @@ public class ReservationDao {
             transaction.commit();
 
             return reservation;
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
     }

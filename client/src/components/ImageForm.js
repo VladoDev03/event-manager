@@ -1,11 +1,13 @@
 import * as mediaService from "../services/mediaService";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
 export function ImageForm() {
   const navigate = useNavigate();
   const [files, setFiles] = useState(null);
   const { eventId } = useParams();
+  const {user} = useContext(AuthContext);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -21,6 +23,7 @@ export function ImageForm() {
     });
 
     formData.append("eventId", eventId);
+    formData.append("userId", user.userId);
 
     try {
       const result = await mediaService.uploadMedia(formData);
@@ -47,7 +50,7 @@ export function ImageForm() {
   return (
     <form
       onSubmit={submitHandler}
-      class="mainContainerCreateEvent"
+      className="mainContainerCreateEvent"
       method="post"
       encType="multipart/form-data"
     >
@@ -63,7 +66,7 @@ export function ImageForm() {
         />
       </div>
       <div>
-        <input type="submit" class="submitBtn" value="Share" />
+        <input type="submit" className="submitBtn" value="Share" />
         <input type="button" onClick={cancelImage} value="Cancel" />
       </div>
     </form>

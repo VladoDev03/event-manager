@@ -11,13 +11,11 @@ import java.util.Optional;
 public class WishlistService {
     private final List<CreateEventDto> wishlist = new ArrayList<>();
 
-    // Add an event to the wishlist
     public CreateEventDto addEventToWishlist(CreateEventDto event) {
         wishlist.add(event);
-        return event;  // Return the added event
+        return event;
     }
 
-    // Remove an event from the wishlist
     public boolean removeEventFromWishlist(long eventId) {
         Optional<CreateEventDto> eventToRemove = wishlist.stream()
                 .filter(event -> event.getId() == eventId)
@@ -27,12 +25,10 @@ public class WishlistService {
             wishlist.remove(eventToRemove.get());
             return true;
         }
-        return false;  // Event not found in wishlist
+        return false;
     }
 
-
-    // Get all events in the wishlist
     public List<CreateEventDto> getWishlist() {
-        return new ArrayList<>(wishlist);  // Return a copy to prevent external modification
+        return new ArrayList<>(wishlist);
     }
 }

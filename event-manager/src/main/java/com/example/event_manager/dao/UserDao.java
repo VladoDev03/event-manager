@@ -3,6 +3,7 @@ package com.example.event_manager.dao;
 import com.example.event_manager.configuration.SessionFactoryUtil;
 import com.example.event_manager.entity.Reservation;
 import com.example.event_manager.entity.User;
+import com.example.event_manager.exception.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -55,13 +56,18 @@ public class UserDao {
         return users;
     }
 
-    public static User getUserById(long id) {
+    public static User getUserById(long id) throws EntityNotFoundException {
         User user;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             user = session.get(User.class, id);
             transaction.commit();
         }
+
+        if (user == null) {
+            throw new EntityNotFoundException(id);
+        }
+
         return user;
     }
 

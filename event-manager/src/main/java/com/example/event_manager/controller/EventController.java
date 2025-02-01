@@ -4,6 +4,7 @@ import com.example.event_manager.dto.CreateEventDto;
 import com.example.event_manager.dto.DisplayEventDto;
 import com.example.event_manager.dto.EventMediaDto;
 import com.example.event_manager.entity.EventCategory;
+import com.example.event_manager.exception.EntityNotFoundException;
 import com.example.event_manager.exception.MinGreaterThanMaxException;
 import com.example.event_manager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +46,13 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateEvent(@PathVariable long id, @RequestBody CreateEventDto createEventDto) {
+    public ResponseEntity<String> updateEvent(@PathVariable long id, @RequestBody CreateEventDto createEventDto) throws EntityNotFoundException {
         eventService.updateEvent(id, createEventDto);
         return new ResponseEntity<>("Event updated successfully", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEvent(@PathVariable long id) {
+    public ResponseEntity<String> deleteEvent(@PathVariable long id) throws EntityNotFoundException {
         eventService.deleteEvent(id);
         return new ResponseEntity<>("Event deleted successfully", HttpStatus.OK);
     }

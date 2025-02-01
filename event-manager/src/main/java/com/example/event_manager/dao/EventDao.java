@@ -6,6 +6,7 @@ import com.example.event_manager.entity.EventCategory;
 
 import com.example.event_manager.entity.Reservation;
 import com.example.event_manager.dto.DisplayEventDto;
+import com.example.event_manager.exception.EntityNotFoundException;
 import jakarta.persistence.criteria.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -28,13 +29,18 @@ public class EventDao {
         }
     }
 
-    public static Event getEventById(long id) {
+    public static Event getEventById(long id) throws EntityNotFoundException {
         Event event;
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             event = session.get(Event.class, id);
             transaction.commit();
         }
+
+        if (event == null) {
+            throw new EntityNotFoundException(id);
+        }
+
         return event;
     }
 

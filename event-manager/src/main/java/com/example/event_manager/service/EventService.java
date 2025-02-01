@@ -6,6 +6,7 @@ import com.example.event_manager.dto.*;
 import com.example.event_manager.entity.Event;
 import com.example.event_manager.entity.EventCategory;
 import com.example.event_manager.entity.User;
+import com.example.event_manager.exception.EntityNotFoundException;
 import com.example.event_manager.exception.MinGreaterThanMaxException;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,12 @@ import java.util.stream.Collectors;
 @Service
 public class EventService {
     public CreateEventDto createEvent(CreateEventDto createEventDto) {
-        User user = UserDao.getUserById(createEventDto.getUserId());
+        User user = null;
+        try {
+            user = UserDao.getUserById(createEventDto.getUserId());
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         Event event = new Event(
                 createEventDto.getId(),
@@ -39,7 +45,7 @@ public class EventService {
         return createEventDto;
     }
 
-    public CreateEventDto getEventById(long id) {
+    public CreateEventDto getEventById(long id) throws EntityNotFoundException {
         Event event = EventDao.getEventById(id);
         if (event != null) {
             return new CreateEventDto(
@@ -83,7 +89,7 @@ public class EventService {
         return null;
     }
 
-    public void updateEvent(long id, CreateEventDto createEventDto) {
+    public void updateEvent(long id, CreateEventDto createEventDto) throws EntityNotFoundException {
         Event event = EventDao.getEventById(id);
         if (event != null) {
             event.setTitle(createEventDto.getTitle());
@@ -95,7 +101,7 @@ public class EventService {
         }
     }
 
-    public void deleteEvent(long id) {
+    public void deleteEvent(long id) throws EntityNotFoundException {
         Event event = EventDao.getEventById(id);
         if (event != null) {
             EventDao.deleteEvent(event);

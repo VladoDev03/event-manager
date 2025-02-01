@@ -22,9 +22,12 @@ public class ReviewController {
 
     @PostMapping()
     public ResponseEntity<?> uploadReview(@RequestBody UploadReviewDto review) {
-        CreateReviewDto result =  reviewService.createReview(review);
-
-        return ResponseEntity.ok(result);
+        try {
+            CreateReviewDto result = reviewService.createReview(review);
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{reviewId}")

@@ -3,6 +3,7 @@ package com.example.event_manager.dao;
 import com.example.event_manager.configuration.SessionFactoryUtil;
 import com.example.event_manager.dto.CreateMediaDto;
 import com.example.event_manager.entity.Media;
+import com.example.event_manager.exception.EntityNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -27,6 +28,8 @@ public class MediaDao {
             Transaction transaction = session.beginTransaction();
             session.save(mediaToAdd);
             transaction.commit();
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

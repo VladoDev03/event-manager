@@ -4,6 +4,8 @@ import com.example.event_manager.dto.CreateReservationDto;
 import com.example.event_manager.dto.ReservationDto;
 import com.example.event_manager.dto.ReservationTicketDto;
 import com.example.event_manager.entity.Reservation;
+import com.example.event_manager.exception.EntityNotFoundException;
+import com.example.event_manager.exception.EventFinishedException;
 import com.example.event_manager.service.ReservationService;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +30,11 @@ public class ReservationController {
     public ResponseEntity<?> createReservation(@RequestBody CreateReservationDto request) throws WriterException, IOException {
         try {
             ReservationDto reservationDto = reservationService.createReservation(request);
-            System.out.println(reservationDto.getQrCode());
             return new ResponseEntity<>(reservationDto, HttpStatus.CREATED);
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | EventFinishedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
