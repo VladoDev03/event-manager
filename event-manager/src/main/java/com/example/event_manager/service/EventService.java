@@ -89,6 +89,23 @@ public class EventService {
         return null;
     }
 
+    public List<DisplayEventDto> getEventsByUser(long userId) {
+        List<Event> events = EventDao.findByUserId(userId);
+
+        return events.stream()
+                .map(event -> new DisplayEventDto(
+                        event.getId(),
+                        event.getTitle(),
+                        event.getDescription(),
+                        event.getCategory(),
+                        event.getLocation(),
+                        event.getPrice(),
+                        event.getStartTime(),
+                        event.getEndTime()
+                ))
+                .collect(Collectors.toList());
+    }
+
     public void updateEvent(long id, CreateEventDto createEventDto) throws EntityNotFoundException {
         Event event = EventDao.getEventById(id);
         if (event != null) {

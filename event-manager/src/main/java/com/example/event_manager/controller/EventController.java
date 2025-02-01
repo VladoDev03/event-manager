@@ -36,6 +36,11 @@ public class EventController {
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
+    @GetMapping("/createdEvents/{userId}")
+    public List<DisplayEventDto> getEventsByUser(@PathVariable long userId) {
+        return eventService.getEventsByUser(userId);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<EventMediaDto> getEventById(@PathVariable long id) {
         EventMediaDto dto = eventService.getEventWithMediaById(id);

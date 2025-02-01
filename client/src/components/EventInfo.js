@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getEventById } from "../services/eventService";
 import { format } from "date-fns";
+import "../style/Homepage.css";
 
 const EventInfo = ({ eventId, setEventUserId, setEventEndDate }) => {
   const [event, setEvent] = useState(null);
@@ -43,17 +44,20 @@ const EventInfo = ({ eventId, setEventUserId, setEventEndDate }) => {
         <h2>Location</h2>
         <span>{event.location || "Location not specified"}</span>
       </div>
-      <div className="eventDescription">
+      <div className="eventDescriptionInfo">
         <h2>About this event</h2>
         <p>{event.description || "No description available."}</p>
       </div>
-      {event.medias.map((m) => (
+      <h2>Media</h2>
+      <div className="mediaDisplay">
+        {event.medias.map((m) =>
           m.url.includes("video") ? (
             <video key={m.url} src={m.url} controls width="100%" />
           ) : (
             <img key={m.url} src={m.url} alt="Event media" width="100%" />
           )
-        ))}
+        )}
+      </div>
     </div>
   );
 };

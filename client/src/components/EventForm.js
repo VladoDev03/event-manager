@@ -109,35 +109,32 @@ const EventForm = () => {
         >
           <h1>Create an event</h1>
           <h2 className="sectionTitle">Event Details</h2>
-          <div className="eventDetails">
-            <div className="formWrapper">
-              <label htmlFor="title">Event Title *</label>
-              <input
-                type="text"
-                id="title"
-                value={formData.title}
-                onChange={handleChange}
-                placeholder="Enter the name of your event"
-                required
-              />
-            </div>
-
-            <div className="formWrapper">
-              <label htmlFor="category">Event Category *</label>
-              <select
-                id="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Please select one</option>
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className="formWrapper">
+            <label htmlFor="title">Event Title *</label>
+            <input
+              type="text"
+              id="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="Enter the name of your event"
+              required
+            />
+          </div>
+          <div className="formWrapper">
+            <label htmlFor="category">Event Category *</label>
+            <select
+              id="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Please select one</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Date & Time Section */}

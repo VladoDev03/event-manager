@@ -86,7 +86,7 @@ export const ReviewForm = ({ eventId }) => {
           ></textarea>
         </div>
 
-        <button type="submit" class="submitBtn">
+        <button type="submit" className="submitBtn">
           Submit Review
         </button>
       </form>

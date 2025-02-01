@@ -7,7 +7,7 @@ export function ImageForm() {
   const navigate = useNavigate();
   const [files, setFiles] = useState(null);
   const { eventId } = useParams();
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -18,12 +18,9 @@ export function ImageForm() {
     }
 
     const formData = new FormData();
-
     Array.from(files).forEach((file) => {
       formData.append("files", file);
     });
-
-    console.log(formData);
 
     formData.append("eventId", eventId);
     formData.append("userId", user.userId);
@@ -31,7 +28,7 @@ export function ImageForm() {
     try {
       const result = await mediaService.uploadMedia(formData);
       console.log("Media URLs:", result);
-      navigate("/");
+      navigate(`../event/${eventId}`);
     } catch (error) {
       console.error("Error uploading images:", error.message);
     }

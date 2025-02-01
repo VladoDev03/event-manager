@@ -119,6 +119,14 @@ hr{
     flex-direction: column;
     text-align: left;
     margin-top: 10px;
+    width: 100%;
+}
+
+.eventDescriptionInfo {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 50px;
 }
 
 .eventDescription a {

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,6 +46,20 @@ public class EventDao {
         }
 
         return event;
+    }
+
+    public static List<Event> findByUserId(long userId) {
+        List<Event> events = new ArrayList<>();
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            events = session.createQuery("SELECT e FROM Event e JOIN e.creator c WHERE c.id = :userId", Event.class)
+                    .setParameter("userId", userId)
+                    .getResultList();
+
+            transaction.commit();
+        }
+        return events;
     }
 
     public static Event getEventByIdWithMedia(long id) {

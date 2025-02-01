@@ -212,3 +212,16 @@ body {
     background-color:#dd5523;
     transition: transform 0.3s; 
 }
+
+.mediaDisplay {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.mediaDisplay img,
+.mediaDisplay video {
+    width: calc((100% - 60px) / 4); 
+    max-width: 200px; 
+    height: auto;
+}
