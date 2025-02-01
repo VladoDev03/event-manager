@@ -29,8 +29,6 @@ const EventPage = () => {
     const [eventEndDate, setEventEndDate] = useState();
     // console.log(eventEndDate);
 
-    console.log(eventId);
-
     const openModal = () => {
         setModalIsOpen(true);
     };
@@ -77,17 +75,12 @@ const EventPage = () => {
         let now = new Date();
         let eventDate = new Date(eventEndDate);
 
-        console.log("now", now.getTime(), now);
-        console.log("event", eventDate.getTime());
-
         if (now.getTime() < eventDate.getTime()) {
             return true;
         } else if (now.getTime() > eventDate.getTime()) {
             return false;
         }
     };
-
-    console.log("comparing", compareDates(eventEndDate));
 
     const redirectToAddMedia = () => {
         navigate(`../add-media/${eventId}`);

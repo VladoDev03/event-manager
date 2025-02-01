@@ -47,11 +47,13 @@ const EventInfo = ({ eventId, setEventUserId, setEventEndDate }) => {
         <h2>About this event</h2>
         <p>{event.description || "No description available."}</p>
       </div>
-      <div>
-        {event.medias.map((m) => {
-          return <img key={m.url} src={m.url}></img>;
-        })}
-      </div>
+      {event.medias.map((m) => (
+          m.url.includes("video") ? (
+            <video key={m.url} src={m.url} controls width="100%" />
+          ) : (
+            <img key={m.url} src={m.url} alt="Event media" width="100%" />
+          )
+        ))}
     </div>
   );
 };

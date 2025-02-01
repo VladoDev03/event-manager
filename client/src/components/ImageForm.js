@@ -18,9 +18,12 @@ export function ImageForm() {
     }
 
     const formData = new FormData();
+
     Array.from(files).forEach((file) => {
       formData.append("files", file);
     });
+
+    console.log(formData);
 
     formData.append("eventId", eventId);
     formData.append("userId", user.userId);
