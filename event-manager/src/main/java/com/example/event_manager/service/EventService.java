@@ -134,6 +134,22 @@ public class EventService {
         return EventDao.getAllDisplayEventDto();
     }
 
+    public List<DisplayEventDto> getFutureEvents() {
+        return EventDao.getFutureEvents()
+                .stream()
+                .map(e -> new DisplayEventDto(
+                        e.getId(),
+                        e.getTitle(),
+                        e.getDescription(),
+                        e.getCategory(),
+                        e.getLocation(),
+                        e.getPrice(),
+                        e.getStartTime(),
+                        e.getEndTime()
+                ))
+                .toList();
+    }
+
     //search
     public List<DisplayEventDto> getEventsByName(String title){
         return EventDao.getEventsByName(title);

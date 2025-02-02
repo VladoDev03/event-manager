@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Review extends BaseEntity {
     @Enumerated
-    @Column(unique = true, nullable=false, name = "public_id")
+    @Column(nullable=false, name = "rating")
     private Rating rating;
 
     @NotBlank(message="Comment must not be blank!")

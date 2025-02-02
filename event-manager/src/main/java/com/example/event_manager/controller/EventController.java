@@ -31,8 +31,6 @@ public class EventController {
     @PostMapping
     public ResponseEntity<CreateEventDto> createEvent(@RequestBody CreateEventDto createEventDto) {
         var res = eventService.createEvent(createEventDto);
-        System.out.println(createEventDto);
-//        return new ResponseEntity<>("Event created successfully", HttpStatus.CREATED);
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
@@ -48,6 +46,12 @@ public class EventController {
             return new ResponseEntity<>(dto, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/future")
+    public ResponseEntity<List<DisplayEventDto>> getFutureEvents() {
+        List<DisplayEventDto> dtos = eventService.getFutureEvents();
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

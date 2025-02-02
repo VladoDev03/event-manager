@@ -39,6 +39,14 @@ const EventsContainer = ({ events }) => {
               className="favoriteButton"
               onClick={e => {
                 e.stopPropagation();
+
+                if (!user.userId) {
+                  navigate('/login');
+                  return;
+                }
+
+                alert('Added to wishlist ❤️');
+
                 addToWishlist(event.id, user.userId)
               }}
             >

@@ -9,6 +9,7 @@ export function ImageForm() {
   const [files, setFiles] = useState(null);
   const { eventId } = useParams();
   const { user } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if(!user.userId) {
@@ -34,6 +35,8 @@ export function ImageForm() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true);
 
     if (!files) {
       console.error("No files selected");
@@ -92,6 +95,7 @@ export function ImageForm() {
         <input type="submit" className="submitBtn" value="Share" />
         <input type="button" onClick={cancelImage} value="Cancel" />
       </div>
+      {isLoading ? <h2>Adding media to event...</h2> : ''}
     </form>
   );
 }

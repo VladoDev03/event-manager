@@ -108,7 +108,7 @@ public class EventDao {
 
     public static List<Event> getEvents() {
         List<Event> events;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             events = session
                     .createQuery("select e from Event e left join fetch e.media left join fetch e.reservations left join fetch e.guestsHaveEventInWishlist", Event.class)
@@ -118,10 +118,28 @@ public class EventDao {
         return events;
     }
 
-    public static List<DisplayEventDto> getUserWishlist(long userId){
+    public static List<Event> getFutureEvents() {
+        List<Event> events;
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            events = session
+                    .createQuery(
+                            "select e from Event e" +
+                                    " left join fetch e.media" +
+                                    " left join fetch e.reservations" +
+                                    " left join fetch e.guestsHaveEventInWishlist" +
+                                    " where e.endTime > now()"
+                            , Event.class)
+                    .getResultList();
+            transaction.commit();
+        }
+        return events;
+    }
+
+    public static List<DisplayEventDto> getUserWishlist(long userId) {
         List<DisplayEventDto> events;
 
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()){
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             events = session.createQuery(
                             "select e from Event e" +
@@ -150,7 +168,7 @@ public class EventDao {
 
     public static Set<Reservation> getEventReservations(long id) {
         Event event;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             event = session
                     .createQuery("select e from Event e join fetch e.reservations where e.id = :id", Event.class)
@@ -162,9 +180,9 @@ public class EventDao {
         return event.getReservations();
     }
 
-    public static boolean isEventFull(long id) throws EntityNotFoundException{
+    public static boolean isEventFull(long id) throws EntityNotFoundException {
         Event event;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             event = session
                     .createQuery("select e from Event e left join fetch e.reservations where e.id = :id", Event.class)
@@ -181,7 +199,7 @@ public class EventDao {
 
     public static List<DisplayEventDto> getAllDisplayEventDto() {
         List<DisplayEventDto> events;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             events = session
                     .createQuery("SELECT new com.example.event_manager.dto.DisplayEventDto(e.id, e.title, e.description, e.category, e.location, e.price, e.startTime, e.endTime) FROM Event e", DisplayEventDto.class)
@@ -191,14 +209,14 @@ public class EventDao {
         return events;
     }
 
-    public static List<DisplayEventDto> getEventsByNameAndLocation(String title, String location){
+    public static List<DisplayEventDto> getEventsByNameAndLocation(String title, String location) {
         List<Event> events;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()){
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             events = session.createQuery("SELECT e FROM Event e WHERE " +
                             "(:title IS NULL OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
                             "(:location IS NULL OR LOWER(e.location) LIKE LOWER(CONCAT('%', :location, '%')))", Event.class)
-                    .setParameter("title",title)
+                    .setParameter("title", title)
                     .setParameter("location", location)
                     .getResultList();
             transaction.commit();
@@ -222,7 +240,7 @@ public class EventDao {
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             results = session.createQuery("SELECT e FROM Event e WHERE (:title IS NULL OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%')))",
-                    Event.class).setParameter("title",title).getResultList();
+                    Event.class).setParameter("title", title).getResultList();
             transaction.commit();
         }
 
@@ -240,12 +258,12 @@ public class EventDao {
 
     }
 
-    public static List<DisplayEventDto> getEventsByLocation(String location){
+    public static List<DisplayEventDto> getEventsByLocation(String location) {
         List<Event> events;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()){
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            events = session.createQuery("SELECT e FROM Event e WHERE (:location IS NULL OR LOWER(e.location) LIKE LOWER(CONCAT('%', :location, '%')))",Event.class)
-                    .setParameter("location",location)
+            events = session.createQuery("SELECT e FROM Event e WHERE (:location IS NULL OR LOWER(e.location) LIKE LOWER(CONCAT('%', :location, '%')))", Event.class)
+                    .setParameter("location", location)
                     .getResultList();
             transaction.commit();
         }
@@ -265,7 +283,7 @@ public class EventDao {
 
     public static List<DisplayEventDto> getFilteredEventsByCategoryStartTimeEndTimePrice(EventCategory eventCategory, LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal minPrice, BigDecimal maxPrice) {
         List<Object[]> results;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Object[]> cr = cb.createQuery(Object[].class);
 
@@ -284,23 +302,23 @@ public class EventDao {
 
             Predicate wherePredicate = cb.conjunction();
 
-            if(eventCategory != null) {
+            if (eventCategory != null) {
                 wherePredicate = cb.and(wherePredicate, cb.equal(root.get("category"), eventCategory));
             }
 
-            if(startDateTime != null) {
+            if (startDateTime != null) {
                 wherePredicate = cb.and(wherePredicate, cb.greaterThanOrEqualTo(root.get("endTime"), startDateTime));
             }
 
-            if(endDateTime != null) {
+            if (endDateTime != null) {
                 wherePredicate = cb.and(wherePredicate, cb.lessThanOrEqualTo(root.get("startTime"), endDateTime));
             }
 
-            if(minPrice != null) {
+            if (minPrice != null) {
                 wherePredicate = cb.and(wherePredicate, cb.greaterThanOrEqualTo(root.get("price"), minPrice));
             }
 
-            if(maxPrice != null) {
+            if (maxPrice != null) {
                 wherePredicate = cb.and(wherePredicate, cb.lessThanOrEqualTo(root.get("price"), maxPrice));
             }
 
@@ -325,7 +343,7 @@ public class EventDao {
 
     public static List<DisplayEventDto> getFilteredEventsAfterSearch(String title, String location, EventCategory eventCategory, LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal minPrice, BigDecimal maxPrice) {
         List<Object[]> results;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+        try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Object[]> cr = cb.createQuery(Object[].class);
 
@@ -346,31 +364,31 @@ public class EventDao {
 
             /*title IS NULL OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%')*/
 
-            if(title != null && !title.isEmpty()) {
+            if (title != null && !title.isEmpty()) {
                 wherePredicate = cb.and(wherePredicate, cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
             }
 
-            if(location != null && !location.isEmpty()) {
+            if (location != null && !location.isEmpty()) {
                 wherePredicate = cb.and(wherePredicate, cb.like(cb.lower(root.get("location")), "%" + location.toLowerCase() + "%"));
             }
 
-            if(eventCategory != null) {
+            if (eventCategory != null) {
                 wherePredicate = cb.and(wherePredicate, cb.equal(root.get("category"), eventCategory));
             }
 
-            if(startDateTime != null) {
+            if (startDateTime != null) {
                 wherePredicate = cb.and(wherePredicate, cb.greaterThanOrEqualTo(root.get("endTime"), startDateTime));
             }
 
-            if(endDateTime != null) {
+            if (endDateTime != null) {
                 wherePredicate = cb.and(wherePredicate, cb.lessThanOrEqualTo(root.get("startTime"), endDateTime));
             }
 
-            if(minPrice != null) {
+            if (minPrice != null) {
                 wherePredicate = cb.and(wherePredicate, cb.greaterThanOrEqualTo(root.get("price"), minPrice));
             }
 
-            if(maxPrice != null) {
+            if (maxPrice != null) {
                 wherePredicate = cb.and(wherePredicate, cb.lessThanOrEqualTo(root.get("price"), maxPrice));
             }
 

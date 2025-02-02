@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import "../style/Homepage.css";
 import Navbar from "./NavBar";
 import EventsContainer from "./EventsContainer";
-import { fetchAllEvents } from "../services/eventService";
+import { fetchFutureEvents } from "../services/eventService";
 
 const HomePage = ({ addToWishlist }) => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const HomePage = ({ addToWishlist }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const eventsData = await fetchAllEvents();
+        const eventsData = await fetchFutureEvents();
         setInitialEvents(eventsData || []);
         setEvents(eventsData || []);
       } catch (error) {
@@ -32,7 +32,7 @@ const HomePage = ({ addToWishlist }) => {
             <div className="popularEventsTitle">
               <h2>Popular events</h2>
             </div>
-            <Link to="/searchEvents">Explore more events</Link> {}
+            <Link to="/findEvents">Explore more events</Link> {}
           </div>
         </div>
         <EventsContainer events={events} />

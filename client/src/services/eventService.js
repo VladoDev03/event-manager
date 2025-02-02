@@ -116,6 +116,25 @@ export const fetchAllEvents = async () => {
   }
 };
 
+export const fetchFutureEvents = async () => {
+  try {
+    const response = await fetch(`${API_URL}/future`, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw new Error("Error fetching all events");
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching all events: ", error);
+    throw error;
+  }
+};
+
 export const fetchSearchedEvents = async (queryParams) => {
   try {
     console.log(`${API_URL}/search?${queryParams}`);
