@@ -61,8 +61,34 @@ const EventPage = () => {
     setFullCapacityIsOpen(false);
   };
 
+  const [errors, setErrors] = useState({ firstName: "", lastName: "" });
+  const validateForm = () => {
+    let errorsCopy = { ...errors };
+    let isValid = true;
+
+    if (firstName.length < 2 || firstName.length > 50) {
+      errorsCopy.firstName = "First name must be between 2 and 50 characters";
+      isValid = false;
+    } else {
+      errorsCopy.firstName = "";
+    }
+    if (lastName.length < 2 || lastName.length > 50) {
+      errorsCopy.lastName = "First name must be between 2 and 50 characters";
+      isValid = false;
+    } else {
+      errorsCopy.lastName = "";
+    }
+
+    setErrors(errorsCopy);
+    return isValid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       await createReservation(eventId, user.userId, firstName, lastName, email);
       openSuccessModal();
@@ -131,6 +157,9 @@ const EventPage = () => {
                   onChange={(e) => setFirstName(e.target.value)}
                   required
                 />
+                {errors.firstName && (
+                  <p className="error-message">{errors.firstName}</p>
+                )}
               </div>
               <div className="last-name">
                 <label htmlFor="last-name">Last Name:</label>
@@ -141,6 +170,9 @@ const EventPage = () => {
                   onChange={(e) => setLastName(e.target.value)}
                   required
                 />
+                {errors.lastName && (
+                  <p className="error-message">{errors.lastName}</p>
+                )}
               </div>
             </div>
 
@@ -200,8 +232,15 @@ const EventPage = () => {
         </div>
       </Modal>
       <div className="eventAndReservationContainer">
-        {(user.userId != eventUserId && !compareDates(eventEndDate) && !reviewExists) ? (
-          <ReviewForm eventId={eventId} setReviewExists={setReviewExists} reviews={reviews} setReviews={setReviews} />
+        {user.userId != eventUserId &&
+        !compareDates(eventEndDate) &&
+        !reviewExists ? (
+          <ReviewForm
+            eventId={eventId}
+            setReviewExists={setReviewExists}
+            reviews={reviews}
+            setReviews={setReviews}
+          />
         ) : (
           ""
         )}

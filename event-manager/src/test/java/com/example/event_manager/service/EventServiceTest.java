@@ -17,7 +17,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-//
+
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,18 +27,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)  // Uses in-memory database
 @Transactional
 public class EventServiceTest {
 
     @Autowired
     private EventService eventService;
-
-//    @Autowired
-//    private UserDao userDao;
-//
-//    @Autowired
-//    private EventDao eventDao;
 
     private static User testUser;
 
@@ -49,18 +42,18 @@ public class EventServiceTest {
                 "Tanya",
                 "Mehandzhvieva",
                 LocalDateTime.now());
-        UserDao.createUser(testUser);  // Persist user for event creation
+        UserDao.createUser(testUser);
     }
 
     @Test
     void testCreateEvent() {
         CreateEventDto eventDto = new CreateEventDto(
                 "Java Lecture",
-                "Lecture in NB",
-                new BigDecimal("50.00"),
-                100,
+                "Lecture in NBU",
+                new BigDecimal("0.00"),
+                50,
                 LocalDateTime.now(),
-                EventCategory.BUSINESS,
+                EventCategory.EDUCATION,
                 LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusDays(2),
                 "NBU",
@@ -74,15 +67,15 @@ public class EventServiceTest {
     @Test
     void testGetEventById() {
         CreateEventDto eventDto = new CreateEventDto(
-                "Test Event 2",
-                "Event Description",
-                new BigDecimal("30.00"),
-                200,
+                "Java Lecture",
+                "Lecture in NBU",
+                new BigDecimal("0.00"),
+                50,
                 LocalDateTime.now(),
                 EventCategory.EDUCATION,
                 LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusDays(2),
-                "Los Angeles",
+                "NBU",
                 testUser.getId()
         );
 
@@ -96,28 +89,28 @@ public class EventServiceTest {
     @Test
     void testGetEventsByUser() {
         CreateEventDto eventDto1 = new CreateEventDto(
-                "User Event 1",
-                "Event Description 1",
-                new BigDecimal("40.00"),
+                "Java Lecture",
+                "Lecture in NBU",
+                new BigDecimal("0.00"),
                 50,
                 LocalDateTime.now(),
-                EventCategory.MUSIC,
+                EventCategory.EDUCATION,
                 LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusDays(2),
-                "Chicago",
+                "NBU",
                 testUser.getId()
         );
 
         CreateEventDto eventDto2 = new CreateEventDto(
-                "User Event 2",
-                "Event Description 2",
-                new BigDecimal("60.00"),
-                150,
+                "JS Lecture",
+                "Lecture in NBU",
+                new BigDecimal("10.00"),
+                50,
                 LocalDateTime.now(),
-                EventCategory.CHARITY,
-                LocalDateTime.now().plusDays(3),
-                LocalDateTime.now().plusDays(4),
-                "San Francisco",
+                EventCategory.EDUCATION,
+                LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusDays(2),
+                "NBU",
                 testUser.getId()
         );
 
@@ -131,15 +124,15 @@ public class EventServiceTest {
     @Test
     void testUpdateEvent() throws EntityNotFoundException {
         CreateEventDto eventDto = new CreateEventDto(
-                "Update Event",
-                "Event Description",
-                new BigDecimal("25.00"),
-                100,
+                "Java Lecture",
+                "Lecture in NBU",
+                new BigDecimal("0.00"),
+                50,
                 LocalDateTime.now(),
-                EventCategory.CULTURE,
+                EventCategory.EDUCATION,
                 LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusDays(2),
-                "Miami",
+                "NBU",
                 testUser.getId()
         );
 
@@ -147,10 +140,10 @@ public class EventServiceTest {
         long eventId = createdEvent.getId();
 
         CreateEventDto updateDto = new CreateEventDto(
-                "Updated Title",
-                "Updated Description",
-                new BigDecimal("75.00"),
-                300,
+                "JS Lecture",
+                "Lecture in NBU",
+                new BigDecimal("10.00"),
+                100,
                 createdEvent.getCreationDate(),
                 createdEvent.getCategory(),
                 createdEvent.getStartTime(),
@@ -162,8 +155,8 @@ public class EventServiceTest {
         eventService.updateEvent(eventId, updateDto);
         CreateEventDto updatedEvent = eventService.getEventById(eventId);
 
-        assertEquals("Updated Title", updatedEvent.getTitle());
-        assertEquals(new BigDecimal("75.00"), updatedEvent.getPrice());
+        assertEquals("JS Lecture", updatedEvent.getTitle());
+        assertEquals(new BigDecimal("10.00"), updatedEvent.getPrice());
     }
 
 }

@@ -41,7 +41,10 @@ const EventForm = () => {
 
   const [errors, setErrors] = useState({
     title: "",
+    location: "",
     capacity: "",
+    price: "",
+    description: "",
   });
 
   const handleSubmit = async (e) => {
