@@ -1,22 +1,50 @@
 package com.example.event_manager.entity;
 
+import com.example.event_manager.validator.InvalidNames;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 public class Event extends BaseEntity {
+    @Size(min = 2, max = 100, message = "Title must be between 2 and 100 characters")
+    @Column(nullable = false)
+    @InvalidNames(message = "Title is not a valid name")
     private String title;
+
+    @Size(min = 10, max = 1000, message = "Description must be between 10 and 1000 characters")
+    @Column(nullable = false)
     private String description;
+
     @Enumerated(EnumType.STRING)
     private EventCategory category;
+
+    @Size(min = 2, max = 100, message = "Location must be between 2 and 100 characters")
+    @Column(nullable = false)
+    @InvalidNames(message = "Location and address are not valid names")
     private String location;
+
+    @DecimalMin(value = "0.0", message = "Price for area must be greater than or equal to 0")
+    @Column(nullable = false)
     private BigDecimal price;
+
+    @Min(value = 1, message = "Capacity must be greater than or equal to 1")
+    @Column(nullable = false)
     private int capacity;
+
+    @FutureOrPresent(message = "Start time must be in the present or future")
+    @Column(nullable = false)
     private LocalDateTime startTime;
+
+    @FutureOrPresent(message = "End time must be in the present or future")
+    @Column(nullable = false)
     private LocalDateTime endTime;
+
     private LocalDateTime creationDate;
+
     @OneToMany (mappedBy = "event")
     private Set<Media> media;
     @ManyToOne (fetch = FetchType.LAZY)

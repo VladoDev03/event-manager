@@ -6,6 +6,7 @@ import com.example.event_manager.entity.Reservation;
 import com.example.event_manager.entity.User;
 import com.example.event_manager.exception.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
+import jakarta.validation.Valid;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Repository
 public class UserDao {
-    public static void saveUser(User user) {
+    public static void createUser(@Valid User user) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(user);
@@ -22,15 +23,7 @@ public class UserDao {
         }
     }
 
-    public static void createUser(User user) {
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.save(user);
-            transaction.commit();
-        }
-    }
-
-    public static void updateUser(User user) {
+    public static void updateUser(@Valid User user) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(user);
@@ -38,7 +31,7 @@ public class UserDao {
         }
     }
 
-    public static void deleteUser(User user) {
+    public static void deleteUser(@Valid User user) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.delete(user);
@@ -73,23 +66,6 @@ public class UserDao {
         }
 
         return user;
-    }
-
-    public static User getUserByEmail(String email) {
-        User user;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            user = session
-                    .createQuery("select u from User u where u.email = :email", User.class)
-                    .setParameter("email", email)
-                    .getSingleResult();
-            transaction.commit();
-            return user;
-
-        } catch (NoResultException nre) {
-            return null;
-        }
-
     }
 
     public static User getUserByUsername(String username) {

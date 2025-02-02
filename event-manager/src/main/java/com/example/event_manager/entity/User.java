@@ -1,16 +1,28 @@
 package com.example.event_manager.entity;
 
+import com.example.event_manager.validator.InvalidNames;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PastOrPresent;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
+@Table(name = "`User`")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseEntity {
+    @InvalidNames(message = "username and name are not a valid names.")
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @InvalidNames(message = "name is not a valid name.")
+    @Column(nullable = false)
     private String firstName;
+    @InvalidNames(message = "name is not a valid name.")
     private String lastName;
+    @PastOrPresent(message = "Creation date must be in the past or present.")
+    @Column(nullable = false)
     private LocalDateTime creationDate;
 
     @OneToMany(mappedBy = "guest")

@@ -5,7 +5,9 @@ import com.example.event_manager.configuration.SessionFactoryUtil;
 import com.example.event_manager.dto.CreateReservationDto;
 import com.example.event_manager.dto.ReservationTicketDto;
 import com.example.event_manager.entity.*;
+import com.example.event_manager.exception.EntitiesNotConnectedException;
 import com.example.event_manager.exception.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -15,7 +17,7 @@ import java.util.List;
 
 @Repository
 public class ReservationDao {
-    public static void saveReservation(Reservation reservation) {
+    public static void createReservation(@Valid Reservation reservation) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(reservation);
@@ -23,15 +25,7 @@ public class ReservationDao {
         }
     }
 
-    public static void createReservation(Reservation reservation) {
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.save(reservation);
-            transaction.commit();
-        }
-    }
-
-    public static void updateReservation(Reservation reservation) {
+    public static void updateReservation(@Valid Reservation reservation) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(reservation);
@@ -39,12 +33,27 @@ public class ReservationDao {
         }
     }
 
-    public static void deleteReservation(Reservation reservation) {
+    public static void deleteReservation(@Valid Reservation reservation) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.delete(reservation);
             transaction.commit();
         }
+    }
+
+    public static Reservation getReservationById(long id) throws EntityNotFoundException {
+        Reservation reservation;
+        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            reservation = session.get(Reservation.class, id);
+            transaction.commit();
+        }
+
+        if(reservation == null) {
+            throw new EntityNotFoundException(id);
+        }
+
+        return reservation;
     }
 
     public static List<Reservation> getReservations() {
@@ -67,6 +76,7 @@ public class ReservationDao {
                     .getResultList();
             transaction.commit();
         }
+
         return reservations;
     }
 
@@ -79,20 +89,11 @@ public class ReservationDao {
                     .getResultList();
             transaction.commit();
         }
+
         return reservations;
     }
 
-    public static Reservation getReservationById(long id) {
-        Reservation reservation;
-        try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            reservation = session.get(Reservation.class, id);
-            transaction.commit();
-        }
-        return reservation;
-    }
-
-    public static Event getReservationEvent(long id) {
+    public static Event getReservationEvent(long id) throws EntityNotFoundException {
         Reservation reservation;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -102,10 +103,15 @@ public class ReservationDao {
                     .getSingleResult();
             transaction.commit();
         }
+
+        if(reservation == null) {
+            throw new EntityNotFoundException(id);
+        }
+
         return reservation.getEvent();
     }
 
-    public static User getReservationGuest(long id) {
+    public static User getReservationGuest(long id) throws EntityNotFoundException {
         Reservation reservation;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -115,6 +121,11 @@ public class ReservationDao {
                     .getSingleResult();
             transaction.commit();
         }
+
+        if(reservation == null) {
+            throw new EntityNotFoundException(id);
+        }
+
         return reservation.getGuest();
     }
 
@@ -148,16 +159,6 @@ public class ReservationDao {
         return reservation.getReview();
     }
 
-    public static String getReservationQrCode(long id) {
-        Reservation reservation = getReservationById(id);
-        Event event = getReservationEvent(id);
-        User guest = getReservationGuest(id);
-        String qrString = "Reservation id:" + id + " by guest id: " + guest.getId() + " for " + reservation.getFirstName() + " " + reservation.getLastName() + ", event id: " + event.getId();
-        String topText = event.getTitle();
-        String bottomText = reservation.getFirstName() + " " + reservation.getLastName();
-        return QRCodeGenerator.getBase64QRCode(qrString, topText, bottomText);
-    }
-
     public static Reservation saveReservationDto(CreateReservationDto createReservationDto) {
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -178,34 +179,7 @@ public class ReservationDao {
 
     }
 
-    public static ReservationTicketDto getReservationTicket(long id) {
-        Reservation reservation = ReservationDao.getReservationById(id);
-
-        //getting Event
-        Event event = ReservationDao.getReservationEvent(id);
-
-        //getting Guest
-        User guest = ReservationDao.getReservationGuest(id);
-
-        ReservationTicketDto reservationTicketDto = new ReservationTicketDto();
-
-        reservationTicketDto.setEventId(event.getId());
-        reservationTicketDto.setEventTitle(event.getTitle());
-        reservationTicketDto.setEventStartTime(event.getStartTime());
-        reservationTicketDto.setEventLocation(event.getLocation());
-        reservationTicketDto.setEventPrice(event.getPrice());
-
-        reservationTicketDto.setReservationId(reservation.getId());
-        reservationTicketDto.setReservationContactNames(reservation.getFirstName() + " " + reservation.getLastName());
-        reservationTicketDto.setReservationEmail(reservation.getEmail());
-        reservationTicketDto.setReservationQrCode(getReservationQrCode(id));
-
-        reservationTicketDto.setGuestId(guest.getId());
-
-        return reservationTicketDto;
-    }
-
-    public static Reservation getReservationByEventIdAndUserId(long eventId, long userId) {
+    public static Reservation getReservationByEventIdAndUserId(long eventId, long userId) throws EntitiesNotConnectedException {
         Reservation reservation;
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -222,6 +196,11 @@ public class ReservationDao {
                     .getSingleResult();
             transaction.commit();
         }
+
+        if(reservation == null) {
+            throw new EntitiesNotConnectedException(eventId, userId);
+        }
+
         return reservation;
     }
 

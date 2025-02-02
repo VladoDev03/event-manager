@@ -1,19 +1,34 @@
 package com.example.event_manager.entity;
 
+import com.example.event_manager.validator.InvalidNames;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.PastOrPresent;
+
 import java.time.LocalDateTime;
 
 @Entity
 public class Reservation extends BaseEntity {
+    @PastOrPresent(message = "Purchase date must be in the past or present.")
+    @Column(nullable = false)
     private LocalDateTime purchaseDate;
     @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private Event event;
     @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private User guest;
+    @Column(nullable = false)
+    @InvalidNames(message = "name is not a valid name.")
     private String firstName;
+    @Column(nullable = false)
+    @InvalidNames(message = "name is not a valid name.")
     private String lastName;
+    @Email(message = "Email must be in email format.")
+    @Column(nullable = false)
     private String email;
     @OneToOne (mappedBy = "reservation")
+    @JoinColumn (unique = true)
     private Review review;
 
     public LocalDateTime getPurchaseDate() {
@@ -43,14 +58,6 @@ public class Reservation extends BaseEntity {
     public Review getReview() {
         return review;
     }
-
-//    @Transient
-//    public String getQrCode() {
-//        String qrString = "Reservation id:" + getId() + " by guest id: " + guest.getId() + " for " + getFirstName() + " " + getLastName() + ", event id: " + event.getId();
-//        String topText = event.getTitle();
-//        String bottomText = firstName + " " + lastName;
-//        return QRCodeGenerator.getBase64QRCode(qrString, topText, bottomText);
-//    }
 
     public void setPurchaseDate(LocalDateTime purchaseDate) {
         this.purchaseDate = purchaseDate;

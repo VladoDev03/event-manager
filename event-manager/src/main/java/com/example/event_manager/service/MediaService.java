@@ -41,7 +41,14 @@ public class MediaService {
     }
 
     public void deleteMedia(long mediaId) throws IOException {
-        Media media = MediaDao.getMediaById(mediaId);
+        Media media = null;
+
+        try {
+            MediaDao.getMediaById(mediaId);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
         MediaDao.deleteMedia(media);
         cloudinaryService.deleteMedia(media);
     }

@@ -1,3 +1,4 @@
+
 package com.example.event_manager.dao;
 
 import com.example.event_manager.configuration.SessionFactoryUtil;
@@ -8,6 +9,7 @@ import com.example.event_manager.entity.Reservation;
 import com.example.event_manager.dto.DisplayEventDto;
 import com.example.event_manager.exception.EntityNotFoundException;
 import jakarta.persistence.criteria.*;
+import jakarta.validation.Valid;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -53,7 +55,7 @@ public class EventDao {
         return event;
     }
 
-    public static List<Event> findByUserId(long userId) {
+    public static List<Event> findByUserId(long userId) throws EntityNotFoundException {
         List<Event> events = new ArrayList<>();
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -64,10 +66,15 @@ public class EventDao {
 
             transaction.commit();
         }
+
+        if (events == null) {
+            throw new EntityNotFoundException(userId);
+        }
+
         return events;
     }
 
-    public static Event getEventByIdWithMedia(long id) {
+    public static Event getEventByIdWithMedia(long id) throws EntityNotFoundException {
         Event event;
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -77,10 +84,13 @@ public class EventDao {
                     .getSingleResult();
             transaction.commit();
         }
+        if (event == null) {
+            throw new EntityNotFoundException(id);
+        }
         return event;
     }
 
-    public static void updateEvent(Event event) {
+    public static void updateEvent(@Valid Event event) {
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(event);
@@ -88,7 +98,7 @@ public class EventDao {
         }
     }
 
-    public static void deleteEvent(Event event) {
+    public static void deleteEvent(@Valid Event event) {
         try (Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.delete(event);
@@ -108,7 +118,7 @@ public class EventDao {
         return events;
     }
 
-    public static List<DisplayEventDto> getUserWishlist(long userId) {
+    public static List<DisplayEventDto> getUserWishlist(long userId){
         List<DisplayEventDto> events;
 
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()){
@@ -148,10 +158,11 @@ public class EventDao {
                     .getSingleResult();
             transaction.commit();
         }
+
         return event.getReservations();
     }
 
-    public static boolean isEventFull(long id) {
+    public static boolean isEventFull(long id) throws EntityNotFoundException{
         Event event;
         try(Session session = SessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -160,6 +171,10 @@ public class EventDao {
                     .setParameter("id", id)
                     .getSingleResult();
             transaction.commit();
+        }
+
+        if (event == null) {
+            throw new EntityNotFoundException(id);
         }
         return event.getCapacity() <= event.getReservations().size();
     }

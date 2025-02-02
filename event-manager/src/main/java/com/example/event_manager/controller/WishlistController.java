@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/wishlist")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "")
 public class WishlistController {
     private final WishlistService wishlistService;
 
@@ -23,24 +23,19 @@ public class WishlistController {
         this.wishlistService = wishlistService;
     }
 
-    // Add an event to the wishlist
     @PostMapping("/add")
     public ResponseEntity<String> addEventToWishlist(@RequestBody WishlistRequest wishlist) throws EntityNotFoundException {
-        System.out.println("Workds");
         wishlistService.addEventToWishlist(wishlist.getEventId(), wishlist.getUserId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    // Remove an event from the wishlist
     @DeleteMapping("/remove")
     public boolean removeEventFromWishlist(@RequestBody WishlistRequest wishlist) {
         return wishlistService.removeEventFromWishlist(wishlist.getEventId(), wishlist.getUserId());
     }
 
-    // Get all events in the wishlist
     @GetMapping("/{id}")
     public List<DisplayEventDto> getWishlist(@PathVariable long id) {
         return wishlistService.getWishlist(id);
     }
 }
-

@@ -39,7 +39,7 @@ public class AuthService {
 
         UserDao.createUser(newUser);
 
-        var jwtToken = jwtService.generateToken(user);
+        String jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken, null, newUser.getId())
@@ -67,11 +67,10 @@ public class AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        var jwtToken = jwtService.generateToken(userListDto);
+        String jwtToken = jwtService.generateToken(userListDto);
 
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken, null, user.getId())
                 .build();
     }
-
 }

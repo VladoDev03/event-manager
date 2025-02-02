@@ -18,23 +18,26 @@ repositories {
 }
 
 dependencies {
-//	Hibernate
+//    Hibernate
 	implementation("org.hibernate:hibernate-core:6.5.2.Final")
 	implementation("mysql:mysql-connector-java:8.0.18")
+
+//    Validation
 	implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
 	implementation("org.hibernate.validator:hibernate-validator-annotation-processor:8.0.1.Final")
+	implementation("org.glassfish.expressly:expressly:5.0.0")
 
-//	JWTs
+//    JWTs
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
-//	Spring Boot
+//    Spring Boot
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.security:spring-security-crypto")
 
-//	Cloudinary
+//    Cloudinary
 	implementation("com.cloudinary:cloudinary-http5:2.0.0")
 	implementation("com.cloudinary:cloudinary-taglib:2.0.0")
 
@@ -42,10 +45,12 @@ dependencies {
 	implementation("com.google.zxing:core:3.4.1")
 	implementation("com.google.zxing:javase:3.4.1")
 
-//	testing
+//    testing
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("com.h2database:h2:2.1.214")
+	testImplementation("org.mockito:mockito-core:5.15.2")
 }
 
 tasks.withType<Test> {

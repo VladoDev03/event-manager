@@ -4,7 +4,6 @@ import "../style/CreateEvent.css";
 import { createEvent } from "../services/eventService";
 import { fetchCategories } from "../services/categoriesService";
 import { AuthContext } from "../contexts/AuthContext";
-import { ImageForm } from "./ImageForm";
 
 const EventForm = () => {
   const [categories, setCategories] = useState([]);
@@ -53,17 +52,39 @@ const EventForm = () => {
     let isValid = true;
     let errorsCopy = { ...errors };
 
+    if (formData.title.length < 2 || formData.title.length > 100) {
+      errorsCopy.title = "Title must be between 2 and 100 characters";
+      isValid = false;
+    } else {
+      errorsCopy.title = "";
+    }
+    if (formData.location.length < 2 || formData.location.length > 100) {
+      errorsCopy.location = "Title must be between 2 and 100 characters";
+      isValid = false;
+    } else {
+      errorsCopy.location = "";
+    }
     if (formData.capacity <= 0) {
-      errorsCopy.capacity = "Capacity must be greater than zero.";
+      errorsCopy.capacity = "Capacity must be greater than zero";
       isValid = false;
     } else {
       errorsCopy.capacity = "";
     }
     if (formData.price < 0) {
-      errorsCopy.price = "Price must be greater than zero.";
+      errorsCopy.price = "Price must be greater than zero";
       isValid = false;
     } else {
       errorsCopy.price = "";
+    }
+    if (
+      formData.description.length < 10 ||
+      formData.description.length > 1000
+    ) {
+      errorsCopy.description =
+        "Description must be between 10 and 1000 characters";
+      isValid = false;
+    } else {
+      errorsCopy.description = "";
     }
 
     setErrors(errorsCopy);
@@ -119,6 +140,7 @@ const EventForm = () => {
               placeholder="Enter the name of your event"
               required
             />
+            {errors.title && <p className="error-message">{errors.title}</p>}
           </div>
           <div className="formWrapper">
             <label htmlFor="category">Event Category *</label>
@@ -158,7 +180,11 @@ const EventForm = () => {
                 type="datetime-local"
                 id="endTime"
                 value={formData.endTime}
-                min={(formData.startTime > new Date().toISOString().slice(0, -8)) ? (formData.startTime) : (new Date().toISOString().slice(0, -8))}
+                min={
+                  formData.startTime > new Date().toISOString().slice(0, -8)
+                    ? formData.startTime
+                    : new Date().toISOString().slice(0, -8)
+                }
                 onChange={handleChange}
                 required
               />
@@ -178,6 +204,9 @@ const EventForm = () => {
               placeholder="Write an address"
               required
             />
+            {errors.location && (
+              <p className="error-message">{errors.location}</p>
+            )}
           </div>
 
           {/* Capacity Section */}
@@ -221,6 +250,9 @@ const EventForm = () => {
               placeholder="Describe what's special about your event & other important details"
               required
             />
+            {errors.description && (
+              <p className="error-message">{errors.description}</p>
+            )}
           </div>
 
           {/* Submit Button */}

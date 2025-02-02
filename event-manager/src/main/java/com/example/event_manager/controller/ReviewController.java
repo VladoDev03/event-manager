@@ -3,6 +3,7 @@ package com.example.event_manager.controller;
 import com.example.event_manager.dto.CreateReviewDto;
 import com.example.event_manager.dto.ReviewDataDto;
 import com.example.event_manager.dto.UploadReviewDto;
+import com.example.event_manager.exception.EntityNotFoundException;
 import com.example.event_manager.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/review")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "")
 public class ReviewController {
     private final ReviewService reviewService;
 
@@ -35,7 +36,6 @@ public class ReviewController {
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<?> deleteReview(@PathVariable String reviewId) {
         reviewService.deleteReview(Long.parseLong(reviewId));
-        
         return ResponseEntity.ok(reviewId);
     }
 

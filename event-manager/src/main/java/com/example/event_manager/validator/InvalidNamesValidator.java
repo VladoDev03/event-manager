@@ -11,7 +11,7 @@ public class InvalidNamesValidator implements ConstraintValidator<InvalidNames, 
 
     @Override
     public void initialize(InvalidNames constraintAnnotation) {
-        reservedWord.addAll(Set.of("event", "name", "address", "location"));
+        reservedWord.addAll(Set.of("event", "name", "address", "location", "username"));
     }
 
     @Override

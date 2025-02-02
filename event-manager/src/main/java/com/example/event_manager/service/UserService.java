@@ -8,16 +8,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    public UserListDto getUserByEmail(String email) {
-        User user = UserDao.getUserByEmail(email);
-        /*if(user != null) {
-            return new UserListDto(
-                    user.getEmail(),
-                    user.getPassword(),
-                    user.getUsername()
-            );
-        }*/
-
-        return null;
-    }
+//    public UserListDto getUserByEmail(String email) {
+//        /*User user = UserDao.getUserByEmail(email);
+//        if(user != null) {
+//            return new UserListDto(
+//                    user.getEmail(),
+//                    user.getPassword(),
+//                    user.getUsername()
+//            );
+//        }*/
+//
+//        return null;
+//    }
 }

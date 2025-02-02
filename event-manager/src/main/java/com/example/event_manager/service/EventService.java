@@ -45,52 +45,61 @@ public class EventService {
         return createEventDto;
     }
 
-    public CreateEventDto getEventById(long id) throws EntityNotFoundException {
-        Event event = EventDao.getEventById(id);
-        if (event != null) {
-            return new CreateEventDto(
-                    event.getTitle(),
-                    event.getDescription(),
-                    event.getPrice(),
-                    event.getCapacity(),
-                    event.getCreationDate(),
-                    event.getCategory(),
-                    event.getStartTime(),
-                    event.getEndTime(),
-                    event.getLocation(),
-                    event.getCreator().getId()
-            );
+    public CreateEventDto getEventById(long id) {
+        Event event = null;
+        try {
+            event = EventDao.getEventById(id);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        return null;
+
+        return new CreateEventDto(
+                event.getTitle(),
+                event.getDescription(),
+                event.getPrice(),
+                event.getCapacity(),
+                event.getCreationDate(),
+                event.getCategory(),
+                event.getStartTime(),
+                event.getEndTime(),
+                event.getLocation(),
+                event.getCreator().getId()
+        );
     }
 
     public EventMediaDto getEventWithMediaById(long id) {
-        Event event = EventDao.getEventByIdWithMedia(id);
-        if (event != null) {
-            return new EventMediaDto(
-                    event.getTitle(),
-                    event.getDescription(),
-                    event.getPrice(),
-                    event.getCapacity(),
-                    event.getCreationDate(),
-                    event.getCategory(),
-                    event.getStartTime(),
-                    event.getEndTime(),
-                    event.getLocation(),
-                    event.getCreator().getId(),
-                    event.getMedia()
-                            .stream()
-                            .map(m -> {
-                                return new MediaDto(m.getUrl(), m.getPublicId());
-                            })
-                            .toList()
-            );
+        Event event;
+        try {
+            event = EventDao.getEventByIdWithMedia(id);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException("Event not found for ID: " + id, e);
         }
-        return null;
+
+        return new EventMediaDto(
+                event.getTitle(),
+                event.getDescription(),
+                event.getPrice(),
+                event.getCapacity(),
+                event.getCreationDate(),
+                event.getCategory(),
+                event.getStartTime(),
+                event.getEndTime(),
+                event.getLocation(),
+                event.getCreator().getId(),
+                event.getMedia().stream()
+                        .map(m -> new MediaDto(m.getUrl(), m.getPublicId()))
+                        .toList()
+        );
     }
 
+
     public List<DisplayEventDto> getEventsByUser(long userId) {
-        List<Event> events = EventDao.findByUserId(userId);
+        List<Event> events = null;
+        try {
+            events = EventDao.findByUserId(userId);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         return events.stream()
                 .map(event -> new DisplayEventDto(
@@ -108,21 +117,17 @@ public class EventService {
 
     public void updateEvent(long id, CreateEventDto createEventDto) throws EntityNotFoundException {
         Event event = EventDao.getEventById(id);
-        if (event != null) {
-            event.setTitle(createEventDto.getTitle());
-            event.setDescription(createEventDto.getDescription());
-            event.setPrice(createEventDto.getPrice());
-            event.setCapacity(createEventDto.getCapacity());
-            event.setCreationDate(createEventDto.getCreationDate());
-            EventDao.updateEvent(event);
-        }
+        event.setTitle(createEventDto.getTitle());
+        event.setDescription(createEventDto.getDescription());
+        event.setPrice(createEventDto.getPrice());
+        event.setCapacity(createEventDto.getCapacity());
+        event.setCreationDate(createEventDto.getCreationDate());
+        EventDao.updateEvent(event);
     }
 
     public void deleteEvent(long id) throws EntityNotFoundException {
         Event event = EventDao.getEventById(id);
-        if (event != null) {
-            EventDao.deleteEvent(event);
-        }
+        EventDao.deleteEvent(event);
     }
 
     public List<DisplayEventDto> getAllEvents() {

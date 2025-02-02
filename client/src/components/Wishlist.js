@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../style/Wishlist.css";
 import Navbar from "./NavBar";
 import { format } from "date-fns";
@@ -7,6 +8,7 @@ import { getWishlist, removeFromWishlist } from '../services/wishlistService';
 import { AuthContext } from "../contexts/AuthContext";
 
 const Wishlist = () => {
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const { user } = useContext(AuthContext);
 
@@ -26,6 +28,10 @@ const Wishlist = () => {
 
   const formatDateTime = (dateTimeString) => {
     return format(dateTimeString, "dd MMMM yyyy HH:mm");
+  };
+
+  const handleEventClick = (eventId) => {
+    navigate(`/event/${eventId}`);
   };
 
   const handleDelete = eventId => {
@@ -50,7 +56,7 @@ const Wishlist = () => {
         <div className="eventsContainer">
           {events.length > 0 ? (
             events.map((event) => (
-              <section key={event.id} className="eventWrapper">
+              <section key={event.id} className="eventWrapper" onClick={() => handleEventClick(event.id)}>
                 <div className="eventDescription">
                   <h3>{event.title}</h3>
                   <p>{formatDateTime(event.startTime)}</p>

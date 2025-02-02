@@ -1,17 +1,29 @@
 package com.example.event_manager.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 
 @Entity
 public class Review extends BaseEntity {
     @Enumerated
+    @Column(unique = true, nullable=false, name = "public_id")
     private Rating rating;
+
+    @NotBlank(message="Comment must not be blank!")
+    @Size(max=100, message = "Comment must not be longer than 100 characters!")
+    @Column(nullable=false)
     private String comment;
+
+    @PastOrPresent(message = "Review time cannot be in the future!")
+    @Column(name = "review_time")
     private LocalDateTime reviewTime;
+
     @OneToOne
+    @JoinColumn(unique = true)
     private Reservation reservation;
 
     public Review() {}

@@ -1,11 +1,18 @@
 package com.example.event_manager.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Media extends BaseEntity {
+    @NotBlank(message="Url must not be blank!")
+    @Column(unique = true, nullable=false)
     private String url;
+
+    @NotBlank(message="Public id must not be blank!")
+    @Column(unique = true, nullable=false, name = "public_id")
     private String publicId;
+
     @ManyToOne (fetch = FetchType.LAZY)
     private Event event;
 
