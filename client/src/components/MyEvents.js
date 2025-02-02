@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./NavBar";
 import EventsContainer from "./EventsContainer";
 import { AuthContext } from "../contexts/AuthContext";
 import { getEventsByUser } from "../services/eventService";
 
 const MyEvents = ({}) => {
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const { user } = useContext(AuthContext);
 
@@ -21,6 +23,8 @@ const MyEvents = ({}) => {
 
     if (user?.userId) {
       fetchUserEvents();
+    } else {
+      navigate('/NotFound');
     }
   }, [user?.userId]);
 
