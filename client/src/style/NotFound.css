@@ -1,0 +1,46 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.mainContainerNotFound {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin: 0px auto 40px;
+    max-width: 600px;
+    padding: 0 0 3.75rem;
+    width: 100%;
+    text-align: center;
+    height: 80vh;
+}
+
+.mainContainerNotFound h1{
+    font-size: 72px;
+    margin-bottom: 0;
+    color: #333;
+}
+
+.mainContainerNotFound h2{
+    font-size: 32px;
+    margin-bottom: 0;
+    color: #333;
+}
+
+.mainContainerNotFound p{
+    font-size: 16px;
+    margin-bottom: 0;
+    color: #333;
+}
+
+.mainContainerNotFound a{
+    text-decoration: none;
+}
+
+.mainContainerNotFound a h5{
+    color: #d1410c;
+}
