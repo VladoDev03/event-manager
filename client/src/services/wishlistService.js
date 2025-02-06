@@ -3,13 +3,13 @@ const baseUrl = "http://localhost:8080/api/wishlist";
 export const addToWishlist = async (eventId, userId) => {
   const wishlist = {
     eventId,
-    userId
+    userId,
   };
 
   const response = await fetch(`${baseUrl}/add`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(wishlist)
+    body: JSON.stringify(wishlist),
   });
   if (!response.ok) {
     throw new Error("Failed to add to wishlist");
@@ -27,15 +27,23 @@ export const getWishlist = async (userId) => {
 export const removeFromWishlist = async (eventId, userId) => {
   const wishlist = {
     eventId,
-    userId
+    userId,
   };
 
   const response = await fetch(`${baseUrl}/remove`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(wishlist)
+    body: JSON.stringify(wishlist),
   });
   if (!response.ok) {
     throw new Error("Failed to remove from wishlist");
   }
+};
+
+export const isEventInWishlist = async (eventId, userId) => {
+  const response = await fetch(`${baseUrl}/exists/${userId}/${eventId}`);
+  if (!response.ok) {
+    throw new Error("Failed to check wishlist");
+  }
+  return response.json();
 };

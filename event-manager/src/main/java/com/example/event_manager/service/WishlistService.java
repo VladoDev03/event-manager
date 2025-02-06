@@ -44,4 +44,12 @@ public class WishlistService {
     public List<DisplayEventDto> getWishlist(long userId) {
         return EventDao.getUserWishlist(userId);
     }
+
+    public boolean isEventInWishlist(long eventId, long userId) throws EntityNotFoundException {
+        User user = UserDao.getUserById(userId);
+        return user.getWishlist()
+                .stream()
+                .anyMatch(event -> event.getId() == eventId);
+    }
+
 }

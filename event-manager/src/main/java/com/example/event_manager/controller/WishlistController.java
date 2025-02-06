@@ -38,4 +38,10 @@ public class WishlistController {
     public List<DisplayEventDto> getWishlist(@PathVariable long id) {
         return wishlistService.getWishlist(id);
     }
+
+    @GetMapping("/exists/{userId}/{eventId}")
+    public boolean isEventInWishlist(@PathVariable long userId, @PathVariable long eventId) throws EntityNotFoundException {
+        return wishlistService.isEventInWishlist(eventId, userId);
+    }
+
 }

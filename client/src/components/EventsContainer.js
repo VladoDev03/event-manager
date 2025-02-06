@@ -1,13 +1,46 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../style/Homepage.css";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { AuthContext } from "../contexts/AuthContext";
-import { addToWishlist } from "../services/wishlistService";
+import { addToWishlist, isEventInWishlist } from "../services/wishlistService";
 
 const EventsContainer = ({ events }) => {
   const navigate = useNavigate();
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const [wishlist, setWishlist] = useState({});
+
+  useEffect(() => {
+    if (user?.userId) {
+      const fetchWishlistStatus = async () => {
+        const wishlistStatus = {};
+        for (const event of events) {
+          wishlistStatus[event.id] = await isEventInWishlist(
+            event.id,
+            user.userId
+          );
+        }
+        setWishlist(wishlistStatus);
+      };
+      fetchWishlistStatus();
+    }
+  }, [user, events]);
+
+  const handleAddToWishlist = async (eventId) => {
+    if (!user?.userId) {
+      navigate("/login");
+      return;
+    }
+
+    if (wishlist[eventId]) {
+      alert("Event is already in your wishlist! ❤️");
+      return;
+    }
+
+    await addToWishlist(eventId, user.userId);
+    setWishlist((prev) => ({ ...prev, [eventId]: true }));
+    alert("Added to wishlist ❤️");
+  };
 
   const handleEventClick = (eventId) => {
     navigate(`/event/${eventId}`);
@@ -37,17 +70,9 @@ const EventsContainer = ({ events }) => {
             </div>
             <button
               className="favoriteButton"
-              onClick={e => {
+              onClick={(e) => {
+                handleAddToWishlist(event.id);
                 e.stopPropagation();
-
-                if (!user.userId) {
-                  navigate('/login');
-                  return;
-                }
-
-                alert('Added to wishlist ❤️');
-
-                addToWishlist(event.id, user.userId)
               }}
             >
               ❤️
