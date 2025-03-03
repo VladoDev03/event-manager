@@ -30,7 +30,7 @@ public class EventController {
 
     @PostMapping
     public ResponseEntity<CreateEventDto> createEvent(@RequestBody CreateEventDto createEventDto) {
-        var res = eventService.createEvent(createEventDto);
+        CreateEventDto res = eventService.createEvent(createEventDto);
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
